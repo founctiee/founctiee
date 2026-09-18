@@ -1,16 +1,15 @@
-## Hi there 👋
+Hi, I’m Ege 
 
-<!--
-**founctiee/founctiee** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Computer Engineering Student at Bilkent University
 
-Here are some ideas to get you started:
+Currently Learning
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+* CS 101
+* Programming Fundamentals
+* Git & GitHub
+
+Interests
+
+* Computer Science
+* Software Development
+* Artificial Intelligence

@@ -199,7 +199,7 @@ describe('bombalar ve maç sonu', () => {
       m.phase = Phase.Live;
       mm.endRound(r % 2 ? Team.T : Team.CT, RoundEndReason.TimeRanOut);
       mm.afterRound();
-      if (m.phase === Phase.Halftime) run(m, TICK_RATE * 11);
+      if ((m.phase as Phase) === Phase.Halftime) run(m, TICK_RATE * 11);
     }
     expect(m.scoreT + m.scoreCT).toBe(16);
     expect(m.overtimeCount).toBe(1);

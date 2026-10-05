@@ -105,8 +105,12 @@ import {
   rayCapsule,
   ITEM_NONE,
   cvars,
+  spreadDirections,
+  MATERIALS,
 } from '@kervan/shared';
 import { LagCompHistory, PoseRecord } from './lagcomp';
+import { Visibility, VisActor } from './visibility';
+import { randomInt } from 'node:crypto';
 
 export interface Conn {
   sendBinary(data: Uint8Array): void;
@@ -146,6 +150,11 @@ export class ServerPlayer {
   shots = 0;
   god = false;
   lastUse = false;
+  /** Gizli spread anahtarı (round başına yenilenir; istemci bilmez). */
+  secret = randomInt(1, 0x7fffffff);
+  shotCounter = 0;
+  stepAcc = 0;
+  lastStepPos: Vec3 | null = null;
 
   constructor(
     readonly id: number,
@@ -248,6 +257,7 @@ export class Match {
   private lastStateTick = -1000;
   private nextPlayerId = 1;
   host = -1;
+  readonly vis: Visibility;
 
   constructor(
     readonly map: MapDef,
@@ -255,6 +265,7 @@ export class Match {
     readonly roomCode = '',
   ) {
     this.world = new World(map.brushes, map.triggers);
+    this.vis = new Visibility(this.world);
     this.settings = { ...DEFAULT_SETTINGS, ...settings };
     if (this.settings.practice) this.settings.showImpacts = true;
   }
@@ -302,6 +313,7 @@ export class Match {
     if (!p) return;
     if (p.alive) this.dropOnDeath(p);
     this.players.delete(id);
+    this.vis.forget(id);
     if (this.host === id) this.pickHost();
     this.stateDirty = true;
   }
@@ -498,6 +510,7 @@ export class Match {
     this.dropped = [];
     this.mvp = -1;
     for (const p of this.players.values()) {
+      p.secret = randomInt(1, 0x7fffffff);
       p.given.clear();
       p.taken.clear();
       p.roundKills = 0;
@@ -769,11 +782,13 @@ export class Match {
       } else if (p.alive) {
         p.idleTicks++;
         // komut gelmiyorsa (sekme arka planda) yerçekimi yine işlesin
-        if (p.idleTicks > 8) {
+        if (p.idleTicks > 8 && p.budget > 0) {
           const idle: UserCmd = { ...p.lastCmd, buttons: 0, weapon: ITEM_NONE, fireFrac: 255, seq: p.lastSeq };
           const saved = p.sim.move.oldButtons;
           simulateCmd(p.sim, idle, this.simEnv(p, boxes));
           p.sim.move.oldButtons = saved;
+          // boşta simülasyon da zaman bankasından harcar (hız hilesi için çift sayım olmasın)
+          p.budget--;
         }
       }
     }
@@ -789,6 +804,9 @@ export class Match {
 
     // 3) faz ve kazanma koşulları
     this.stepPhase();
+
+    // görüş sisi (32 Hz)
+    if (tick % 2 === 0) this.updateVisibility();
 
     // 4) bağlantısı kopanları temizle
     for (const p of [...this.players.values()]) {
@@ -828,6 +846,22 @@ export class Match {
     for (const ev of events) this.handleSimEvent(p, ev, cmd);
     this.handleUse(p, cmd);
     this.autoPickup(p);
+    this.footsteps(p, cmd);
+  }
+
+  /** Koşan oyuncunun ayak sesleri: görmeyen ve duyma mesafesindekilere bulanık konumla. */
+  private footsteps(p: ServerPlayer, cmd: UserCmd) {
+    const m = p.sim.move;
+    const prev = p.lastStepPos;
+    p.lastStepPos = { ...m.origin };
+    if (!prev) return;
+    const speed = Math.hypot(m.velocity.x, m.velocity.y);
+    if (!m.onGround || speed <= 150 || cmd.buttons & IN_SPEED || m.ducked) return;
+    p.stepAcc += Math.hypot(m.origin.x - prev.x, m.origin.y - prev.y);
+    if (p.stepAcc < 82) return;
+    p.stepAcc = 0;
+    const step = MATERIALS[m.groundMat]?.step ?? 'concrete';
+    this.emitFrom(p, null, `step_${step}`, 1300, 16, 0.9);
   }
 
   private handleSimEvent(p: ServerPlayer, ev: SimEvent, cmd: UserCmd) {
@@ -848,14 +882,14 @@ export class Match {
       case 'land': {
         const dmg = fallDamage(ev.value ?? 0);
         if (dmg > 0) this.damage(p, null, dmg, 0, HitGroup.Generic, KNIFE, false, p.sim.move.origin, true);
-        this.broadcastExcept(p.id, { e: 'land', id: p.id, v: Math.round(ev.value ?? 0) });
+        if ((ev.value ?? 0) > 250) this.emitFrom(p, { e: 'land', id: p.id, v: Math.round(ev.value ?? 0) }, 'land_concrete', 1500, 24, 0.8);
         break;
       }
       case 'jump':
-        this.broadcastExcept(p.id, { e: 'jump', id: p.id });
+        this.emitFrom(p, { e: 'jump', id: p.id }, null, 0, 0);
         break;
       case 'reload':
-        if (ev.value === 0) this.broadcastExcept(p.id, { e: 'reload', id: p.id, w: activeDef(p.sim).num });
+        if (ev.value === 0) this.emitFrom(p, { e: 'reload', id: p.id, w: activeDef(p.sim).num }, 'mag_out', 1100, 32, 0.6);
         break;
     }
   }
@@ -878,15 +912,20 @@ export class Match {
 
   private shoot(p: ServerPlayer, ev: ShotEvent, cmd: UserCmd) {
     const def = weaponByNum(ev.weapon)!;
-    this.broadcastExcept(p.id, {
-      e: 'shot',
-      id: p.id,
-      w: ev.weapon,
-      m: ev.mode,
-      o: v3(ev.origin),
-      d: ev.dirs.map((d) => [Math.round(d.x * 1e5) / 1e5, Math.round(d.y * 1e5) / 1e5, Math.round(d.z * 1e5) / 1e5] as V3),
-      sil: ev.silenced,
-    });
+    // Gizli spread: yönler sunucuda tahmin edilemeyen seed ile yeniden üretilir (nospread hilesine karşı).
+    const seed = hashSeed(p.secret, cmd.seq, p.shotCounter++);
+    ev.dirs = spreadDirections(seed, ev.pitch, ev.yaw, ev.inaccuracy, ev.spread, ev.pellets);
+    const dirs = ev.dirs.map((d) => [Math.round(d.x * 1e5) / 1e5, Math.round(d.y * 1e5) / 1e5, Math.round(d.z * 1e5) / 1e5] as V3);
+    const full: GameEvent = { e: 'shot', id: p.id, w: ev.weapon, m: ev.mode, o: v3(ev.origin), d: dirs, sil: ev.silenced };
+    const range = ev.silenced ? 1500 : 1e9;
+    for (const o of this.players.values()) {
+      if (o === p) continue;
+      if (this.sees(o, p)) this.toPlayer(o.id, full);
+      else if (vdist(o.sim.move.origin, p.sim.move.origin) <= range) {
+        // görünmeyen atıcı: konum bulanık (ses yönü kadar bilgi)
+        this.toPlayer(o.id, { ...full, o: v3(this.fuzz(ev.origin, 48)) });
+      }
+    }
     const targets = this.targetsFor(p, cmd.renderTick);
     // aynı atışta bir oyuncuya giden saçmalar toplanır (pompalı)
     const agg = new Map<number, { dmg: number; group: HitGroup; point: Vec3; wb: boolean; smoke: boolean }>();
@@ -947,7 +986,7 @@ export class Match {
         this.damage(victim, p, dmg, KNIFE.armorRatio, HitGroup.Chest, KNIFE, false, end);
       }
     }
-    this.broadcastExcept(p.id, { e: 'melee', id: p.id, hit, heavy: ev.heavy });
+    this.emitFrom(p, { e: 'melee', id: p.id, hit, heavy: ev.heavy }, hit ? 'knife_hit' : 'knife_swing', 1200, 24, 0.7);
   }
 
   /**
@@ -1002,17 +1041,13 @@ export class Match {
     }
 
     const from = attacker ? eyePosition(attacker.sim) : point;
-    this.broadcast({
-      e: 'hit',
-      a: attacker?.id ?? -1,
-      v: victim.id,
-      dmg: dealt,
-      hg: group,
-      p: v3(point),
-      hp: victim.sim.health,
-      armor: victim.sim.armor,
-      from: v3(from),
-    });
+    const base = { e: 'hit' as const, a: attacker?.id ?? -1, v: victim.id, dmg: dealt, hg: group, p: v3(point) };
+    for (const o of this.players.values()) {
+      if (o === victim) this.toPlayer(o.id, { ...base, hp: victim.sim.health, armor: victim.sim.armor, from: v3(from) });
+      else if (o.team === victim.team) this.toPlayer(o.id, { ...base, hp: victim.sim.health, armor: victim.sim.armor });
+      else if (o === attacker) this.toPlayer(o.id, { ...base, hp: -1, armor: -1, hel: victim.sim.helmet });
+      else if (this.sees(o, victim)) this.toPlayer(o.id, { ...base, hp: -1, armor: -1 });
+    }
 
     if (victim.sim.health <= 0) {
       this.kill(victim, attacker, def, group === HitGroup.Head, wallbang, throughSmoke, noscope);
@@ -1066,6 +1101,7 @@ export class Match {
       as: assister,
       ff,
     });
+    if (attacker && attacker !== victim) this.toPlayer(victim.id, { e: 'deathinfo', k: attacker.id, hp: attacker.sim.health });
     if (this.bomb.defuser === victim.id) this.abortDefuse();
     this.stateDirty = true;
   }
@@ -1139,7 +1175,7 @@ export class Match {
         s.wpn.reloadEnd = 0;
       }
     }
-    this.broadcast({ e: 'buy', id: p.id, item });
+    for (const o of this.players.values()) if (o.team === p.team) this.toPlayer(o.id, { e: 'buy', id: p.id, item });
     this.stateDirty = true;
   }
 
@@ -1245,7 +1281,7 @@ export class Match {
           s.wpn.deployEnd = s.time + def.deployTime;
         }
       }
-      this.broadcast({ e: 'pickup', id: p.id, w: d.item === 'c4' ? 1 : d.item.num });
+      this.emitFrom(p, { e: 'pickup', id: p.id, w: d.item === 'c4' ? 1 : d.item.num }, 'pickup', 600, 24, 0.5, true);
       this.dropped.splice(i, 1);
       i--;
       this.stateDirty = true;
@@ -1302,7 +1338,7 @@ export class Match {
       p.sim.wpn.deployEnd = p.sim.time + def.deployTime;
       p.sim.wpn.zoom = 0;
       p.sim.wpn.reloadEnd = 0;
-      this.broadcast({ e: 'pickup', id: p.id, w: def.num });
+      this.emitFrom(p, { e: 'pickup', id: p.id, w: def.num }, 'pickup', 600, 24, 0.5, true);
       this.stateDirty = true;
     }
   }
@@ -1334,7 +1370,7 @@ export class Match {
     this.bomb.defuseEndTick = this.tick + ts(kit ? this.settings.defuseTimeKit : this.settings.defuseTime);
     p.sim.defusing = true;
     p.sim.move.velocity = { x: 0, y: 0, z: 0 };
-    this.broadcast({ e: 'defuse_start', by: p.id, kit });
+    this.emitFrom(p, { e: 'defuse_start', by: p.id, kit }, 'defuse_tick', 2500, 24, 0.8, true);
     this.stateDirty = true;
   }
 
@@ -1395,7 +1431,7 @@ export class Match {
       hitFloor: false,
     };
     this.grenades.push(g);
-    this.broadcast({ e: 'nade_throw', id: g.id, type: g.type, owner: p.id });
+    this.emitFrom(p, { e: 'nade_throw', id: g.id, type: g.type, owner: p.id }, 'throw', 1500, 32, 0.6, true);
     this.stateDirty = true;
   }
 
@@ -1580,9 +1616,6 @@ export class Match {
   private broadcast(e: GameEvent) {
     this.events.push(e);
   }
-  private broadcastExcept(id: number, e: GameEvent) {
-    for (const p of this.players.values()) if (p.id !== id) this.toPlayer(p.id, e);
-  }
   private toPlayer(id: number, e: GameEvent) {
     let l = this.personal.get(id);
     if (!l) this.personal.set(id, (l = []));
@@ -1590,6 +1623,68 @@ export class Match {
   }
   notice(text: string, kind: 'info' | 'warn' | 'good' = 'info') {
     this.broadcast({ e: 'notice', text, kind });
+  }
+
+  /** Konumu ±amount kadar bulanıklaştır (32u ızgaraya oturtarak). */
+  private fuzz(p: Vec3, amount: number): Vec3 {
+    const r = () => (Math.random() * 2 - 1) * amount;
+    const q = (v: number) => Math.round(v / 32) * 32;
+    return { x: q(p.x) + r(), y: q(p.y) + r(), z: p.z + 8 };
+  }
+
+  /**
+   * Oyuncudan kaynaklanan olay: kaynağı görenlere tam olay, görmeyip duyma mesafesinde
+   * olanlara sadece bulanık konumlu ses gider.
+   */
+  private emitFrom(src: ServerPlayer, full: GameEvent | null, sound: string | null, range: number, fuzz: number, gain = 1, includeSelf = false) {
+    for (const o of this.players.values()) {
+      if (o === src && !includeSelf) continue;
+      if (o === src) {
+        if (full) this.toPlayer(o.id, full);
+        continue;
+      }
+      // görünen kaynağın ayak sesini istemci hareketten kendisi üretir (full = null)
+      if (this.sees(o, src)) {
+        if (full) this.toPlayer(o.id, full);
+      } else if (sound && vdist(o.sim.move.origin, src.sim.move.origin) <= range) {
+        this.toPlayer(o.id, { e: 'sound', s: sound, p: v3(this.fuzz(src.sim.move.origin, fuzz)), g: gain, r: range });
+      }
+    }
+  }
+
+  /** viewer, target oyuncusunun konumunu bilmeli mi? (görüş sisi) */
+  sees(viewer: ServerPlayer, target: ServerPlayer): boolean {
+    if (viewer === target) return true;
+    if (viewer.team !== Team.T && viewer.team !== Team.CT) return true;
+    if (target.team === viewer.team) return true;
+    if (!target.alive) return true;
+    if (viewer.alive) return this.vis.canSend(viewer.id, target.id, this.tick);
+    // ölü: hayattaki takım arkadaşlarının gördükleri; takımda kimse kalmadıysa her şey
+    let anyMate = false;
+    for (const m of this.players.values()) {
+      if (m.team !== viewer.team || !m.alive) continue;
+      anyMate = true;
+      if (this.vis.canSend(m.id, target.id, this.tick)) return true;
+    }
+    return !anyMate;
+  }
+
+  private updateVisibility() {
+    const actors: VisActor[] = [];
+    for (const p of this.players.values()) {
+      if (p.team !== Team.T && p.team !== Team.CT) continue;
+      actors.push({
+        id: p.id,
+        team: p.team,
+        alive: p.alive,
+        origin: p.sim.move.origin,
+        velocity: p.sim.move.velocity,
+        duck: p.sim.move.duckAmount,
+        latency: Math.min(0.15, p.ping / 2000),
+      });
+    }
+    const smokes = [...this.smokes.values()].map((s) => ({ vol: s.vol, bornTick: s.vol.bornAt }));
+    this.vis.update(actors, smokes, this.tick);
   }
 
   private entityFlags(p: ServerPlayer): number {
@@ -1628,7 +1723,7 @@ export class Match {
     const evs = this.events;
     this.events = [];
     const sendState = this.stateDirty || this.tick - this.lastStateTick >= 32;
-    const state = sendState ? this.buildState() : null;
+    const states = new Map<number, GameState>();
     if (sendState) {
       this.stateDirty = false;
       this.lastStateTick = this.tick;
@@ -1638,26 +1733,37 @@ export class Match {
       const conn = p.conn;
       if (conn.bufferedAmount() > 512 * 1024) continue;
       const personal = this.personal.get(p.id);
-      if (state) conn.sendJSON({ t: 'state', ...state });
+      if (sendState) {
+        const key = p.team === Team.T || p.team === Team.CT ? p.team : 0;
+        let st = states.get(key);
+        if (!st) states.set(key, (st = this.buildState(key)));
+        conn.sendJSON({ t: 'state', ...st });
+      }
       if (evs.length || personal?.length) conn.sendJSON({ t: 'ev', tick: this.tick, list: personal ? [...evs, ...personal] : evs });
-      const bomb =
-        this.bomb.state === BombState.Planted || this.bomb.state === BombState.Dropped || (this.bomb.state === BombState.Carried && p.team === Team.T && this.bomb.carrier >= 0)
-          ? { state: this.bomb.state, pos: this.bomb.state === BombState.Carried ? this.players.get(this.bomb.carrier)?.sim.move.origin ?? this.bomb.pos : this.bomb.pos }
-          : null;
+      const isT = p.team === Team.T;
+      const isSpec = p.team !== Team.T && p.team !== Team.CT;
+      let bomb: { state: number; pos: Vec3 } | null = null;
+      if (this.bomb.state === BombState.Planted) bomb = { state: this.bomb.state, pos: this.bomb.pos };
+      else if (this.bomb.state === BombState.Dropped && (isT || isSpec)) bomb = { state: this.bomb.state, pos: this.bomb.pos };
+      else if (this.bomb.state === BombState.Carried && (isT || isSpec) && this.bomb.carrier >= 0)
+        bomb = { state: this.bomb.state, pos: this.players.get(this.bomb.carrier)?.sim.move.origin ?? this.bomb.pos };
       // izleme: ölüyse hayatta olan takım arkadaşı
       let spectating = 0;
       if (!p.alive) {
         const mate = [...this.players.values()].find((o) => o.alive && o.team === p.team) ?? [...this.players.values()].find((o) => o.alive);
         if (mate) spectating = mate.id;
       }
+      const visible = ents.filter((e) => e.id !== p.id && this.sees(p, this.players.get(e.id)!));
+      // CT, görmediği yerdeki düşmüş C4'ü bilmesin
+      const drops = isT || isSpec ? dropped : dropped.filter((d) => d.weapon !== 1 || this.anyTeamSees(p.team, d.pos));
       const snap = encodeSnapshot({
         tick: this.tick,
         ackSeq: p.lastSeq < 0 ? 0 : p.lastSeq,
         local: p.sim,
         spectating,
-        entities: ents.filter((e) => e.id !== p.id),
+        entities: visible,
         grenades,
-        dropped,
+        dropped: drops,
         bomb,
       });
       conn.sendBinary(snap);
@@ -1668,7 +1774,33 @@ export class Match {
     }
   }
 
-  buildState(): GameState {
+  /** Takımın canlı biri bu noktayı görüyor mu? */
+  private anyTeamSees(team: Team, pos: Vec3): boolean {
+    for (const m of this.players.values()) {
+      if (m.team !== team || !m.alive) continue;
+      if (this.world.traceRay(eyePosition(m.sim), { x: pos.x, y: pos.y, z: pos.z + 4 }, MASK_SHOT).fraction >= 0.99) return true;
+    }
+    return false;
+  }
+
+  /**
+   * Oyun durumu. viewerTeam T/CT ise rakibin canı, parası, silahı, kiti ve bomba taşıyıcı
+   * bilgisi gizlenir (0 = izleyici: her şey).
+   */
+  buildState(viewerTeam: number = 0): GameState {
+    const all = this.buildStateRaw();
+    if (viewerTeam !== Team.T && viewerTeam !== Team.CT) return all;
+    const reveal = this.phase === Phase.MatchEnd;
+    all.players = all.players.map((p) =>
+      p.team === viewerTeam || p.team === Team.Spectator || p.team === Team.None
+        ? p
+        : { ...p, money: reveal ? p.money : -1, hp: p.alive ? -1 : 0, armor: -1, helmet: false, defuser: false, bomb: false, weapon: 0 },
+    );
+    if (viewerTeam === Team.CT) all.bomb = { ...all.bomb, carrier: -1, pos: all.bomb.state === BombState.Planted ? all.bomb.pos : null };
+    return all;
+  }
+
+  private buildStateRaw(): GameState {
     const players: PlayerInfo[] = [...this.players.values()].map((p) => ({
       id: p.id,
       name: p.name,

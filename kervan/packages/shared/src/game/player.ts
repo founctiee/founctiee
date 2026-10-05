@@ -261,6 +261,15 @@ export interface ShotEvent {
   /** Subtick kesri (0..1) ya da -1. */
   fireFrac: number;
   silenced: boolean;
+  /** Atışta kullanılan açı (aim punch dahil) ve isabetsizlik: sunucu yönleri gizli seed ile yeniden üretir. */
+  pitch: number;
+  yaw: number;
+  inaccuracy: number;
+  spread: number;
+  pellets: number;
+  /** Atıştan önceki aim punch (no-recoil tespiti için). */
+  punchP: number;
+  punchY: number;
 }
 export interface MeleeEvent {
   kind: 'melee';
@@ -554,6 +563,13 @@ function fireGun(p: PlayerSim, cmd: UserCmd, now: number, def: WeaponDef, item: 
     seed,
     fireFrac: cmd.fireFrac === 255 ? -1 : cmd.fireFrac / 254,
     silenced: (def.silencer === 'detachable' && item.silencer) || def.silencer === 'integrated',
+    pitch,
+    yaw,
+    inaccuracy,
+    spread: def.spread[mode],
+    pellets: def.numBullets,
+    punchP: w.aimPunch.p,
+    punchY: w.aimPunch.y,
   });
 
   item.clip -= 1;

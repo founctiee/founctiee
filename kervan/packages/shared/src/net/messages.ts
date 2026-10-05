@@ -77,7 +77,11 @@ export interface GameState {
 
 export type GameEvent =
   | { e: 'shot'; id: number; w: number; m: number; o: V3; d: V3[]; sil: boolean }
-  | { e: 'hit'; a: number; v: number; dmg: number; hg: number; p: V3; hp: number; armor: number; from: V3 }
+  | { e: 'hit'; a: number; v: number; dmg: number; hg: number; p: V3; hp: number; armor: number; from?: V3; hel?: boolean }
+  /** Görünmeyen kaynaktan gelen konumlu ses (konum bulanıklaştırılmış). */
+  | { e: 'sound'; s: string; p: V3; g?: number; r?: number }
+  /** Sadece ölen oyuncuya: öldürenin kalan canı. */
+  | { e: 'deathinfo'; k: number; hp: number }
   | {
       e: 'kill';
       k: number;

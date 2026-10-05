@@ -612,14 +612,17 @@ export class Game {
       }
       case 'hit': {
         const p = { x: e.p[0], y: e.p[1], z: e.p[2] };
-        const from = { x: e.from[0], y: e.from[1], z: e.from[2] };
+        // saldırganın yeri bilinmiyorsa (görüş sisi) yön olarak kendi konumumuzu ya da yukarıyı kullan
+        const att = e.a === this.myId ? this.sim?.move.origin : e.a >= 0 ? this.entityPos(e.a) : null;
+        const from = e.from ? { x: e.from[0], y: e.from[1], z: e.from[2] } : att ? { x: att.x, y: att.y, z: att.z + 60 } : { x: p.x, y: p.y, z: p.z - 1 };
         const dir = { x: p.x - from.x, y: p.y - from.y, z: p.z - from.z };
         const victim = playerById(e.v);
+        const helmet = e.hel ?? victim?.helmet ?? false;
         const head = e.hg === 1;
         if (e.a >= 0) this.effects.blood(p, dir, head);
         if (e.a === this.myId && e.v !== this.myId) {
-          audio.play2D(head ? (victim?.helmet ? 'hit_head' : 'hit_headnohelm') : 'hit_body', head ? 0.7 : 0.45);
-        } else if (head) audio.play3D(victim?.helmet ? 'hit_head' : 'hit_headnohelm', p, { gain: 0.6, ref: 200, max: 2000 });
+          audio.play2D(head ? (helmet ? 'hit_head' : 'hit_headnohelm') : 'hit_body', head ? 0.7 : 0.45);
+        } else if (head) audio.play3D(helmet ? 'hit_head' : 'hit_headnohelm', p, { gain: 0.6, ref: 200, max: 2000 });
         if (e.v === this.myId) {
           if (this.sim) {
             this.sim.health = e.hp;
@@ -654,12 +657,22 @@ export class Game {
         };
         ui.killfeed.value = [...ui.killfeed.value.filter((k) => performance.now() - k.t < 7000).slice(-5), entry];
         if (e.v === this.myId) {
-          ui.deathInfo.value = { killer: e.k >= 0 && e.k !== this.myId ? this.nameOf(e.k) : '', weapon: weaponByNum(e.w)?.name ?? '', hs: e.hs, hp: playerById(e.k)?.hp ?? 0 };
+          ui.deathInfo.value = { killer: e.k >= 0 && e.k !== this.myId ? this.nameOf(e.k) : '', weapon: weaponByNum(e.w)?.name ?? '', hs: e.hs, hp: Math.max(0, playerById(e.k)?.hp ?? 0) };
           ui.buyOpen.value = false;
           this.syncInputState();
         }
         const r = this.remotes.get(e.v);
         if (r) r.model.fireKick = 0;
+        break;
+      }
+      case 'deathinfo': {
+        const d = ui.deathInfo.value;
+        if (d) ui.deathInfo.value = { ...d, hp: e.hp };
+        break;
+      }
+      case 'sound': {
+        const r = e.r ?? 1500;
+        audio.play3D(e.s, { x: e.p[0], y: e.p[1], z: e.p[2] }, { gain: e.g ?? 0.8, ref: Math.min(140, r / 10), max: Math.min(r * 1.1, 8000) });
         break;
       }
       case 'melee': {

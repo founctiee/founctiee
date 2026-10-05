@@ -14,7 +14,7 @@ export type ClientMsg =
   | { t: 'start' }
   | { t: 'settings'; settings: Partial<MatchSettings> }
   | { t: 'pong'; s: number }
-  | { t: 'cheat'; name: 'noclip' | 'god' | 'money' | 'bot_place' | 'restart' }
+  | { t: 'cheat'; name: 'noclip' | 'god' | 'money' | 'restart' | 'setpos'; args?: number[] }
   | { t: 'leave' };
 
 // ───────────── sunucu → istemci ─────────────

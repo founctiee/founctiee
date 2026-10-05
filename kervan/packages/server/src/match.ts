@@ -391,12 +391,12 @@ export class Match {
         p.ping = Math.max(0, Math.min(999, Date.now() - msg.s));
         break;
       case 'cheat':
-        this.cheat(p, msg.name);
+        this.cheat(p, msg.name, msg.args);
         break;
     }
   }
 
-  private cheat(p: ServerPlayer, name: string) {
+  private cheat(p: ServerPlayer, name: string, args: number[] = []) {
     if (!this.settings.practice) {
       this.toPlayer(p.id, { e: 'notice', text: 'Hileler sadece antrenman modunda açık', kind: 'warn' });
       return;
@@ -411,6 +411,10 @@ export class Match {
       p.money = this.settings.maxMoney;
     } else if (name === 'restart') {
       this.spawn(p, true);
+    } else if (name === 'setpos' && args.length >= 3 && args.every((a) => Number.isFinite(a))) {
+      p.sim.move.origin = { x: args[0]!, y: args[1]!, z: args[2]! };
+      p.sim.move.velocity = { x: 0, y: 0, z: 0 };
+      if (args.length >= 4) p.lastCmd = { ...p.lastCmd, yaw: args[3]! };
     }
     this.stateDirty = true;
   }

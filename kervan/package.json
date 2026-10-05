@@ -1,0 +1,31 @@
+{
+  "name": "kervan",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "packages/shared",
+    "packages/server",
+    "packages/client"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n server,client -c yellow,cyan \"npm run dev -w @kervan/server\" \"npm run dev -w @kervan/client\"",
+    "build": "npm run build -w @kervan/client && npm run build -w @kervan/server",
+    "start": "node packages/server/dist/server.js",
+    "test": "vitest run",
+    "typecheck": "tsc -p packages/shared && tsc -p packages/server && tsc -p packages/client",
+    "ci": "npm run typecheck && npm test && npm run build",
+    "extract-weapons": "tsx tools/extract-weapons.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "concurrently": "^9.1.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.0",
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

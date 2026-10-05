@@ -1,0 +1,5127 @@
+{
+ "_source": "https://raw.githubusercontent.com/SteamDatabase/GameTracking-CS2/master/game/csgo/pak01_dir/scripts/weapons.vdata",
+ "_note": "Otomatik üretildi: npm run extract-weapons. Elle düzenlemeyin.",
+ "weapons": {
+  "weapon_deagle": {
+   "nKillAward": 300,
+   "nDamage": 53,
+   "iMaxClip1": 7,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 7,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.54882,
+   "flInaccuracyJumpApex": 0.33155,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.2,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.449927,
+   "flRecoveryTimeStand": 0.8112,
+   "flRecoveryTimeCrouchFinal": 0.449927,
+   "flRecoveryTimeStandFinal": 0.8112,
+   "nRecoveryTransitionStartBullet": 3,
+   "nRecoveryTransitionEndBullet": 10,
+   "flHeadshotMultiplier": 3.9,
+   "flArmorRatio": 1.864,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.55,
+   "flRange": 4096,
+   "flRangeModifier": 0.85,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.225,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    230,
+    230
+   ],
+   "flSpread": [
+    0.002,
+    0.002
+   ],
+   "flInaccuracyCrouch": [
+    0.00218,
+    0.00218
+   ],
+   "flInaccuracyStand": [
+    0.0042,
+    0.0042
+   ],
+   "flInaccuracyJump": [
+    0.04055,
+    0.37155
+   ],
+   "flInaccuracyLand": [
+    0.000043,
+    0.00073
+   ],
+   "flInaccuracyLadder": [
+    0.152,
+    0.152
+   ],
+   "flInaccuracyFire": [
+    0.07223,
+    0.07223
+   ],
+   "flInaccuracyMove": [
+    0.0481,
+    0.0481
+   ],
+   "flRecoilAngle": 0,
+   "flRecoilAngleVariance": [
+    60,
+    60
+   ],
+   "flRecoilMagnitude": [
+    48.200001,
+    48.200001
+   ],
+   "flRecoilMagnitudeVariance": [
+    18,
+    18
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_PISTOL",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_PISTOL",
+   "bReserveAmmoAsClips": true,
+   "nPrimaryAmmoType": "BULLET_PLAYER_50AE",
+   "nPrice": 700,
+   "nRecoilSeed": 1454
+  },
+  "weapon_revolver": {
+   "nKillAward": 300,
+   "nDamage": 86,
+   "iMaxClip1": 8,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 7,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.01865,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.166667,
+   "flDisallowAttackAfterReloadStartDuration": 2.266667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.7,
+   "flRecoveryTimeStand": 0.9,
+   "flRecoveryTimeCrouchFinal": 0.449927,
+   "flRecoveryTimeStandFinal": 0.8112,
+   "nRecoveryTransitionStartBullet": 3,
+   "nRecoveryTransitionEndBullet": 10,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.864,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.4,
+   "flRange": 4096,
+   "flRangeModifier": 0.94,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": true,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.5,
+    0.4
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    180,
+    220
+   ],
+   "flSpread": [
+    0.00052,
+    0.068
+   ],
+   "flInaccuracyCrouch": [
+    0.001,
+    0.005
+   ],
+   "flInaccuracyStand": [
+    0.002,
+    0.012
+   ],
+   "flInaccuracyJump": [
+    0.05323,
+    0.05323
+   ],
+   "flInaccuracyLand": [
+    0.00013,
+    0.00015
+   ],
+   "flInaccuracyLadder": [
+    0.012,
+    0.035
+   ],
+   "flInaccuracyFire": [
+    0.05,
+    0.055
+   ],
+   "flInaccuracyMove": [
+    0.0065,
+    0.036
+   ],
+   "flRecoilAngle": [
+    0,
+    3
+   ],
+   "flRecoilAngleVariance": [
+    40,
+    50
+   ],
+   "flRecoilMagnitude": [
+    20,
+    45
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    6
+   ],
+   "nTracerFrequency": [
+    1,
+    1
+   ],
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_PISTOL",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_PISTOL",
+   "bReserveAmmoAsClips": true,
+   "nPrimaryAmmoType": "BULLET_PLAYER_50AE",
+   "nPrice": 600,
+   "nRecoilSeed": 12345
+  },
+  "weapon_elite": {
+   "nKillAward": 300,
+   "nDamage": 38,
+   "iMaxClip1": 30,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 5,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.09586,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 3.766667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.437491,
+   "flRecoveryTimeStand": 0.524989,
+   "flRecoveryTimeCrouchFinal": 0.437491,
+   "flRecoveryTimeStandFinal": 0.524989,
+   "nRecoveryTransitionStartBullet": 3,
+   "nRecoveryTransitionEndBullet": 10,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.15,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.5,
+   "flFlinchVelocityModifierSmall": 0.65,
+   "flRange": 4096,
+   "flRangeModifier": 0.79,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.12,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.002,
+    0.002
+   ],
+   "flInaccuracyCrouch": [
+    0.00525,
+    0.0075
+   ],
+   "flInaccuracyStand": [
+    0.007,
+    0.01
+   ],
+   "flInaccuracyJump": [
+    0.15842,
+    0.15842
+   ],
+   "flInaccuracyLand": [
+    0.000255,
+    0.000255
+   ],
+   "flInaccuracyLadder": [
+    0.102,
+    0.102
+   ],
+   "flInaccuracyFire": [
+    0.01116,
+    0.01196
+   ],
+   "flInaccuracyMove": [
+    0.01785,
+    0.01785
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    20,
+    20
+   ],
+   "flRecoilMagnitude": [
+    27,
+    27
+   ],
+   "flRecoilMagnitudeVariance": [
+    4,
+    4
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_PISTOL",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_PISTOL",
+   "bReserveAmmoAsClips": true,
+   "nPrimaryAmmoType": "BULLET_PLAYER_9MM",
+   "nPrice": 300,
+   "nRecoilSeed": 24563
+  },
+  "weapon_fiveseven": {
+   "nKillAward": 300,
+   "nDamage": 32,
+   "iMaxClip1": 20,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 5,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.09988,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.266667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.2,
+   "flRecoveryTimeStand": 0.2,
+   "flRecoveryTimeCrouchFinal": 0.5,
+   "flRecoveryTimeStandFinal": 0.5,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.823,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.5,
+   "flFlinchVelocityModifierSmall": 0.65,
+   "flRange": 4096,
+   "flRangeModifier": 0.81,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.002,
+    0.002
+   ],
+   "flInaccuracyCrouch": [
+    0.00683,
+    0.00683
+   ],
+   "flInaccuracyStand": [
+    0.0091,
+    0.0091
+   ],
+   "flInaccuracyJump": [
+    0.0897,
+    0.0897
+   ],
+   "flInaccuracyLand": [
+    0.00019,
+    0.00019
+   ],
+   "flInaccuracyLadder": [
+    0.138,
+    0.138
+   ],
+   "flInaccuracyFire": [
+    0.025,
+    0.03245
+   ],
+   "flInaccuracyMove": [
+    0.04,
+    0.01341
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    5,
+    5
+   ],
+   "flRecoilMagnitude": [
+    25,
+    25
+   ],
+   "flRecoilMagnitudeVariance": [
+    4,
+    4
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_PISTOL",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_PISTOL",
+   "bReserveAmmoAsClips": true,
+   "nPrimaryAmmoType": "BULLET_PLAYER_57MM",
+   "nPrice": 500,
+   "nRecoilSeed": 33244
+  },
+  "weapon_cz75a": {
+   "nKillAward": 300,
+   "nDamage": 31,
+   "iMaxClip1": 12,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 5,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.09662,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.83333,
+   "flDisallowAttackAfterReloadStartDuration": 2.733333,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.2275,
+   "flRecoveryTimeStand": 0.2425,
+   "flRecoveryTimeCrouchFinal": 0.287823,
+   "flRecoveryTimeStandFinal": 0.345388,
+   "nRecoveryTransitionStartBullet": 3,
+   "nRecoveryTransitionEndBullet": 10,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.553,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.5,
+   "flFlinchVelocityModifierSmall": 0.65,
+   "flRange": 4096,
+   "flRangeModifier": 0.85,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.1,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.003,
+    0.003
+   ],
+   "flInaccuracyCrouch": [
+    0.0076,
+    0.0076
+   ],
+   "flInaccuracyStand": [
+    0.01043,
+    0.01043
+   ],
+   "flInaccuracyJump": [
+    0.09296,
+    0.09296
+   ],
+   "flInaccuracyLand": [
+    0.00019,
+    0.00019
+   ],
+   "flInaccuracyLadder": [
+    0.138,
+    0.138
+   ],
+   "flInaccuracyFire": [
+    0.035,
+    0.025
+   ],
+   "flInaccuracyMove": [
+    0.01341,
+    0.01341
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    120,
+    180
+   ],
+   "flRecoilMagnitude": [
+    31,
+    27
+   ],
+   "flRecoilMagnitudeVariance": [
+    6,
+    12
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_PISTOL",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_PISTOL",
+   "bReserveAmmoAsClips": true,
+   "nPrimaryAmmoType": "BULLET_PLAYER_357SIG_MIN",
+   "nPrice": 500,
+   "nRecoilSeed": 9788
+  },
+  "weapon_glock": {
+   "nKillAward": 300,
+   "nDamage": 30,
+   "iMaxClip1": 20,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 5,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.09662,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.266667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.2,
+   "flRecoveryTimeStand": 0.2,
+   "flRecoveryTimeCrouchFinal": 0.33,
+   "flRecoveryTimeStandFinal": 0.33,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 0.94,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.5,
+   "flFlinchVelocityModifierSmall": 0.65,
+   "flRange": 4096,
+   "flRangeModifier": 0.85,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": true,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0.5,
+   "flTimeBetweenBurstShots": 0.05,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.002,
+    0.015
+   ],
+   "flInaccuracyCrouch": [
+    0.0042,
+    0.003
+   ],
+   "flInaccuracyStand": [
+    0.0056,
+    0.0056
+   ],
+   "flInaccuracyJump": [
+    0.08787,
+    0.08787
+   ],
+   "flInaccuracyLand": [
+    0.000185,
+    0.000185
+   ],
+   "flInaccuracyLadder": [
+    0.137,
+    0.11925
+   ],
+   "flInaccuracyFire": [
+    0.056,
+    0.045
+   ],
+   "flInaccuracyMove": [
+    0.01,
+    0.01295
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    20,
+    20
+   ],
+   "flRecoilMagnitude": [
+    18,
+    30
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    5
+   ],
+   "nTracerFrequency": [
+    1,
+    1
+   ],
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_PISTOL",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_PISTOL",
+   "bReserveAmmoAsClips": true,
+   "nPrimaryAmmoType": "BULLET_PLAYER_9MM",
+   "nPrice": 200,
+   "nRecoilSeed": 4484
+  },
+  "weapon_ak47": {
+   "nKillAward": 300,
+   "nDamage": 36,
+   "iMaxClip1": 30,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.10094,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.466667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.305257,
+   "flRecoveryTimeStand": 0.368,
+   "flRecoveryTimeCrouchFinal": 0.419728,
+   "flRecoveryTimeStandFinal": 0.506,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.55,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.55,
+   "flRange": 8192,
+   "flRangeModifier": 0.98,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.1,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    215,
+    215
+   ],
+   "flSpread": [
+    0.0006,
+    0.0006
+   ],
+   "flInaccuracyCrouch": [
+    0.00481,
+    0.00481
+   ],
+   "flInaccuracyStand": [
+    0.00641,
+    0.00641
+   ],
+   "flInaccuracyJump": [
+    0.14076,
+    0.14076
+   ],
+   "flInaccuracyLand": [
+    0.000242,
+    0.000242
+   ],
+   "flInaccuracyLadder": [
+    0.14,
+    0.14
+   ],
+   "flInaccuracyFire": [
+    0.0078,
+    0.0078
+   ],
+   "flInaccuracyMove": [
+    0.17506,
+    0.17506
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    70,
+    70
+   ],
+   "flRecoilMagnitude": [
+    30,
+    30
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 3,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_RIFLE",
+   "nPrimaryAmmoType": "BULLET_PLAYER_762MM",
+   "nPrice": 2700,
+   "nRecoilSeed": 223
+  },
+  "weapon_aug": {
+   "nKillAward": 300,
+   "nDamage": 28,
+   "iMaxClip1": 30,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.10156,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.16667,
+   "flDisallowAttackAfterReloadStartDuration": 3.766667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.30552,
+   "flRecoveryTimeStand": 0.429727,
+   "flRecoveryTimeCrouchFinal": 0.30552,
+   "flRecoveryTimeStandFinal": 0.429727,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.8,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.55,
+   "flRange": 8192,
+   "flRangeModifier": 0.98,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 1,
+   "nZoomFOV1": 45,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0.06,
+   "flZoomTime1": 0.1,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.1,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    220,
+    150
+   ],
+   "flSpread": [
+    0.0005,
+    0.0003
+   ],
+   "flInaccuracyCrouch": [
+    0.00368,
+    0.00311
+   ],
+   "flInaccuracyStand": [
+    0.0049,
+    0.00368
+   ],
+   "flInaccuracyJump": [
+    0.10599,
+    0.10599
+   ],
+   "flInaccuracyLand": [
+    0.000208,
+    0.000208
+   ],
+   "flInaccuracyLadder": [
+    0.11004,
+    0.10004
+   ],
+   "flInaccuracyFire": [
+    0.00729,
+    0.00729
+   ],
+   "flInaccuracyMove": [
+    0.13545,
+    0.10545
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    60,
+    60
+   ],
+   "flRecoilMagnitude": [
+    24,
+    16
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": [
+    3,
+    3
+   ],
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_RIFLE",
+   "nPrimaryAmmoType": "BULLET_PLAYER_762MM",
+   "nPrice": 3300,
+   "nRecoilSeed": 24204,
+   "flIronSightPullUpSpeed": 10,
+   "flIronSightPutDownSpeed": 8,
+   "flIronSightFOV": 45,
+   "flIronSightPivotForward": 10,
+   "flIronSightLooseness": 0.03
+  },
+  "weapon_awp": {
+   "nKillAward": 100,
+   "nDamage": 115,
+   "iMaxClip1": 5,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 30,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.17286,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.266667,
+   "flDisallowAttackAfterReloadStartDuration": 3.666667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.24671,
+   "flRecoveryTimeStand": 0.34539,
+   "flRecoveryTimeCrouchFinal": 0.24671,
+   "flRecoveryTimeStandFinal": 0.34539,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.95,
+   "flPenetration": 2.5,
+   "flFlinchVelocityModifierLarge": 0.35,
+   "flFlinchVelocityModifierSmall": 0.4,
+   "flRange": 8192,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": true,
+   "nZoomLevels": 2,
+   "nZoomFOV1": 40,
+   "nZoomFOV2": 10,
+   "flZoomTime0": 0.05,
+   "flZoomTime1": 0.05,
+   "flZoomTime2": 0.05,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 1.455,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    200,
+    100
+   ],
+   "flSpread": [
+    0.0002,
+    0.0002
+   ],
+   "flInaccuracyCrouch": [
+    0.0606,
+    0.0015
+   ],
+   "flInaccuracyStand": [
+    0.0808,
+    0.002
+   ],
+   "flInaccuracyJump": [
+    0.13383,
+    0.13383
+   ],
+   "flInaccuracyLand": [
+    0.000307,
+    0.0001
+   ],
+   "flInaccuracyLadder": [
+    0.1365,
+    0.1365
+   ],
+   "flInaccuracyFire": [
+    0.05385,
+    0.05385
+   ],
+   "flInaccuracyMove": [
+    0.17648,
+    0.17648
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    20,
+    20
+   ],
+   "flRecoilMagnitude": [
+    78,
+    25
+   ],
+   "flRecoilMagnitudeVariance": [
+    15,
+    2
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SNIPER_RIFLE",
+   "bShowCrosshair": false,
+   "nPrimaryAmmoType": "BULLET_PLAYER_338MAG",
+   "nPrice": 4750,
+   "nRecoilSeed": 4100
+  },
+  "weapon_famas": {
+   "nKillAward": 300,
+   "nDamage": 30,
+   "iMaxClip1": 25,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 75,
+   "nPrimaryReserveAmmoMax": 4,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.09477,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 3.3,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.12,
+   "flRecoveryTimeStand": 0.25,
+   "flRecoveryTimeCrouchFinal": 0.48,
+   "flRecoveryTimeStandFinal": 0.5,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.4,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.55,
+   "flRange": 8192,
+   "flRangeModifier": 0.96,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": true,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.09,
+   "flCycleTimeWhenInBurstMode": 0.55,
+   "flTimeBetweenBurstShots": 0.075,
+   "flMaxSpeed": [
+    220,
+    220
+   ],
+   "flSpread": [
+    0.0006,
+    0.0006
+   ],
+   "flInaccuracyCrouch": [
+    0.0055,
+    0.00325
+   ],
+   "flInaccuracyStand": [
+    0.00759,
+    0.00369
+   ],
+   "flInaccuracyJump": [
+    0.11039,
+    0.11039
+   ],
+   "flInaccuracyLand": [
+    0.000205,
+    0.000205
+   ],
+   "flInaccuracyLadder": [
+    0.118716,
+    0.118716
+   ],
+   "flInaccuracyFire": [
+    0.00605,
+    0.00335
+   ],
+   "flInaccuracyMove": [
+    0.09934,
+    0.09934
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    60,
+    50
+   ],
+   "flRecoilMagnitude": [
+    20,
+    20
+   ],
+   "flRecoilMagnitudeVariance": [
+    1,
+    1
+   ],
+   "nTracerFrequency": [
+    3,
+    3
+   ],
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_RIFLE",
+   "nPrimaryAmmoType": "BULLET_PLAYER_556MM",
+   "nPrice": 1950,
+   "nRecoilSeed": 39623
+  },
+  "weapon_g3sg1": {
+   "nKillAward": 300,
+   "nDamage": 80,
+   "iMaxClip1": 20,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 20,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.10769,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 4.666667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.388808,
+   "flRecoveryTimeStand": 0.544331,
+   "flRecoveryTimeCrouchFinal": 0.388808,
+   "flRecoveryTimeStandFinal": 0.544331,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.65,
+   "flPenetration": 2.5,
+   "flFlinchVelocityModifierLarge": 0.5,
+   "flFlinchVelocityModifierSmall": 0.65,
+   "flRange": 8192,
+   "flRangeModifier": 0.98,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 2,
+   "nZoomFOV1": 40,
+   "nZoomFOV2": 15,
+   "flZoomTime0": 0.05,
+   "flZoomTime1": 0.05,
+   "flZoomTime2": 0.05,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.25,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    215,
+    120
+   ],
+   "flSpread": [
+    0.0003,
+    0.0003
+   ],
+   "flInaccuracyCrouch": [
+    0.01935,
+    0.0015
+   ],
+   "flInaccuracyStand": [
+    0.0258,
+    0.002
+   ],
+   "flInaccuracyJump": [
+    0.15377,
+    0.15377
+   ],
+   "flInaccuracyLand": [
+    0.000262,
+    0.000262
+   ],
+   "flInaccuracyLadder": [
+    0.11639,
+    0.11639
+   ],
+   "flInaccuracyFire": [
+    0.01861,
+    0.01861
+   ],
+   "flInaccuracyMove": [
+    0.15048,
+    0.15048
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    30,
+    30
+   ],
+   "flRecoilMagnitude": [
+    30,
+    30
+   ],
+   "flRecoilMagnitudeVariance": [
+    4,
+    4
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SNIPER_RIFLE",
+   "bShowCrosshair": false,
+   "nPrimaryAmmoType": "BULLET_PLAYER_762MM",
+   "nPrice": 5000,
+   "nRecoilSeed": 29908
+  },
+  "weapon_m14": {
+   "nKillAward": 100,
+   "nDamage": 115,
+   "iMaxClip1": 5,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 30,
+   "nPrimaryReserveAmmoMax": 5,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.17286,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.85,
+   "flDisallowAttackAfterReloadStartDuration": 0.466667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.24671,
+   "flRecoveryTimeStand": 0.34539,
+   "flRecoveryTimeCrouchFinal": -1,
+   "flRecoveryTimeStandFinal": -1,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.95,
+   "flPenetration": 2.5,
+   "flFlinchVelocityModifierLarge": 0.35,
+   "flFlinchVelocityModifierSmall": 0.4,
+   "flRange": 8192,
+   "flRangeModifier": 0.945,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": true,
+   "nZoomLevels": 1,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0.06,
+   "flZoomTime1": 0.1,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 1.85,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    200,
+    130
+   ],
+   "flSpread": [
+    0.002,
+    0.002
+   ],
+   "flInaccuracyCrouch": [
+    0.0506,
+    0.0025
+   ],
+   "flInaccuracyStand": [
+    0.0708,
+    0.0045
+   ],
+   "flInaccuracyJump": [
+    0.13383,
+    0.13383
+   ],
+   "flInaccuracyLand": [
+    0.000307,
+    0.0001
+   ],
+   "flInaccuracyLadder": [
+    0.1365,
+    0.1365
+   ],
+   "flInaccuracyFire": [
+    0.05385,
+    0.05385
+   ],
+   "flInaccuracyMove": [
+    0.17648,
+    0.15
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    20,
+    20
+   ],
+   "flRecoilMagnitude": [
+    78,
+    25
+   ],
+   "flRecoilMagnitudeVariance": [
+    15,
+    2
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": false,
+   "WeaponType": "WEAPONTYPE_RIFLE",
+   "nPrimaryAmmoType": "BULLET_PLAYER_338MAG",
+   "nPrice": 4100,
+   "nRecoilSeed": 4100,
+   "flIronSightPullUpSpeed": 7,
+   "flIronSightPutDownSpeed": 7,
+   "flIronSightFOV": 75,
+   "flIronSightPivotForward": 8,
+   "flIronSightLooseness": 0.03,
+   "bReloadsSingleShells": true,
+   "bShowCrosshair": false
+  },
+  "weapon_galilar": {
+   "nKillAward": 300,
+   "nDamage": 30,
+   "iMaxClip1": 35,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 4,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.10539,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.1,
+   "flDisallowAttackAfterReloadStartDuration": 3.033333,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.15,
+   "flRecoveryTimeStand": 0.3,
+   "flRecoveryTimeCrouchFinal": 0.47,
+   "flRecoveryTimeStandFinal": 0.5,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.55,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.55,
+   "flRange": 8192,
+   "flRangeModifier": 0.98,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.09,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    215,
+    215
+   ],
+   "flSpread": [
+    0.0006,
+    0.0006
+   ],
+   "flInaccuracyCrouch": [
+    0.00658,
+    0.00484
+   ],
+   "flInaccuracyStand": [
+    0.00877,
+    0.00778
+   ],
+   "flInaccuracyJump": [
+    0.14978,
+    0.14978
+   ],
+   "flInaccuracyLand": [
+    0.000256,
+    0.000256
+   ],
+   "flInaccuracyLadder": [
+    0.11358,
+    0.11358
+   ],
+   "flInaccuracyFire": [
+    0.007,
+    0.00585
+   ],
+   "flInaccuracyMove": [
+    0.12356,
+    0.10652
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    70,
+    70
+   ],
+   "flRecoilMagnitude": [
+    21,
+    21
+   ],
+   "flRecoilMagnitudeVariance": [
+    1,
+    1
+   ],
+   "nTracerFrequency": 3,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_RIFLE",
+   "nPrimaryAmmoType": "BULLET_PLAYER_556MM",
+   "nPrice": 1800,
+   "nRecoilSeed": 51191
+  },
+  "weapon_m249": {
+   "nKillAward": 300,
+   "nDamage": 32,
+   "iMaxClip1": 100,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.11827,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.1,
+   "flDisallowAttackAfterReloadStartDuration": 5.7,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.592093,
+   "flRecoveryTimeStand": 0.828931,
+   "flRecoveryTimeCrouchFinal": 0.592093,
+   "flRecoveryTimeStandFinal": 0.828931,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.6,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.55,
+   "flRange": 8192,
+   "flRangeModifier": 0.97,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.08,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    195,
+    195
+   ],
+   "flSpread": [
+    0.002,
+    0.002
+   ],
+   "flInaccuracyCrouch": [
+    0.00534,
+    0.00534
+   ],
+   "flInaccuracyStand": [
+    0.0077,
+    0.0077
+   ],
+   "flInaccuracyJump": [
+    0.27947,
+    0.27947
+   ],
+   "flInaccuracyLand": [
+    0.000398,
+    0.000398
+   ],
+   "flInaccuracyLadder": [
+    0.13281,
+    0.13281
+   ],
+   "flInaccuracyFire": [
+    0.00356,
+    0.00356
+   ],
+   "flInaccuracyMove": [
+    0.15625,
+    0.15625
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    50,
+    50
+   ],
+   "flRecoilMagnitude": [
+    25,
+    25
+   ],
+   "flRecoilMagnitudeVariance": [
+    2,
+    2
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_MACHINEGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_556MM_BOX",
+   "nPrice": 5200,
+   "nRecoilSeed": 50310
+  },
+  "weapon_m4a1": {
+   "nKillAward": 300,
+   "nDamage": 33,
+   "iMaxClip1": 30,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 4,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.09441,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.133333,
+   "flDisallowAttackAfterReloadStartDuration": 3.066667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.2421,
+   "flRecoveryTimeStand": 0.338941,
+   "flRecoveryTimeCrouchFinal": 0.332888,
+   "flRecoveryTimeStandFinal": 0.466044,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.4,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.55,
+   "flRange": 8192,
+   "flRangeModifier": 0.97,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.09,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    225,
+    225
+   ],
+   "flSpread": [
+    0.0006,
+    0.00045
+   ],
+   "flInaccuracyCrouch": [
+    0.0041,
+    0.00368
+   ],
+   "flInaccuracyStand": [
+    0.0049,
+    0.0049
+   ],
+   "flInaccuracyJump": [
+    0.09727,
+    0.09727
+   ],
+   "flInaccuracyLand": [
+    0.000192,
+    0.000197
+   ],
+   "flInaccuracyLadder": [
+    0.110994,
+    0.113672
+   ],
+   "flInaccuracyFire": [
+    0.007,
+    0.00634
+   ],
+   "flInaccuracyMove": [
+    0.13788,
+    0.122
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    70,
+    70
+   ],
+   "flRecoilMagnitude": [
+    23,
+    23
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 3,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_RIFLE",
+   "nPrimaryAmmoType": "BULLET_PLAYER_556MM",
+   "nPrice": 2900,
+   "nRecoilSeed": 38965
+  },
+  "weapon_m4a1_silencer": {
+   "nKillAward": 300,
+   "nDamage": 38,
+   "iMaxClip1": 20,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.09677,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.133333,
+   "flDisallowAttackAfterReloadStartDuration": 3.066667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.2421,
+   "flRecoveryTimeStand": 0.338941,
+   "flRecoveryTimeCrouchFinal": 0.332888,
+   "flRecoveryTimeStandFinal": 0.466044,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 3.475,
+   "flArmorRatio": 1.4,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.4,
+   "flRange": 8192,
+   "flRangeModifier": 0.94,
+   "eSilencerType": "WEAPONSILENCER_DETACHABLE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.1,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    225,
+    225
+   ],
+   "flSpread": [
+    0.0006,
+    0.0005
+   ],
+   "flInaccuracyCrouch": [
+    0.0041,
+    0.0041
+   ],
+   "flInaccuracyStand": [
+    0.0049,
+    0.0049
+   ],
+   "flInaccuracyJump": [
+    0.0997,
+    0.0997
+   ],
+   "flInaccuracyLand": [
+    0.000197,
+    0.000197
+   ],
+   "flInaccuracyLadder": [
+    0.110994,
+    0.113672
+   ],
+   "flInaccuracyFire": [
+    0.012,
+    0.007
+   ],
+   "flInaccuracyMove": [
+    0.09288,
+    0.122
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    65,
+    65
+   ],
+   "flRecoilMagnitude": [
+    25,
+    21
+   ],
+   "flRecoilMagnitudeVariance": [
+    3,
+    0
+   ],
+   "nTracerFrequency": [
+    3,
+    0
+   ],
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_RIFLE",
+   "nPrimaryAmmoType": "BULLET_PLAYER_556MM_SMALL",
+   "nPrice": 2900,
+   "nRecoilSeed": 38965
+  },
+  "weapon_mac10": {
+   "nKillAward": 600,
+   "nDamage": 29,
+   "iMaxClip1": 30,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.03499,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.566667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.285521,
+   "flRecoveryTimeStand": 0.399729,
+   "flRecoveryTimeCrouchFinal": 0.285521,
+   "flRecoveryTimeStandFinal": 0.399729,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.15,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0,
+   "flFlinchVelocityModifierSmall": 0,
+   "flRange": 3600,
+   "flRangeModifier": 0.8,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.075,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.0006,
+    0.0006
+   ],
+   "flInaccuracyCrouch": [
+    0.00998,
+    0.00998
+   ],
+   "flInaccuracyStand": [
+    0.0133,
+    0.0133
+   ],
+   "flInaccuracyJump": [
+    0.0333,
+    0.0333
+   ],
+   "flInaccuracyLand": [
+    0.000069,
+    0.000069
+   ],
+   "flInaccuracyLadder": [
+    0.03426,
+    0.03426
+   ],
+   "flInaccuracyFire": [
+    0.00476,
+    0.00476
+   ],
+   "flInaccuracyMove": [
+    0.01399,
+    0.01399
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    70,
+    70
+   ],
+   "flRecoilMagnitude": [
+    18,
+    18
+   ],
+   "flRecoilMagnitudeVariance": [
+    1,
+    1
+   ],
+   "nTracerFrequency": 3,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SUBMACHINEGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_45ACP",
+   "nPrice": 1050,
+   "nRecoilSeed": 34079
+  },
+  "weapon_p90": {
+   "nKillAward": 300,
+   "nDamage": 26,
+   "iMaxClip1": 50,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 26,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.1046,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 3.366667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.265784,
+   "flRecoveryTimeStand": 0.372098,
+   "flRecoveryTimeCrouchFinal": 0.265784,
+   "flRecoveryTimeStandFinal": 0.372098,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.38,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0,
+   "flFlinchVelocityModifierSmall": 0,
+   "flRange": 3700,
+   "flRangeModifier": 0.86,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.07,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    230,
+    230
+   ],
+   "flSpread": [
+    0.001,
+    0.001
+   ],
+   "flInaccuracyCrouch": [
+    0.01024,
+    0.01024
+   ],
+   "flInaccuracyStand": [
+    0.01365,
+    0.01365
+   ],
+   "flInaccuracyJump": [
+    0.09008,
+    0.09008
+   ],
+   "flInaccuracyLand": [
+    0.000082,
+    0.000082
+   ],
+   "flInaccuracyLadder": [
+    0.13217,
+    0.13217
+   ],
+   "flInaccuracyFire": [
+    0.00285,
+    0.00285
+   ],
+   "flInaccuracyMove": [
+    0.031,
+    0.031
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    70,
+    70
+   ],
+   "flRecoilMagnitude": [
+    16,
+    16
+   ],
+   "flRecoilMagnitudeVariance": [
+    1,
+    1
+   ],
+   "nTracerFrequency": 3,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SUBMACHINEGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_57MM",
+   "nPrice": 2350,
+   "nRecoilSeed": 6213
+  },
+  "weapon_ump45": {
+   "nKillAward": 600,
+   "nDamage": 35,
+   "iMaxClip1": 25,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.04721,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 3.466667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.249995,
+   "flRecoveryTimeStand": 0.349993,
+   "flRecoveryTimeCrouchFinal": 0.249995,
+   "flRecoveryTimeStandFinal": 0.349993,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.3,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0,
+   "flFlinchVelocityModifierSmall": 0,
+   "flRange": 3700,
+   "flRangeModifier": 0.75,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.09,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    230,
+    230
+   ],
+   "flSpread": [
+    0.001,
+    0.001
+   ],
+   "flInaccuracyCrouch": [
+    0.01007,
+    0.01007
+   ],
+   "flInaccuracyStand": [
+    0.01343,
+    0.01343
+   ],
+   "flInaccuracyJump": [
+    0.03725,
+    0.03725
+   ],
+   "flInaccuracyLand": [
+    0.000085,
+    0.000085
+   ],
+   "flInaccuracyLadder": [
+    0.04235,
+    0.04235
+   ],
+   "flInaccuracyFire": [
+    0.00342,
+    0.00342
+   ],
+   "flInaccuracyMove": [
+    0.02876,
+    0.02876
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    40,
+    40
+   ],
+   "flRecoilMagnitude": [
+    23,
+    23
+   ],
+   "flRecoilMagnitudeVariance": [
+    1,
+    1
+   ],
+   "nTracerFrequency": 3,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SUBMACHINEGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_45ACP",
+   "nPrice": 1200,
+   "nRecoilSeed": 59299
+  },
+  "weapon_xm1014": {
+   "nKillAward": 600,
+   "nDamage": 20,
+   "iMaxClip1": 7,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 6,
+   "bMeleeWeapon": false,
+   "iWeight": 20,
+   "nPrimaryReserveAmmoMax": 32,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.10038,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 0.6,
+   "nSpreadSeed": 817955,
+   "flRecoveryTimeCrouch": 0.361835,
+   "flRecoveryTimeStand": 0.506569,
+   "flRecoveryTimeCrouchFinal": 0.361835,
+   "flRecoveryTimeStandFinal": 0.506569,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.6,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.45,
+   "flRange": 3000,
+   "flRangeModifier": 0.7,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.35,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    215,
+    215
+   ],
+   "flSpread": [
+    0.038,
+    0.038
+   ],
+   "flInaccuracyCrouch": [
+    0.00525,
+    0.00525
+   ],
+   "flInaccuracyStand": [
+    0.007,
+    0.007
+   ],
+   "flInaccuracyJump": [
+    0.13083,
+    0.13083
+   ],
+   "flInaccuracyLand": [
+    0.000232,
+    0.000232
+   ],
+   "flInaccuracyLadder": [
+    0.07721,
+    0.07721
+   ],
+   "flInaccuracyFire": [
+    0.00883,
+    0.00883
+   ],
+   "flInaccuracyMove": [
+    0.03603,
+    0.03603
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    20,
+    20
+   ],
+   "flRecoilMagnitude": [
+    80,
+    80
+   ],
+   "flRecoilMagnitudeVariance": [
+    20,
+    20
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": false,
+   "WeaponType": "WEAPONTYPE_SHOTGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_BUCKSHOT",
+   "nPrice": 2000,
+   "nRecoilSeed": 24862,
+   "bReloadsSingleShells": true
+  },
+  "weapon_bizon": {
+   "nKillAward": 600,
+   "nDamage": 27,
+   "iMaxClip1": 64,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 26,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.0459,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.1,
+   "flDisallowAttackAfterReloadStartDuration": 2.433333,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.236837,
+   "flRecoveryTimeStand": 0.331572,
+   "flRecoveryTimeCrouchFinal": 0.236837,
+   "flRecoveryTimeStandFinal": 0.331572,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.26,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0,
+   "flFlinchVelocityModifierSmall": 0,
+   "flRange": 3600,
+   "flRangeModifier": 0.8,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.08,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.001,
+    0.001
+   ],
+   "flInaccuracyCrouch": [
+    0.0105,
+    0.0105
+   ],
+   "flInaccuracyStand": [
+    0.014,
+    0.014
+   ],
+   "flInaccuracyJump": [
+    0.03347,
+    0.03347
+   ],
+   "flInaccuracyLand": [
+    0.00008,
+    0.00008
+   ],
+   "flInaccuracyLadder": [
+    0.16965,
+    0.16965
+   ],
+   "flInaccuracyFire": [
+    0.00288,
+    0.00288
+   ],
+   "flInaccuracyMove": [
+    0.02757,
+    0.02757
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    70,
+    70
+   ],
+   "flRecoilMagnitude": [
+    18,
+    18
+   ],
+   "flRecoilMagnitudeVariance": [
+    1,
+    1
+   ],
+   "nTracerFrequency": 3,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SUBMACHINEGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_9MM",
+   "nPrice": 1300,
+   "nRecoilSeed": 36387
+  },
+  "weapon_mag7": {
+   "nKillAward": 900,
+   "nDamage": 30,
+   "iMaxClip1": 5,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 8,
+   "bMeleeWeapon": false,
+   "iWeight": 20,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.05264,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.5,
+   "nSpreadSeed": 19899236,
+   "flRecoveryTimeCrouch": 0.285521,
+   "flRecoveryTimeStand": 0.399729,
+   "flRecoveryTimeCrouchFinal": 0.285521,
+   "flRecoveryTimeStandFinal": 0.399729,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.5,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.45,
+   "flRange": 1400,
+   "flRangeModifier": 0.45,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.85,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    225,
+    225
+   ],
+   "flSpread": [
+    0.04,
+    0.04
+   ],
+   "flInaccuracyCrouch": [
+    0.00525,
+    0.00525
+   ],
+   "flInaccuracyStand": [
+    0.007,
+    0.007
+   ],
+   "flInaccuracyJump": [
+    0.05009,
+    0.05009
+   ],
+   "flInaccuracyLand": [
+    0.000103,
+    0.000103
+   ],
+   "flInaccuracyLadder": [
+    0.13426,
+    0.13426
+   ],
+   "flInaccuracyFire": [
+    0.01119,
+    0.01119
+   ],
+   "flInaccuracyMove": [
+    0.01599,
+    0.01599
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    20,
+    20
+   ],
+   "flRecoilMagnitude": [
+    165,
+    165
+   ],
+   "flRecoilMagnitudeVariance": [
+    25,
+    25
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SHOTGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_BUCKSHOT",
+   "nPrice": 1300,
+   "nRecoilSeed": 12518
+  },
+  "weapon_negev": {
+   "nKillAward": 300,
+   "nDamage": 35,
+   "iMaxClip1": 150,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.11629,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.1,
+   "flDisallowAttackAfterReloadStartDuration": 5.7,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.25,
+   "flRecoveryTimeStand": 0.3,
+   "flRecoveryTimeCrouchFinal": 0.08,
+   "flRecoveryTimeStandFinal": 0.1,
+   "nRecoveryTransitionStartBullet": 9,
+   "nRecoveryTransitionEndBullet": 12,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.42,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.55,
+   "flRange": 8192,
+   "flRangeModifier": 0.97,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 0.5,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": -50,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.075,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    150,
+    150
+   ],
+   "flSpread": [
+    0.002,
+    0.002
+   ],
+   "flInaccuracyCrouch": [
+    0.00763,
+    0.00763
+   ],
+   "flInaccuracyStand": [
+    0.01017,
+    0.01017
+   ],
+   "flInaccuracyJump": [
+    0.29223,
+    0.29223
+   ],
+   "flInaccuracyLand": [
+    0.000409,
+    0.000409
+   ],
+   "flInaccuracyLadder": [
+    0.13643,
+    0.13643
+   ],
+   "flInaccuracyFire": [
+    0.03,
+    0.00337
+   ],
+   "flInaccuracyMove": [
+    0.15914,
+    0.15914
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    20,
+    20
+   ],
+   "flRecoilMagnitudeVariance": [
+    2,
+    2
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_MACHINEGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_556MM_BOX",
+   "nPrice": 1700,
+   "nRecoilSeed": 57966
+  },
+  "weapon_sawedoff": {
+   "nKillAward": 900,
+   "nDamage": 32,
+   "iMaxClip1": 7,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 8,
+   "bMeleeWeapon": false,
+   "iWeight": 20,
+   "nPrimaryReserveAmmoMax": 32,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.05012,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 0.466667,
+   "nSpreadSeed": 9571223,
+   "flRecoveryTimeCrouch": 0.328941,
+   "flRecoveryTimeStand": 0.460517,
+   "flRecoveryTimeCrouchFinal": 0.328941,
+   "flRecoveryTimeStandFinal": 0.460517,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.5,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.45,
+   "flRange": 1400,
+   "flRangeModifier": 0.45,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.85,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    210,
+    210
+   ],
+   "flSpread": [
+    0.062,
+    0.062
+   ],
+   "flInaccuracyCrouch": [
+    0.00525,
+    0.00525
+   ],
+   "flInaccuracyStand": [
+    0.007,
+    0.007
+   ],
+   "flInaccuracyJump": [
+    0.0577,
+    0.0577
+   ],
+   "flInaccuracyLand": [
+    0.000108,
+    0.000108
+   ],
+   "flInaccuracyLadder": [
+    0.036,
+    0.036
+   ],
+   "flInaccuracyFire": [
+    0.00972,
+    0.00972
+   ],
+   "flInaccuracyMove": [
+    0.0168,
+    0.0168
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    20,
+    20
+   ],
+   "flRecoilMagnitude": [
+    143,
+    143
+   ],
+   "flRecoilMagnitudeVariance": [
+    22,
+    22
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": false,
+   "WeaponType": "WEAPONTYPE_SHOTGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_BUCKSHOT",
+   "nPrice": 1100,
+   "nRecoilSeed": 1089,
+   "bReloadsSingleShells": true
+  },
+  "weapon_tec9": {
+   "nKillAward": 300,
+   "nDamage": 33,
+   "iMaxClip1": 18,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 6,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.07117,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.566667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.315,
+   "flRecoveryTimeStand": 0.391,
+   "flRecoveryTimeCrouchFinal": 0.315,
+   "flRecoveryTimeStandFinal": 0.391,
+   "nRecoveryTransitionStartBullet": 3,
+   "nRecoveryTransitionEndBullet": 10,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.812,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.5,
+   "flFlinchVelocityModifierSmall": 0.65,
+   "flRange": 4096,
+   "flRangeModifier": 0.79,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.12,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.002,
+    0.0018
+   ],
+   "flInaccuracyCrouch": [
+    0.00368,
+    0.00727
+   ],
+   "flInaccuracyStand": [
+    0.0049,
+    0.00903
+   ],
+   "flInaccuracyJump": [
+    0.07978,
+    0.07978
+   ],
+   "flInaccuracyLand": [
+    0.000211,
+    0.000211
+   ],
+   "flInaccuracyLadder": [
+    0.1206,
+    0.1206
+   ],
+   "flInaccuracyFire": [
+    0.045,
+    0.03688
+   ],
+   "flInaccuracyMove": [
+    0.00381,
+    0.00381
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    60,
+    60
+   ],
+   "flRecoilMagnitude": [
+    23,
+    23
+   ],
+   "flRecoilMagnitudeVariance": [
+    3,
+    3
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_PISTOL",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_PISTOL",
+   "bReserveAmmoAsClips": true,
+   "nPrimaryAmmoType": "BULLET_PLAYER_9MM",
+   "nPrice": 500,
+   "nRecoilSeed": 789
+  },
+  "weapon_taser": {
+   "nKillAward": 100,
+   "nDamage": 500,
+   "iMaxClip1": 1,
+   "iMaxClip2": 0,
+   "iDefaultClip1": 1,
+   "iDefaultClip2": 1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 5,
+   "nPrimaryReserveAmmoMax": 0,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 5,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0,
+   "flRecoveryTimeStand": 0,
+   "flRecoveryTimeCrouchFinal": 0,
+   "flRecoveryTimeStandFinal": 0,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 0,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 2,
+   "flPenetration": 0,
+   "flFlinchVelocityModifierLarge": 0.5,
+   "flFlinchVelocityModifierSmall": 0.65,
+   "flRange": 120,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": 230,
+   "flSpread": 0,
+   "flInaccuracyCrouch": 0.05,
+   "flInaccuracyStand": 0.06,
+   "flInaccuracyJump": 0.01,
+   "flInaccuracyLand": 0.0001,
+   "flInaccuracyLadder": 0.01,
+   "flInaccuracyFire": 0.05,
+   "flInaccuracyMove": 0.013,
+   "flRecoilAngle": 0,
+   "flRecoilAngleVariance": 0,
+   "flRecoilMagnitude": 0,
+   "flRecoilMagnitudeVariance": 0,
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "WeaponType": "WEAPONTYPE_TASER",
+   "GearSlot": "GEAR_SLOT_KNIFE",
+   "GearSlotPosition": 1,
+   "nPrimaryAmmoType": "AMMO_TYPE_TASERCHARGE",
+   "nPrice": 200,
+   "nRecoilSeed": 687
+  },
+  "weapon_hkp2000": {
+   "nKillAward": 300,
+   "nDamage": 35,
+   "iMaxClip1": 13,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 5,
+   "nPrimaryReserveAmmoMax": 4,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.0966,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.266667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.291277,
+   "flRecoveryTimeStand": 0.349532,
+   "flRecoveryTimeCrouchFinal": 0.291277,
+   "flRecoveryTimeStandFinal": 0.349532,
+   "nRecoveryTransitionStartBullet": 3,
+   "nRecoveryTransitionEndBullet": 10,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.01,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.5,
+   "flFlinchVelocityModifierSmall": 0.65,
+   "flRange": 4096,
+   "flRangeModifier": 0.91,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.17,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.002,
+    0.0015
+   ],
+   "flInaccuracyCrouch": [
+    0.00368,
+    0.00368
+   ],
+   "flInaccuracyStand": [
+    0.0049,
+    0.0049
+   ],
+   "flInaccuracyJump": [
+    0.09448,
+    0.09448
+   ],
+   "flInaccuracyLand": [
+    0.000191,
+    0.000198
+   ],
+   "flInaccuracyLadder": [
+    0.13832,
+    0.1199
+   ],
+   "flInaccuracyFire": [
+    0.05,
+    0.01315
+   ],
+   "flInaccuracyMove": [
+    0.013,
+    0.01387
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    26,
+    26
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_PISTOL",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_PISTOL",
+   "bReserveAmmoAsClips": true,
+   "nPrimaryAmmoType": "BULLET_PLAYER_357SIG",
+   "nPrice": 200,
+   "nRecoilSeed": 5426
+  },
+  "weapon_usp_silencer": {
+   "nKillAward": 300,
+   "nDamage": 35,
+   "iMaxClip1": 12,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 5,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.0966,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.2,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.291277,
+   "flRecoveryTimeStand": 0.349532,
+   "flRecoveryTimeCrouchFinal": 0.291277,
+   "flRecoveryTimeStandFinal": 0.349532,
+   "nRecoveryTransitionStartBullet": 3,
+   "nRecoveryTransitionEndBullet": 10,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.01,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.5,
+   "flFlinchVelocityModifierSmall": 0.65,
+   "flRange": 4096,
+   "flRangeModifier": 0.91,
+   "eSilencerType": "WEAPONSILENCER_DETACHABLE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.17,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.0025,
+    0.0015
+   ],
+   "flInaccuracyCrouch": [
+    0.00368,
+    0.00368
+   ],
+   "flInaccuracyStand": [
+    0.0049,
+    0.0049
+   ],
+   "flInaccuracyJump": [
+    0.09448,
+    0.09448
+   ],
+   "flInaccuracyLand": [
+    0.000191,
+    0.000198
+   ],
+   "flInaccuracyLadder": [
+    0.13832,
+    0.1199
+   ],
+   "flInaccuracyFire": [
+    0.071,
+    0.052
+   ],
+   "flInaccuracyMove": [
+    0.01387,
+    0.01387
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    29,
+    23
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": [
+    1,
+    0
+   ],
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_PISTOL",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_PISTOL",
+   "bReserveAmmoAsClips": true,
+   "nPrimaryAmmoType": "BULLET_PLAYER_357SIG_SMALL",
+   "nPrice": 200,
+   "nRecoilSeed": 5426
+  },
+  "weapon_mp7": {
+   "nKillAward": 600,
+   "nDamage": 30,
+   "iMaxClip1": 30,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.05541,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 3.166667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.312494,
+   "flRecoveryTimeStand": 0.437491,
+   "flRecoveryTimeCrouchFinal": 0.312494,
+   "flRecoveryTimeStandFinal": 0.437491,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.25,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0,
+   "flFlinchVelocityModifierSmall": 0,
+   "flRange": 3600,
+   "flRangeModifier": 0.87,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.08,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    220,
+    220
+   ],
+   "flSpread": [
+    0.0006,
+    0.0006
+   ],
+   "flInaccuracyCrouch": [
+    0.0085,
+    0.0085
+   ],
+   "flInaccuracyStand": [
+    0.01,
+    0.01
+   ],
+   "flInaccuracyJump": [
+    0.0596,
+    0.0596
+   ],
+   "flInaccuracyLand": [
+    0.000115,
+    0.000115
+   ],
+   "flInaccuracyLadder": [
+    0.05756,
+    0.05756
+   ],
+   "flInaccuracyFire": [
+    0.00218,
+    0.00218
+   ],
+   "flInaccuracyMove": [
+    0.01986,
+    0.01986
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    70,
+    70
+   ],
+   "flRecoilMagnitude": [
+    16,
+    16
+   ],
+   "flRecoilMagnitudeVariance": [
+    1,
+    1
+   ],
+   "nTracerFrequency": 3,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SUBMACHINEGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_9MM",
+   "nPrice": 1400,
+   "nRecoilSeed": 61649
+  },
+  "weapon_mp5sd": {
+   "nKillAward": 600,
+   "nDamage": 28,
+   "iMaxClip1": 30,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.05541,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.966667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.312494,
+   "flRecoveryTimeStand": 0.437491,
+   "flRecoveryTimeCrouchFinal": 0.312494,
+   "flRecoveryTimeStandFinal": 0.437491,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.25,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0,
+   "flFlinchVelocityModifierSmall": 0,
+   "flRange": 3600,
+   "flRangeModifier": 0.87,
+   "eSilencerType": "WEAPONSILENCER_INTEGRATED",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.08,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    235,
+    220
+   ],
+   "flSpread": [
+    0.0006,
+    0.0006
+   ],
+   "flInaccuracyCrouch": [
+    0.0085,
+    0.0085
+   ],
+   "flInaccuracyStand": [
+    0.01,
+    0.01
+   ],
+   "flInaccuracyJump": [
+    0.0596,
+    0.0596
+   ],
+   "flInaccuracyLand": [
+    0.000115,
+    0.000115
+   ],
+   "flInaccuracyLadder": [
+    0.05756,
+    0.05756
+   ],
+   "flInaccuracyFire": [
+    0.00218,
+    0.00218
+   ],
+   "flInaccuracyMove": [
+    0.03,
+    0.01986
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    70,
+    70
+   ],
+   "flRecoilMagnitude": [
+    16,
+    16
+   ],
+   "flRecoilMagnitudeVariance": [
+    1,
+    1
+   ],
+   "nTracerFrequency": 0,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SUBMACHINEGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_9MM",
+   "nPrice": 1400,
+   "nRecoilSeed": 61649
+  },
+  "weapon_mp9": {
+   "nKillAward": 600,
+   "nDamage": 26,
+   "iMaxClip1": 30,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.03728,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.2,
+   "flDisallowAttackAfterReloadStartDuration": 2.133333,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.184207,
+   "flRecoveryTimeStand": 0.25789,
+   "flRecoveryTimeCrouchFinal": 0.184207,
+   "flRecoveryTimeStandFinal": 0.25789,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.2,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0,
+   "flFlinchVelocityModifierSmall": 0,
+   "flRange": 3600,
+   "flRangeModifier": 0.87,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.07,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.0006,
+    0.0006
+   ],
+   "flInaccuracyCrouch": [
+    0.008,
+    0.008
+   ],
+   "flInaccuracyStand": [
+    0.009,
+    0.009
+   ],
+   "flInaccuracyJump": [
+    0.05,
+    0.05
+   ],
+   "flInaccuracyLand": [
+    0.000056,
+    0.000056
+   ],
+   "flInaccuracyLadder": [
+    0.148913,
+    0.148913
+   ],
+   "flInaccuracyFire": [
+    0.0037,
+    0.0037
+   ],
+   "flInaccuracyMove": [
+    0.02904,
+    0.02904
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    70,
+    70
+   ],
+   "flRecoilMagnitude": [
+    21,
+    21
+   ],
+   "flRecoilMagnitudeVariance": [
+    1,
+    1
+   ],
+   "nTracerFrequency": 3,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SUBMACHINEGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_9MM",
+   "nPrice": 1250,
+   "nRecoilSeed": 50729
+  },
+  "weapon_nova": {
+   "nKillAward": 900,
+   "nDamage": 26,
+   "iMaxClip1": 8,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 9,
+   "bMeleeWeapon": false,
+   "iWeight": 20,
+   "nPrimaryReserveAmmoMax": 32,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.1097,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 0.466667,
+   "nSpreadSeed": 17514,
+   "flRecoveryTimeCrouch": 0.328941,
+   "flRecoveryTimeStand": 0.460517,
+   "flRecoveryTimeCrouchFinal": 0.328941,
+   "flRecoveryTimeStandFinal": 0.460517,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.45,
+   "flRange": 3000,
+   "flRangeModifier": 0.7,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.88,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    220,
+    220
+   ],
+   "flSpread": [
+    0.04,
+    0.04
+   ],
+   "flInaccuracyCrouch": [
+    0.00525,
+    0.00525
+   ],
+   "flInaccuracyStand": [
+    0.007,
+    0.007
+   ],
+   "flInaccuracyJump": [
+    0.12631,
+    0.12631
+   ],
+   "flInaccuracyLand": [
+    0.000236,
+    0.000236
+   ],
+   "flInaccuracyLadder": [
+    0.07875,
+    0.07875
+   ],
+   "flInaccuracyFire": [
+    0.00972,
+    0.00972
+   ],
+   "flInaccuracyMove": [
+    0.03675,
+    0.03675
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    20,
+    20
+   ],
+   "flRecoilMagnitude": [
+    143,
+    143
+   ],
+   "flRecoilMagnitudeVariance": [
+    22,
+    22
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": false,
+   "WeaponType": "WEAPONTYPE_SHOTGUN",
+   "nPrimaryAmmoType": "BULLET_PLAYER_BUCKSHOT",
+   "nPrice": 1050,
+   "nRecoilSeed": 7763,
+   "bReloadsSingleShells": true
+  },
+  "weapon_p250": {
+   "nKillAward": 300,
+   "nDamage": 38,
+   "iMaxClip1": 13,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 5,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.09662,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.266667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.287823,
+   "flRecoveryTimeStand": 0.345388,
+   "flRecoveryTimeCrouchFinal": 0.287823,
+   "flRecoveryTimeStandFinal": 0.345388,
+   "nRecoveryTransitionStartBullet": 3,
+   "nRecoveryTransitionEndBullet": 10,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.28,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.5,
+   "flFlinchVelocityModifierSmall": 0.65,
+   "flRange": 4096,
+   "flRangeModifier": 0.9,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    240,
+    240
+   ],
+   "flSpread": [
+    0.002,
+    0.002
+   ],
+   "flInaccuracyCrouch": [
+    0.00683,
+    0.00683
+   ],
+   "flInaccuracyStand": [
+    0.0091,
+    0.0091
+   ],
+   "flInaccuracyJump": [
+    0.09296,
+    0.09296
+   ],
+   "flInaccuracyLand": [
+    0.00019,
+    0.00019
+   ],
+   "flInaccuracyLadder": [
+    0.138,
+    0.138
+   ],
+   "flInaccuracyFire": [
+    0.05245,
+    0.05245
+   ],
+   "flInaccuracyMove": [
+    0.02,
+    0.01341
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    10,
+    10
+   ],
+   "flRecoilMagnitude": [
+    26,
+    26
+   ],
+   "flRecoilMagnitudeVariance": [
+    3,
+    3
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_PISTOL",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_PISTOL",
+   "bReserveAmmoAsClips": true,
+   "nPrimaryAmmoType": "BULLET_PLAYER_357SIG_P250",
+   "nPrice": 300,
+   "nRecoilSeed": 9788
+  },
+  "weapon_scar20": {
+   "nKillAward": 300,
+   "nDamage": 80,
+   "iMaxClip1": 20,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 20,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.10769,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 3.066667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.388808,
+   "flRecoveryTimeStand": 0.544331,
+   "flRecoveryTimeCrouchFinal": 0.388808,
+   "flRecoveryTimeStandFinal": 0.544331,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.65,
+   "flPenetration": 2.5,
+   "flFlinchVelocityModifierLarge": 0.35,
+   "flFlinchVelocityModifierSmall": 0.4,
+   "flRange": 8192,
+   "flRangeModifier": 0.98,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 2,
+   "nZoomFOV1": 40,
+   "nZoomFOV2": 15,
+   "flZoomTime0": 0.05,
+   "flZoomTime1": 0.05,
+   "flZoomTime2": 0.05,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.25,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    215,
+    120
+   ],
+   "flSpread": [
+    0.0003,
+    0.0003
+   ],
+   "flInaccuracyCrouch": [
+    0.01935,
+    0.0015
+   ],
+   "flInaccuracyStand": [
+    0.0258,
+    0.002
+   ],
+   "flInaccuracyJump": [
+    0.15377,
+    0.15377
+   ],
+   "flInaccuracyLand": [
+    0.000262,
+    0.000262
+   ],
+   "flInaccuracyLadder": [
+    0.11639,
+    0.11639
+   ],
+   "flInaccuracyFire": [
+    0.01861,
+    0.01861
+   ],
+   "flInaccuracyMove": [
+    0.15048,
+    0.15048
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    30,
+    30
+   ],
+   "flRecoilMagnitude": [
+    31,
+    31
+   ],
+   "flRecoilMagnitudeVariance": [
+    4,
+    4
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SNIPER_RIFLE",
+   "bShowCrosshair": false,
+   "nPrimaryAmmoType": "BULLET_PLAYER_762MM",
+   "nPrice": 5000,
+   "nRecoilSeed": 19364
+  },
+  "weapon_sg556": {
+   "nKillAward": 300,
+   "nDamage": 30,
+   "iMaxClip1": 30,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": true,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 25,
+   "nPrimaryReserveAmmoMax": 3,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.07879,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 2.766667,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.379204,
+   "flRecoveryTimeStand": 0.452886,
+   "flRecoveryTimeCrouchFinal": 0.379204,
+   "flRecoveryTimeStandFinal": 0.452886,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 2,
+   "flPenetration": 2,
+   "flFlinchVelocityModifierLarge": 0.4,
+   "flFlinchVelocityModifierSmall": 0.55,
+   "flRange": 8192,
+   "flRangeModifier": 0.98,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 1,
+   "nZoomFOV1": 45,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0.06,
+   "flZoomTime1": 0.1,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 0.11,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    210,
+    150
+   ],
+   "flSpread": [
+    0.0006,
+    0.0003
+   ],
+   "flInaccuracyCrouch": [
+    0.00381,
+    0.00305
+   ],
+   "flInaccuracyStand": [
+    0.00581,
+    0.00381
+   ],
+   "flInaccuracyJump": [
+    0.109,
+    0.109
+   ],
+   "flInaccuracyLand": [
+    0.000188,
+    0.000188
+   ],
+   "flInaccuracyLadder": [
+    0.08366,
+    0.138758
+   ],
+   "flInaccuracyFire": [
+    0.00795,
+    0.0092
+   ],
+   "flInaccuracyMove": [
+    0.13601,
+    0.13601
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    60,
+    60
+   ],
+   "flRecoilMagnitude": [
+    28,
+    19
+   ],
+   "flRecoilMagnitudeVariance": [
+    2,
+    2
+   ],
+   "nTracerFrequency": [
+    3,
+    3
+   ],
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_RIFLE",
+   "nPrimaryAmmoType": "BULLET_PLAYER_556MM",
+   "nPrice": 3000,
+   "nRecoilSeed": 43500,
+   "flIronSightPullUpSpeed": 10,
+   "flIronSightPutDownSpeed": 8,
+   "flIronSightFOV": 45,
+   "flIronSightPivotForward": 8,
+   "flIronSightLooseness": 0.03
+  },
+  "weapon_ssg08": {
+   "nKillAward": 300,
+   "nDamage": 88,
+   "iMaxClip1": 10,
+   "iMaxClip2": 0,
+   "iDefaultClip1": -1,
+   "iDefaultClip2": -1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 30,
+   "nPrimaryReserveAmmoMax": 2,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0.20872,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 3.7,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 0.055783,
+   "flRecoveryTimeStand": 0.142096,
+   "flRecoveryTimeCrouchFinal": 0.055783,
+   "flRecoveryTimeStandFinal": 0.142096,
+   "nRecoveryTransitionStartBullet": 2,
+   "nRecoveryTransitionEndBullet": 5,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.7,
+   "flPenetration": 2.5,
+   "flFlinchVelocityModifierLarge": 0.35,
+   "flFlinchVelocityModifierSmall": 0.4,
+   "flRange": 8192,
+   "flRangeModifier": 0.98,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": true,
+   "nZoomLevels": 2,
+   "nZoomFOV1": 40,
+   "nZoomFOV2": 15,
+   "flZoomTime0": 0.05,
+   "flZoomTime1": 0.05,
+   "flZoomTime2": 0.05,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": 1.25,
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    230,
+    230
+   ],
+   "flSpread": [
+    0.00028,
+    0.00023
+   ],
+   "flInaccuracyCrouch": [
+    0.02378,
+    0.0028
+   ],
+   "flInaccuracyStand": [
+    0.0317,
+    0.003
+   ],
+   "flInaccuracyJump": [
+    0.00572,
+    0.00572
+   ],
+   "flInaccuracyLand": [
+    0.000215,
+    0.000215
+   ],
+   "flInaccuracyLadder": [
+    0.09549,
+    0.09549
+   ],
+   "flInaccuracyFire": [
+    0.02292,
+    0.02292
+   ],
+   "flInaccuracyMove": [
+    0.12345,
+    0.12345
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    20,
+    20
+   ],
+   "flRecoilMagnitude": [
+    33,
+    25
+   ],
+   "flRecoilMagnitudeVariance": [
+    15,
+    2
+   ],
+   "nTracerFrequency": 1,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_RIFLE",
+   "GearSlotPosition": 0,
+   "bReserveAmmoAsClips": true,
+   "WeaponType": "WEAPONTYPE_SNIPER_RIFLE",
+   "bShowCrosshair": false,
+   "nPrimaryAmmoType": "BULLET_PLAYER_762MM",
+   "nPrice": 1700,
+   "nRecoilSeed": 1278
+  },
+  "weapon_hegrenade": {
+   "nKillAward": 300,
+   "nDamage": 99,
+   "iMaxClip1": 0,
+   "iMaxClip2": 0,
+   "iDefaultClip1": 1,
+   "iDefaultClip2": 1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 2,
+   "nPrimaryReserveAmmoMax": 0,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 5,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 1,
+   "flRecoveryTimeStand": 1,
+   "flRecoveryTimeCrouchFinal": -1,
+   "flRecoveryTimeStandFinal": -1,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 0,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.2,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.3,
+   "flFlinchVelocityModifierSmall": 0.1,
+   "flRange": 350,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    245,
+    245
+   ],
+   "flSpread": [
+    0,
+    0
+   ],
+   "flInaccuracyCrouch": [
+    0,
+    0
+   ],
+   "flInaccuracyStand": [
+    0,
+    0
+   ],
+   "flInaccuracyJump": [
+    0,
+    0
+   ],
+   "flInaccuracyLand": [
+    0,
+    0
+   ],
+   "flInaccuracyLadder": [
+    0,
+    0
+   ],
+   "flInaccuracyFire": [
+    0,
+    0
+   ],
+   "flInaccuracyMove": [
+    0,
+    0
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    0,
+    0
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 0,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_GRENADES",
+   "WeaponType": "WEAPONTYPE_GRENADE",
+   "nPrimaryAmmoType": "AMMO_TYPE_HEGRENADE",
+   "nPrice": 300,
+   "nRecoilSeed": 52132,
+   "flThrowVelocity": 750
+  },
+  "weapon_smokegrenade": {
+   "nKillAward": 300,
+   "nDamage": 50,
+   "iMaxClip1": 0,
+   "iMaxClip2": 0,
+   "iDefaultClip1": 1,
+   "iDefaultClip2": 1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 2,
+   "nPrimaryReserveAmmoMax": 0,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 5,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 1,
+   "flRecoveryTimeStand": 1,
+   "flRecoveryTimeCrouchFinal": -1,
+   "flRecoveryTimeStandFinal": -1,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 0,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1,
+   "flPenetration": 0,
+   "flFlinchVelocityModifierLarge": 1,
+   "flFlinchVelocityModifierSmall": 1,
+   "flRange": 4096,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    245,
+    245
+   ],
+   "flSpread": [
+    0,
+    0
+   ],
+   "flInaccuracyCrouch": [
+    0,
+    0
+   ],
+   "flInaccuracyStand": [
+    0,
+    0
+   ],
+   "flInaccuracyJump": [
+    0,
+    0
+   ],
+   "flInaccuracyLand": [
+    0,
+    0
+   ],
+   "flInaccuracyLadder": [
+    0,
+    0
+   ],
+   "flInaccuracyFire": [
+    0,
+    0
+   ],
+   "flInaccuracyMove": [
+    0,
+    0
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    0,
+    0
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 0,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_GRENADES",
+   "WeaponType": "WEAPONTYPE_GRENADE",
+   "nPrimaryAmmoType": "AMMO_TYPE_SMOKEGRENADE",
+   "vSmokeColor": [
+    0,
+    0.8,
+    0
+   ],
+   "nPrice": 300,
+   "flThrowVelocity": 750
+  },
+  "weapon_flashbang": {
+   "nKillAward": 300,
+   "nDamage": 50,
+   "iMaxClip1": 0,
+   "iMaxClip2": 0,
+   "iDefaultClip1": 1,
+   "iDefaultClip2": 1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 1,
+   "nPrimaryReserveAmmoMax": 0,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 5,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 1,
+   "flRecoveryTimeStand": 1,
+   "flRecoveryTimeCrouchFinal": -1,
+   "flRecoveryTimeStandFinal": -1,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 0,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 1,
+   "flFlinchVelocityModifierSmall": 1,
+   "flRange": 4096,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    245,
+    245
+   ],
+   "flSpread": [
+    0,
+    0
+   ],
+   "flInaccuracyCrouch": [
+    0,
+    0
+   ],
+   "flInaccuracyStand": [
+    0,
+    0
+   ],
+   "flInaccuracyJump": [
+    0,
+    0
+   ],
+   "flInaccuracyLand": [
+    0,
+    0
+   ],
+   "flInaccuracyLadder": [
+    0,
+    0
+   ],
+   "flInaccuracyFire": [
+    0,
+    0
+   ],
+   "flInaccuracyMove": [
+    0,
+    0
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    0,
+    0
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 0,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_GRENADES",
+   "WeaponType": "WEAPONTYPE_GRENADE",
+   "nPrimaryAmmoType": "AMMO_TYPE_FLASHBANG",
+   "nPrice": 200,
+   "flThrowVelocity": 750
+  },
+  "weapon_molotov": {
+   "nKillAward": 300,
+   "nDamage": 40,
+   "iMaxClip1": 0,
+   "iMaxClip2": 0,
+   "iDefaultClip1": 1,
+   "iDefaultClip2": 1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 2,
+   "nPrimaryReserveAmmoMax": 0,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 5,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 1,
+   "flRecoveryTimeStand": 1,
+   "flRecoveryTimeCrouchFinal": -1,
+   "flRecoveryTimeStandFinal": -1,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 0,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.8,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 1,
+   "flFlinchVelocityModifierSmall": 1,
+   "flRange": 4096,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    245,
+    245
+   ],
+   "flSpread": [
+    0,
+    0
+   ],
+   "flInaccuracyCrouch": [
+    0,
+    0
+   ],
+   "flInaccuracyStand": [
+    0,
+    0
+   ],
+   "flInaccuracyJump": [
+    0,
+    0
+   ],
+   "flInaccuracyLand": [
+    0,
+    0
+   ],
+   "flInaccuracyLadder": [
+    0,
+    0
+   ],
+   "flInaccuracyFire": [
+    0,
+    0
+   ],
+   "flInaccuracyMove": [
+    0,
+    0
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    0,
+    0
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 0,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_GRENADES",
+   "WeaponType": "WEAPONTYPE_GRENADE",
+   "nPrimaryAmmoType": "AMMO_TYPE_MOLOTOV",
+   "nPrice": 400,
+   "flThrowVelocity": 750
+  },
+  "weapon_incgrenade": {
+   "nKillAward": 300,
+   "nDamage": 40,
+   "iMaxClip1": 0,
+   "iMaxClip2": 0,
+   "iDefaultClip1": 1,
+   "iDefaultClip2": 1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 2,
+   "nPrimaryReserveAmmoMax": 0,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 5,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 1,
+   "flRecoveryTimeStand": 1,
+   "flRecoveryTimeCrouchFinal": -1,
+   "flRecoveryTimeStandFinal": -1,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 0,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.475,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.7,
+   "flFlinchVelocityModifierSmall": 0.8,
+   "flRange": 4096,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    245,
+    245
+   ],
+   "flSpread": [
+    0,
+    0
+   ],
+   "flInaccuracyCrouch": [
+    0,
+    0
+   ],
+   "flInaccuracyStand": [
+    0,
+    0
+   ],
+   "flInaccuracyJump": [
+    0,
+    0
+   ],
+   "flInaccuracyLand": [
+    0,
+    0
+   ],
+   "flInaccuracyLadder": [
+    0,
+    0
+   ],
+   "flInaccuracyFire": [
+    0,
+    0
+   ],
+   "flInaccuracyMove": [
+    0,
+    0
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    0,
+    0
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 0,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_GRENADES",
+   "WeaponType": "WEAPONTYPE_GRENADE",
+   "nPrimaryAmmoType": "AMMO_TYPE_MOLOTOV",
+   "nPrice": 500,
+   "flThrowVelocity": 750
+  },
+  "weapon_decoy": {
+   "nKillAward": 300,
+   "nDamage": 50,
+   "iMaxClip1": 0,
+   "iMaxClip2": 0,
+   "iDefaultClip1": 1,
+   "iDefaultClip2": 1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 1,
+   "nPrimaryReserveAmmoMax": 0,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 5,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 1,
+   "flRecoveryTimeStand": 1,
+   "flRecoveryTimeCrouchFinal": -1,
+   "flRecoveryTimeStandFinal": -1,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 0,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 1,
+   "flFlinchVelocityModifierSmall": 1,
+   "flRange": 4096,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    245,
+    245
+   ],
+   "flSpread": [
+    0,
+    0
+   ],
+   "flInaccuracyCrouch": [
+    0,
+    0
+   ],
+   "flInaccuracyStand": [
+    0,
+    0
+   ],
+   "flInaccuracyJump": [
+    0,
+    0
+   ],
+   "flInaccuracyLand": [
+    0,
+    0
+   ],
+   "flInaccuracyLadder": [
+    0,
+    0
+   ],
+   "flInaccuracyFire": [
+    0,
+    0
+   ],
+   "flInaccuracyMove": [
+    0,
+    0
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    0,
+    0
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 0,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_GRENADES",
+   "WeaponType": "WEAPONTYPE_GRENADE",
+   "nPrimaryAmmoType": "AMMO_TYPE_DECOY",
+   "nPrice": 50,
+   "flThrowVelocity": 750
+  },
+  "weapon_healthshot": {
+   "nKillAward": 300,
+   "nDamage": 50,
+   "iMaxClip1": 0,
+   "iMaxClip2": 0,
+   "iDefaultClip1": 1,
+   "iDefaultClip2": 1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 0,
+   "nPrimaryReserveAmmoMax": 0,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 5,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 1,
+   "flRecoveryTimeStand": 1,
+   "flRecoveryTimeCrouchFinal": -1,
+   "flRecoveryTimeStandFinal": -1,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 0,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 1,
+   "flFlinchVelocityModifierSmall": 1,
+   "flRange": 4096,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    250,
+    250
+   ],
+   "flSpread": [
+    0,
+    0
+   ],
+   "flInaccuracyCrouch": [
+    0,
+    0
+   ],
+   "flInaccuracyStand": [
+    0,
+    0
+   ],
+   "flInaccuracyJump": [
+    0,
+    0
+   ],
+   "flInaccuracyLand": [
+    0,
+    0
+   ],
+   "flInaccuracyLadder": [
+    0,
+    0
+   ],
+   "flInaccuracyFire": [
+    0,
+    0
+   ],
+   "flInaccuracyMove": [
+    0,
+    0
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    0,
+    0
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 0,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "WeaponType": "WEAPONTYPE_STACKABLEITEM",
+   "nPrimaryAmmoType": "AMMO_TYPE_HEALTHSHOT",
+   "vSmokeColor": [
+    0,
+    0.8,
+    0
+   ],
+   "nPrice": 0
+  },
+  "weapon_knife": {
+   "nKillAward": 1500,
+   "nDamage": 50,
+   "iMaxClip1": 0,
+   "iMaxClip2": 0,
+   "iDefaultClip1": 1,
+   "iDefaultClip2": 1,
+   "bAllowFlipping": true,
+   "bBuiltRightHanded": true,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": true,
+   "iWeight": 0,
+   "nPrimaryReserveAmmoMax": 0,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1,
+   "flDisallowAttackAfterReloadStartDuration": 5,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 1,
+   "flRecoveryTimeStand": 1,
+   "flRecoveryTimeCrouchFinal": -1,
+   "flRecoveryTimeStandFinal": -1,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 0,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1.7,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 0.3,
+   "flFlinchVelocityModifierSmall": 0.3,
+   "flRange": 4096,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    250,
+    250
+   ],
+   "flSpread": [
+    0,
+    0
+   ],
+   "flInaccuracyCrouch": [
+    0,
+    0
+   ],
+   "flInaccuracyStand": [
+    0,
+    0
+   ],
+   "flInaccuracyJump": [
+    0,
+    0
+   ],
+   "flInaccuracyLand": [
+    0,
+    0
+   ],
+   "flInaccuracyLadder": [
+    0,
+    0
+   ],
+   "flInaccuracyFire": [
+    0,
+    0
+   ],
+   "flInaccuracyMove": [
+    0,
+    0
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    0,
+    0
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 0,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_KNIFE",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_KNIFE",
+   "nPrice": 0,
+   "nRecoilSeed": 26701
+  },
+  "weapon_c4": {
+   "nKillAward": 300,
+   "nDamage": 50,
+   "iMaxClip1": 0,
+   "iMaxClip2": 0,
+   "iDefaultClip1": 1,
+   "iDefaultClip2": 1,
+   "bAllowFlipping": false,
+   "bBuiltRightHanded": false,
+   "bIsFullAuto": false,
+   "nNumBullets": 1,
+   "bMeleeWeapon": false,
+   "iWeight": 0,
+   "nPrimaryReserveAmmoMax": 0,
+   "nSecondaryReserveAmmoMax": 0,
+   "flInaccuracyJumpInitial": 0,
+   "flInaccuracyJumpApex": 0,
+   "flInaccuracyReload": 0,
+   "flDeployDuration": 1.233333,
+   "flDisallowAttackAfterReloadStartDuration": 5,
+   "nSpreadSeed": 0,
+   "flRecoveryTimeCrouch": 1,
+   "flRecoveryTimeStand": 1,
+   "flRecoveryTimeCrouchFinal": -1,
+   "flRecoveryTimeStandFinal": -1,
+   "nRecoveryTransitionStartBullet": 0,
+   "nRecoveryTransitionEndBullet": 0,
+   "flHeadshotMultiplier": 4,
+   "flArmorRatio": 1,
+   "flPenetration": 1,
+   "flFlinchVelocityModifierLarge": 1,
+   "flFlinchVelocityModifierSmall": 1,
+   "flRange": 4096,
+   "flRangeModifier": 0.99,
+   "eSilencerType": "WEAPONSILENCER_NONE",
+   "flAttackMovespeedFactor": 1,
+   "bUnzoomsAfterShot": false,
+   "nZoomLevels": 0,
+   "nZoomFOV1": 90,
+   "nZoomFOV2": 90,
+   "flZoomTime0": 0,
+   "flZoomTime1": 0,
+   "flZoomTime2": 0,
+   "flInaccuracyPitchShift": 0,
+   "bHasBurstMode": false,
+   "bIsRevolver": false,
+   "bCannotShootUnderwater": false,
+   "flCycleTime": [
+    0.15,
+    0.3
+   ],
+   "flCycleTimeWhenInBurstMode": 0,
+   "flTimeBetweenBurstShots": 0,
+   "flMaxSpeed": [
+    250,
+    250
+   ],
+   "flSpread": [
+    0,
+    0
+   ],
+   "flInaccuracyCrouch": [
+    0,
+    0
+   ],
+   "flInaccuracyStand": [
+    0,
+    0
+   ],
+   "flInaccuracyJump": [
+    0,
+    0
+   ],
+   "flInaccuracyLand": [
+    0,
+    0
+   ],
+   "flInaccuracyLadder": [
+    0,
+    0
+   ],
+   "flInaccuracyFire": [
+    0,
+    0
+   ],
+   "flInaccuracyMove": [
+    0,
+    0
+   ],
+   "flRecoilAngle": [
+    0,
+    0
+   ],
+   "flRecoilAngleVariance": [
+    0,
+    0
+   ],
+   "flRecoilMagnitude": [
+    0,
+    0
+   ],
+   "flRecoilMagnitudeVariance": [
+    0,
+    0
+   ],
+   "nTracerFrequency": 0,
+   "bAutoSwitchFrom": true,
+   "bAutoSwitchTo": true,
+   "GearSlot": "GEAR_SLOT_C4",
+   "GearSlotPosition": 0,
+   "WeaponType": "WEAPONTYPE_C4",
+   "nPrice": 0,
+   "nRecoilSeed": 39693,
+   "bShowCrosshair": false
+  }
+ }
+}

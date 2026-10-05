@@ -203,7 +203,7 @@ export class Effects {
     this.decals.frustumCulled = false;
     this.decals.renderOrder = 2;
     scene.add(this.decals);
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 2; i++) {
       const l = new THREE.PointLight(0xffa850, 0, 420, 1.6);
       scene.add(l);
       this.lightPool.push(l);
@@ -433,7 +433,52 @@ export class Effects {
     }
   }
 
+  private debug: { mesh: THREE.Mesh; life: number }[] = [];
+  private debugGeo = new THREE.BoxGeometry(2.5, 2.5, 2.5);
+  private debugMat = new THREE.MeshBasicMaterial({ color: 0xff3020, wireframe: true, depthTest: false, transparent: true });
+  private trail: THREE.Line | null = null;
+
+  /** Antrenman: isabet noktasına kutu (sv_showimpacts). */
+  debugBox(p: Vec3) {
+    const m = new THREE.Mesh(this.debugGeo, this.debugMat);
+    m.position.set(p.x, p.z, -p.y);
+    m.renderOrder = 20;
+    this.scene.add(m);
+    this.debug.push({ mesh: m, life: 4 });
+    if (this.debug.length > 120) this.debug.shift()!.mesh.removeFromParent();
+  }
+
+  /** Antrenman: bomba yörüngesi çizgisi (sim noktaları) ya da null. */
+  setTrajectory(points: Vec3[] | null) {
+    if (!points || points.length < 2) {
+      if (this.trail) this.trail.visible = false;
+      return;
+    }
+    if (!this.trail) {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(3 * 400), 3));
+      this.trail = new THREE.Line(geo, new THREE.LineBasicMaterial({ color: 0x7fe0ff, transparent: true, opacity: 0.9, depthTest: false }));
+      this.trail.frustumCulled = false;
+      this.trail.renderOrder = 20;
+      this.scene.add(this.trail);
+    }
+    const attr = this.trail.geometry.attributes['position'] as THREE.BufferAttribute;
+    const n = Math.min(400, points.length);
+    for (let i = 0; i < n; i++) attr.setXYZ(i, points[i]!.x, points[i]!.z, -points[i]!.y);
+    attr.needsUpdate = true;
+    this.trail.geometry.setDrawRange(0, n);
+    this.trail.visible = true;
+  }
+
   update(dt: number) {
+    for (let i = this.debug.length - 1; i >= 0; i--) {
+      const d = this.debug[i]!;
+      d.life -= dt;
+      if (d.life <= 0) {
+        d.mesh.removeFromParent();
+        this.debug.splice(i, 1);
+      }
+    }
     this.add.update(dt);
     this.norm.update(dt);
     for (let i = this.tracers.length - 1; i >= 0; i--) {

@@ -60,6 +60,10 @@ import {
   Inferno,
   areaName,
   recoilCvars,
+  computeThrow,
+  stepGrenade,
+  Grenade,
+  GrenadeType,
   getInaccuracy,
   weaponMode,
   IN_SPEED,
@@ -180,7 +184,10 @@ export class Game {
     this.input.onAction = (a, down) => this.onAction(a, down);
     this.input.onPointerLockChange = (l) => {
       ui.pointerLocked.value = l;
-      if (!l && ui.screen.value === 'game' && !this.anyMenuOpen()) ui.escOpen.value = true;
+      if (!l && ui.screen.value === 'game' && !this.anyMenuOpen()) {
+        ui.escOpen.value = true;
+        this.syncInputState();
+      }
     };
     this.renderer.canvas.addEventListener('click', () => {
       audio.resume();
@@ -271,7 +278,11 @@ export class Game {
         history.replaceState(null, '', `?oda=${encodeURIComponent(m.room)}`);
         ui.screen.value = 'game';
         this.tickOffset = NaN;
+        this.history = [];
+        this.sim = null;
+        this.snaps = [];
         this.start();
+        if (!this.windHandle && audio.ready) this.windHandle = audio.play2D('wind', 0.06);
         log(`Odaya bağlanıldı: ${m.room} (tick ${m.tickRate})`);
         break;
       case 'error':
@@ -477,7 +488,7 @@ export class Game {
             this.effects.tracer(mz, new THREE.Vector3(res.end.x, res.end.z, -res.end.y));
           }
           if (this.state?.settings.showImpacts) {
-            for (const imp of res.impacts) log(`isabet ${imp.point.x.toFixed(0)},${imp.point.y.toFixed(0)},${imp.point.z.toFixed(0)}`);
+            for (const imp of res.impacts) this.effects.debugBox(imp.point);
           }
         }
         this.shake = Math.max(this.shake, def.category === 'sniper' ? 0.6 : 0.15);
@@ -1182,6 +1193,11 @@ export class Game {
       R.vmLight += (target - R.vmLight) * Math.min(1, dt * 5);
     }
 
+    // antrenman: bomba yörüngesi
+    if (this.state?.settings.practice && sim && sim.alive && sim.wpn.pinPulled && activeDef(sim).category === 'grenade') {
+      this.effects.setTrajectory(this.predictTrajectory(sim));
+    } else this.effects.setTrajectory(null);
+
     // sis
     this.smoke.tick(this.serverTickNow() / TICK_RATE, dt);
     this.effects.setViewportHeight(R.size.h, R.camera.fov);
@@ -1319,6 +1335,32 @@ export class Game {
       ui.buyOpen.value = false;
       this.syncInputState();
     }
+  }
+
+  private predictTrajectory(sim: PlayerSim): Vec3[] {
+    const gi = sim.active - ITEM_GRENADE0;
+    const thr = computeThrow(sim, this.input.pitch + sim.wpn.aimPunch.p * recoilCvars.weapon_recoil_scale, this.input.yaw, sim.wpn.throwStrength, this.world);
+    const g: Grenade = {
+      id: 0,
+      type: gi as GrenadeType,
+      owner: this.myId,
+      ownerTeam: sim.team,
+      pos: { ...thr.origin },
+      vel: { ...thr.velocity },
+      age: 0,
+      restTime: 0,
+      resting: false,
+      detonated: false,
+      bounces: 0,
+      hitFloor: false,
+    };
+    const pts: Vec3[] = [{ ...g.pos }];
+    for (let i = 0; i < 64 * 4 && !g.detonated && !g.resting; i++) {
+      stepGrenade(g, this.world, TICK_DT);
+      if (i % 2 === 0) pts.push({ ...g.pos });
+    }
+    pts.push({ ...g.pos });
+    return pts;
   }
 
   /** Radar için: oyuncu konumları (sim). */

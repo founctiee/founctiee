@@ -312,7 +312,7 @@ export function buildKervan(): MapDef {
     { kind: 'awning', pos: { x: -200, y: 300, z: 150 }, yaw: 180, size: { x: 50, y: 120, z: 8 }, color: 0x7c8a2f },
     { kind: 'awning', pos: { x: 1300, y: 1000, z: 160 }, yaw: 180, size: { x: 70, y: 220, z: 8 }, color: 0x9a3b2c },
     { kind: 'cloth', pos: { x: -1375, y: 0, z: 230 }, size: { x: 250, y: 0, z: 0 }, color: 0xb2452f },
-    { kind: 'cloth', pos: { x: 450, y: 200, z: 240 }, size: { x: 600, y: 0, z: 0 }, color: 0x3e6a8f, yaw: 0 },
+    { kind: 'cloth', pos: { x: 450, y: 200, z: 240 }, size: { x: 600, y: 0, z: 0 }, color: 0x7a2c22, yaw: 0 },
     { kind: 'palm', pos: { x: 1150, y: 850, z: 0 } },
     { kind: 'palm', pos: { x: -420, y: 40, z: 0 } },
     { kind: 'pot', pos: { x: -980, y: 380, z: 0 } },

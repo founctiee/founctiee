@@ -43,7 +43,7 @@ export class WorldFx {
   private fireLightBusy = new Set<THREE.PointLight>();
 
   constructor(private scene: THREE.Scene) {
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       const l = new THREE.PointLight(0xff7a2a, 0, 500, 1.6);
       scene.add(l);
       this.fireLight.push(l);
@@ -136,7 +136,9 @@ export class WorldFx {
         sprites.push(s);
       }
     }
-    const light = this.fireLight.find((l) => !this.fireLightBusy.has(l)) ?? this.fireLight[0]!;
+    // tek ışık paylaşılır: en son yanan ateş aydınlatır
+    const light = this.fireLight[0]!;
+    for (const f of this.fires.values()) if (f.light === light) this.fireLightBusy.delete(light);
     this.fireLightBusy.add(light);
     light.position.set(inf.center.x, inf.center.z + 30, -inf.center.y);
     this.fires.set(inf.id, { inf, bornSec, sprites, light });
@@ -149,9 +151,11 @@ export class WorldFx {
       s.removeFromParent();
       s.material.dispose();
     }
-    f.light.intensity = 0;
-    this.fireLightBusy.delete(f.light);
     this.fires.delete(id);
+    if (![...this.fires.values()].some((o) => o.light === f.light)) {
+      f.light.intensity = 0;
+      this.fireLightBusy.delete(f.light);
+    }
   }
 
   clear() {
@@ -178,7 +182,10 @@ export class WorldFx {
         s.scale.set(34 * k * grow * fade, 52 * k * grow * fade, 1);
         s.material.opacity = 0.9 * fade;
       }
-      f.light.intensity = lit > 0 ? 14000 * (0.8 + 0.2 * Math.sin(nowSec * 17)) * Math.min(1, lit / 8) : 0;
+      if (f === [...this.fires.values()].pop()) {
+        f.light.position.set(f.inf.center.x, f.inf.center.z + 30, -f.inf.center.y);
+        f.light.intensity = lit > 0 ? 14000 * (0.8 + 0.2 * Math.sin(nowSec * 17)) * Math.min(1, lit / 8) : 0;
+      }
     }
   }
 }

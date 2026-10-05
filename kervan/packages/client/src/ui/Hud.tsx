@@ -85,7 +85,7 @@ export function BottomHud() {
       <div class="hud-right">
         <div class="weapon-line">
           {nades.map((g) => (
-            <span key={g.k} class="nade" title={weaponByNum(0) ? g.k : ''}>
+            <span key={g.k} class="nade">
               <img src={weaponIcon(g.k, 'white')} />
               {g.n > 1 && <b>×{g.n}</b>}
             </span>

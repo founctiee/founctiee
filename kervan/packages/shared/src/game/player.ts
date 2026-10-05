@@ -610,28 +610,9 @@ function grenadeFrame(p: PlayerSim, cmd: UserCmd, env: SimEnv, now: number, even
 
   // bırakıldı → at
   const gi = p.active - ITEM_GRENADE0;
-  const strength = w.throwStrength;
-  let pitch = cmd.pitch + w.aimPunch.p * recoilCvars.weapon_recoil_scale;
-  // CS: atış açısı ufukta 10° yukarı eğilir
-  if (pitch < 90) pitch = -10 + pitch * ((90 + 10) / 90);
-  const yaw = cmd.yaw;
-  const sp = Math.sin(pitch * DEG2RAD);
-  const cp = Math.cos(pitch * DEG2RAD);
-  const fwd = { x: cp * Math.cos(yaw * DEG2RAD), y: cp * Math.sin(yaw * DEG2RAD), z: -sp };
-  let vel = 750 * 0.9;
-  vel *= 0.3 + (1 - 0.3) * strength;
-  const eye = eyePosition(p);
-  const src = { x: eye.x, y: eye.y, z: eye.z + strength * 12 - 12 };
-  const end = { x: src.x + fwd.x * 22, y: src.y + fwd.y * 22, z: src.z + fwd.z * 22 };
-  const tr = env.world.traceHull(src, end, { x: -2, y: -2, z: -2 }, { x: 2, y: 2, z: 2 }, 1);
-  const origin = tr.fraction < 1 ? { x: src.x + (end.x - src.x) * tr.fraction * 0.9, y: src.y + (end.y - src.y) * tr.fraction * 0.9, z: src.z + (end.z - src.z) * tr.fraction * 0.9 } : end;
-  const mv = p.move.velocity;
-  events.push({
-    kind: 'throw',
-    grenade: gi,
-    origin,
-    velocity: { x: fwd.x * vel + mv.x * 1.25, y: fwd.y * vel + mv.y * 1.25, z: fwd.z * vel + mv.z * 1.25 },
-  });
+  const pitch = cmd.pitch + w.aimPunch.p * recoilCvars.weapon_recoil_scale;
+  const thr = computeThrow(p, pitch, cmd.yaw, w.throwStrength, env.world);
+  events.push({ kind: 'throw', grenade: gi, origin: thr.origin, velocity: thr.velocity });
   p.inv.grenades[gi] = Math.max(0, p.inv.grenades[gi]! - 1);
   w.pinPulled = false;
   w.throwStrength = 1;
@@ -642,6 +623,30 @@ function grenadeFrame(p: PlayerSim, cmd: UserCmd, env: SimEnv, now: number, even
   } else {
     switchTo(p, p.lastActive !== p.active && hasItem(p, p.lastActive) ? p.lastActive : bestItem(p), now);
   }
+}
+
+/**
+ * CS atış hesabı (CBaseCSGrenade::EmitGrenade): bakış açısı ufukta 10° yukarı eğilir,
+ * hız 750*0.9 × lerp(0.3, 1, güç), oyuncu hızının 1.25 katı eklenir.
+ */
+export function computeThrow(p: PlayerSim, pitchIn: number, yaw: number, strength: number, world: World): { origin: Vec3; velocity: Vec3 } {
+  let pitch = pitchIn;
+  if (pitch < 90) pitch = -10 + pitch * ((90 + 10) / 90);
+  const sp = Math.sin(pitch * DEG2RAD);
+  const cp = Math.cos(pitch * DEG2RAD);
+  const fwd = { x: cp * Math.cos(yaw * DEG2RAD), y: cp * Math.sin(yaw * DEG2RAD), z: -sp };
+  let vel = 750 * 0.9;
+  vel *= 0.3 + (1 - 0.3) * strength;
+  const eye = eyePosition(p);
+  const src = { x: eye.x, y: eye.y, z: eye.z + strength * 12 - 12 };
+  const end = { x: src.x + fwd.x * 22, y: src.y + fwd.y * 22, z: src.z + fwd.z * 22 };
+  const tr = world.traceHull(src, end, { x: -2, y: -2, z: -2 }, { x: 2, y: 2, z: 2 }, 1);
+  const origin =
+    tr.fraction < 1
+      ? { x: src.x + (end.x - src.x) * tr.fraction * 0.9, y: src.y + (end.y - src.y) * tr.fraction * 0.9, z: src.z + (end.z - src.z) * tr.fraction * 0.9 }
+      : end;
+  const mv = p.move.velocity;
+  return { origin, velocity: { x: fwd.x * vel + mv.x * 1.25, y: fwd.y * vel + mv.y * 1.25, z: fwd.z * vel + mv.z * 1.25 } };
 }
 
 function c4Frame(p: PlayerSim, cmd: UserCmd, env: SimEnv, now: number, events: SimEvent[]) {

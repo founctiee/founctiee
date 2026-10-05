@@ -407,7 +407,7 @@ export function createSurfaceMaterials(quality: 'low' | 'medium' | 'high', aniso
   };
   const sand = make((L) => genSand(L, n), 256, 3);
   const plaster = make((L) => genPlaster(L, n), 256, 2.5);
-  const stone = make((L) => genStone(L, n, 6, 4, 0xc2ab86, 0xd8c39c, 0x8c7b63), 192, 5);
+  const stone = make((L) => genStone(L, n, 6, 4, 0xa98f68, 0xc2a57c, 0x76654f), 192, 5);
   const tile = make((L) => genTile(L, n), 128, 4);
   const wood = make((L) => genWood(L, n, false), 96, 4);
   const crate = make((L) => genWood(L, n, true), 64, 5);

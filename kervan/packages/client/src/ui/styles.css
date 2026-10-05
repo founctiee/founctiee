@@ -636,6 +636,7 @@ select {
   animation: centerIn 0.35s ease-out;
 }
 .center-text .big {
+  white-space: nowrap;
   font-size: 38px;
   font-weight: 900;
   letter-spacing: 0.1em;

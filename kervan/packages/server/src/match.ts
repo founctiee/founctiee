@@ -282,6 +282,7 @@ export class Match {
     p.conn = conn;
     p.disconnectTick = -1;
     p.cmdQueue = [];
+    p.lastSeq = -1;
     this.notice(`${p.name} yeniden bağlandı`);
     this.stateDirty = true;
   }

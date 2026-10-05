@@ -230,8 +230,8 @@ export class Viewmodel {
     const base = new THREE.Vector3();
     const rot = new THREE.Euler();
     if (cat === 'pistol') {
-      base.set(4.9, -5.6, -12);
-      rot.set(0, 0.03, 0);
+      base.set(4.6, -5.2, -13.5);
+      rot.set(0.02, 0.05, 0);
     } else if (cat === 'knife') {
       base.set(5.4, -6.0, -11.5);
       rot.set(0.18, 0.28, -0.25);
@@ -442,10 +442,13 @@ export class Viewmodel {
     const gripL = new THREE.Vector3();
     if (lhObj) lhObj.getWorldPosition(gripL);
     else gripL.copy(gripR).add(new THREE.Vector3(-3, 0, -3));
-    const shoulders = [new THREE.Vector3(12, -17, 9), new THREE.Vector3(-4, -21, 6)];
+    const shoulders =
+      cat === 'pistol'
+        ? [new THREE.Vector3(9, -18, 7), new THREE.Vector3(-3, -19, 7)]
+        : [new THREE.Vector3(12, -17, 9), new THREE.Vector3(-4, -21, 6)];
     const targets = [gripR, gripL];
     const poles = [new THREE.Vector3(1, -0.6, 0.4), new THREE.Vector3(-1, -0.7, 0.4)];
-    const showLeft = cat !== 'knife' && cat !== 'grenade';
+    const showLeft = cat !== 'knife' && cat !== 'grenade' && cat !== 'c4';
     for (let side = 0; side < 2; side++) {
       const upper = this.arms[side * 3]!;
       const lower = this.arms[side * 3 + 1]!;

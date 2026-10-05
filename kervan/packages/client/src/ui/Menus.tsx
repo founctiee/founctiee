@@ -22,9 +22,9 @@ export function Scoreboard() {
             <tr>
               <th class="name">{tr.name}</th>
               <th>{tr.money}</th>
-              <th>Ö</th>
-              <th>A</th>
-              <th>Ö</th>
+              <th title="Öldürme">Leş</th>
+              <th title="Asist">Asist</th>
+              <th title="Ölüm">Ölüm</th>
               <th>{tr.adr}</th>
               <th>{tr.hsp}</th>
               <th>MVP</th>

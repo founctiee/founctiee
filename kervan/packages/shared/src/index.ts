@@ -18,3 +18,6 @@ export * from './grenades/smoke';
 export * from './grenades/inferno';
 export * from './game/rules';
 export * from './maps/kervan';
+export * from './net/binary';
+export * from './net/protocol';
+export * from './net/messages';

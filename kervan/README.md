@@ -40,7 +40,8 @@ npm run build
 npm start
 ```
 
-Tarayıcıda **http://localhost:3000** adresini aç. Takma adını yaz ve **Oda Oluştur**'a bas.
+Tarayıcıda **http://localhost:3000** adresini aç (Chrome veya Edge önerilir: ham fare girişi
+`unadjustedMovement` en iyi orada çalışır). Takma adını yaz ve **Oda Oluştur**'a bas.
 ESC menüsündeki **Davet linkini kopyala** ile linki arkadaşlarına gönder.
 
 Geliştirme modu (değişiklikler anında yansır): `npm run dev` → http://localhost:5173
@@ -138,6 +139,9 @@ npm run extract-weapons   # CS2 silah değerlerini yeniden çıkar (oyun güncel
 ```
 
 ## Bilinen sınırlar
+
+- FPS ekran yenileme hızıyla sınırlıdır (tarayıcı kuralı). Takılma olursa **Ayarlar → Görüntü**'den
+  kaliteyi "Orta" ya da "Düşük" yap veya çözünürlük ölçeğini düşür.
 
 - Grafikler prosedürel low-poly. CS2'nin model ve dokuları kullanılmadığı için birebir aynı
   görünmez.

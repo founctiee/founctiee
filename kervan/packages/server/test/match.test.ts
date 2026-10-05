@@ -140,3 +140,69 @@ describe('Wingman maç akışı', () => {
     expect(a.money).toBe(800 + 300 + 3250);
   });
 });
+
+describe('bombalar ve maç sonu', () => {
+  it('HE atılır, patlar ve yakındaki rakibe hasar verir; sis oluşur', () => {
+    const { m, a, b, ct } = setup();
+    m.startMatch();
+    run(m, TICK_RATE + 2);
+    a.sim.inv.grenades[0] = 1; // HE
+    a.sim.inv.grenades[2] = 1; // sis
+    a.sim.move.origin = { x: 450, y: -300, z: 1 };
+    b.sim.move.origin = { x: 450, y: 0, z: 1 };
+    // HE'yi seç, yere doğru (B'nin ayağına) bak, at
+    feed(m, a.id, 50, () => ({ weapon: 3, yaw: 90, pitch: 10 }));
+    feed(m, a.id, 4, () => ({ buttons: IN_ATTACK, yaw: 90, pitch: 10 }));
+    feed(m, a.id, 2, () => ({ yaw: 90, pitch: 10 }));
+    expect(m.grenades.length).toBe(1);
+    run(m, TICK_RATE * 2);
+    expect(m.grenades.length).toBe(0);
+    expect(b.sim.health).toBeLessThan(100);
+    expect(ct.events('nade_det').length).toBe(1);
+    // sis
+    feed(m, a.id, 50, () => ({ weapon: 5, yaw: 90, pitch: 0 }));
+    feed(m, a.id, 4, () => ({ buttons: IN_ATTACK, yaw: 90, pitch: 0 }));
+    feed(m, a.id, 2, () => ({ yaw: 90, pitch: 0 }));
+    run(m, TICK_RATE * 4);
+    expect(m.smokes.size).toBe(1);
+    expect(ct.events('smoke').length).toBe(1);
+  });
+
+  it('8 round sonra taraf değişir, 9 alan maçı kazanır', () => {
+    const { m, a, b } = setup();
+    const mm = m as unknown as { endRound(w: Team, r: RoundEndReason): void; afterRound(): void };
+    m.startMatch();
+    for (let r = 0; r < 8; r++) {
+      m.phase = Phase.Live;
+      mm.endRound(Team.T, RoundEndReason.CTsEliminated);
+      mm.afterRound();
+    }
+    expect(m.phase).toBe(Phase.Halftime);
+    // A (T idi) artık CT; skor da onunla gider
+    expect(a.team).toBe(Team.CT);
+    expect(b.team).toBe(Team.T);
+    expect(m.scoreCT).toBe(8);
+    expect(a.money).toBe(800);
+    run(m, TICK_RATE * 10 + 10);
+    expect(m.phase).toBe(Phase.Freeze);
+    m.phase = Phase.Live;
+    mm.endRound(Team.CT, RoundEndReason.TerroristsEliminated);
+    mm.afterRound();
+    expect(m.phase).toBe(Phase.MatchEnd);
+  });
+
+  it('8-8 olursa uzatma başlar ($8000)', () => {
+    const { m, a } = setup();
+    const mm = m as unknown as { endRound(w: Team, r: RoundEndReason): void; afterRound(): void };
+    m.startMatch();
+    for (let r = 0; r < 16; r++) {
+      m.phase = Phase.Live;
+      mm.endRound(r % 2 ? Team.T : Team.CT, RoundEndReason.TimeRanOut);
+      mm.afterRound();
+      if (m.phase === Phase.Halftime) run(m, TICK_RATE * 11);
+    }
+    expect(m.scoreT + m.scoreCT).toBe(16);
+    expect(m.overtimeCount).toBe(1);
+    expect(a.money).toBe(8000);
+  });
+});

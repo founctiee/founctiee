@@ -4,6 +4,7 @@ import { ui, log } from './store';
 import { settings, saveSettings } from '../settings';
 import type { Game } from '../game/game';
 import { audio } from '../audio/audio';
+import { getGame } from './gameRef';
 
 const HELP = [
   'Komutlar:',
@@ -140,7 +141,8 @@ export function runCommand(game: Game, line: string) {
   }
 }
 
-export function Console({ game }: { game: Game }) {
+export function Console() {
+  const game = getGame();
   const ref = useRef<HTMLInputElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const open = ui.consoleOpen.value;

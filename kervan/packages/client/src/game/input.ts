@@ -63,6 +63,16 @@ export class Input {
   onPointerLockChange: (locked: boolean) => void = () => {};
 
   constructor(private canvas: HTMLCanvasElement) {
+    // test derlemesi: otomasyon için açı/tuş kancası (üretimde derleyici bu bloğu siler)
+    if (import.meta.env.VITE_KERVAN_DEBUG === '1') {
+      (this as unknown as { debug: unknown }).debug = {
+        setAngles: (yaw: number, pitch: number) => {
+          this.#yaw = yaw;
+          this.#pitch = pitch;
+        },
+        key: (code: string, down: boolean) => (down ? this.keyDown(code) : this.keyUp(code)),
+      };
+    }
     document.addEventListener('pointerlockchange', () => {
       this.locked = document.pointerLockElement === this.canvas;
       if (!this.locked) this.releaseAll();
@@ -70,7 +80,7 @@ export class Input {
     });
     document.addEventListener('mousemove', (e) => {
       // script ile üretilen (sahte) olaylar yok sayılır ve bildirilir
-      if (!e.isTrusted) return security.untrusted();
+      if (!e.isTrusted) return this.untrusted(true);
       if (!this.locked || !this.enabled) return;
       // aşırı sıçramaları (bazı tarayıcı hataları) yut
       if (Math.abs(e.movementX) > 2000 || Math.abs(e.movementY) > 2000) return;
@@ -85,19 +95,19 @@ export class Input {
     });
     const codeOfMouse = (b: number) => `Mouse${b}`;
     document.addEventListener('mousedown', (e) => {
-      if (!e.isTrusted) return security.untrusted();
+      if (!e.isTrusted) return this.untrusted(true);
       if (!this.locked || !this.enabled) return;
       this.keyDown(codeOfMouse(e.button));
       e.preventDefault();
     });
     document.addEventListener('mouseup', (e) => {
-      if (!e.isTrusted) return security.untrusted();
+      if (!e.isTrusted) return this.untrusted(true);
       this.keyUp(codeOfMouse(e.button));
     });
     document.addEventListener(
       'wheel',
       (e) => {
-        if (!e.isTrusted) return security.untrusted();
+        if (!e.isTrusted) return this.untrusted(true);
         if (!this.locked || !this.enabled) return;
         const code = e.deltaY > 0 ? 'WheelDown' : 'WheelUp';
         this.keyDown(code);
@@ -106,7 +116,7 @@ export class Input {
       { passive: true },
     );
     window.addEventListener('keydown', (e) => {
-      if (!e.isTrusted) return security.untrusted();
+      if (!e.isTrusted) return this.untrusted();
       if (isTyping(e)) return;
       if (e.code === 'Tab' || (e.code.startsWith('Digit') && this.locked)) e.preventDefault();
       if (e.code === 'Space' && this.locked) e.preventDefault();
@@ -120,7 +130,7 @@ export class Input {
       this.keyDown(e.code);
     });
     window.addEventListener('keyup', (e) => {
-      if (!e.isTrusted) return security.untrusted();
+      if (!e.isTrusted) return this.untrusted();
       if (isTyping(e)) return;
       this.keyUp(e.code);
     });
@@ -170,6 +180,14 @@ export class Input {
     for (const a of this.tapped) b |= BUTTON_ACTIONS[a] ?? 0;
     this.tapped.clear();
     return b;
+  }
+
+  /**
+   * Script ile üretilmiş olay. Fare olayları her zaman sayılır; klavye olayları sadece oyun
+   * içindeyken (parola yöneticilerinin form doldurması sayılmasın).
+   */
+  private untrusted(mouse = false) {
+    if (mouse || this.locked) security.untrusted();
   }
 
   /** Bekleyen ateş basışını al (bir kez). */

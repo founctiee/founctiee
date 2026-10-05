@@ -29,6 +29,50 @@ Görseller, modeller ve sesler bize ait ve kodla üretiliyor. Valve'ın modeller
 sesleri kullanılmadı, çünkü bunları dağıtmak yasal değil. Sentez sesler CS2'nin kayıtlı
 seslerinin birebir aynısı değildir.
 
+## Hile koruması
+
+Oyun tarayıcıda çalıştığı için istemciye güvenilmez. Koruma, hileyi önce **imkânsız**, sonra
+**tespit edilebilir**, en son da **zahmetli** hale getirecek şekilde katmanlıdır.
+
+**1. Sunucu hiç vermez (kesin koruma)**
+- **Görüş sisi:** Sunucu her rakip için görüş hattı (duvar + sis) hesaplar. Görmediğin rakibin
+  konumu sana hiç gönderilmez, bu yüzden wallhack, ESP ve radar hilelerinin gösterecek verisi yoktur.
+  Köşeden çıkan rakip gecikmeye göre biraz önceden gönderilir, yani geç belirmez.
+- **Bilgi süzgeci:** Rakibin canı, zırhı, parası, silahı ve kiti gizlidir. CT, bombanın kimde
+  olduğunu bilmez. Görünmeyen rakibin ayak sesi ve atışı sadece yaklaşık konumla gelir.
+- **Gizli spread:** Mermi sapması, oyuncu ve round başına değişen gizli bir anahtarla sunucuda
+  üretilir. Nospread hilesi tahmin edemez.
+- **Backtrack kilidi:** Lag compensation, ping'e göre izin verilen pencerenin dışına çıkamaz.
+
+**2. Tespit ve otomatik atma**
+- **Bal tuzağı:** Ara sıra, görmediğin gerçek bir rakip duvarın *içinde* sahte olarak gönderilir.
+  Normal oyunda bu görünmez. ESP onu gösterir, aimbot ona kilitlenir. Ona ateş eden anında atılır.
+- **Nişan analizi:** Tek tick'te kafaya kilitlenme, insanüstü tepki süresi (<110 ms), triggerbot,
+  kusursuz sekme telafisi ve yüksek kafa oranı izlenir. Tek bir şanslı seri atılmaz. Atılmak için
+  puan eşiğinin aşılması ve en az iki farklı sinyal gerekir.
+- **İstemci bütünlüğü:** Sunucu düzenli olarak oyun dosyalarının özetini ister. Değiştirilmiş
+  dosya, kancalanmış `WebSocket`/`requestAnimationFrame`/WebGL ya da script ile üretilmiş
+  fare/klavye olayları tespit edilir.
+- Atılan oyuncu oda kapanana kadar **yasaklanır**. Yasak oturum jetonu, tarayıcı kimliği ve IP
+  özetiyle tutulur. Herkese duyurulur.
+
+**3. Zahmetli hale getirme**
+- Üretim derlemesinde oyun kodu her derlemede farklı şekilde **karartılır**. `window.kervan` yoktur.
+  Açılar ve ağ nesneleri gerçek `#private` alanlarda tutulur ve dışarıdan yazılamaz.
+- Oyun soketi temiz bir iframe'den açılır, sayfadaki WebSocket kancaları hiçbir şey görmez. İkili
+  paketler oturum anahtarıyla karıştırılır.
+
+**Host paneli (ESC → Hile Koruması):** Oyuncuların şüphe puanları ve sinyalleri burada görünür.
+Elle atabilir, yasaklayabilir ve yasak kaldırabilirsin. **Demoyu indir** ile son 5 round'u ve
+atılan oyuncuların kanıt kayıtlarını alırsın. Ana menüdeki **Demo izle** ile dosyayı açınca
+istediğin oyuncunun gözünden 0.25× hızda izleyebilirsin. Bal tuzakları kırmızı kutuyla gösterilir.
+"Otomatik at" anahtarı kapatılırsa şüpheliler atılmaz, sadece raporlanır, ve bu herkese duyurulur.
+
+Bilinen sınırlar: Bu koruma tarayıcı scriptlerine, eklentilere ve paket dinleyicilere karşı
+tasarlandı. Ekranı okuyup fareyi işletim sistemi üzerinden oynatan harici bir program ("renk botu")
+yalnızca ekranda zaten görünen rakibe nişan alabilir. Bunu tamamen engellemek mümkün değildir, ama
+nişan istatistiği yine tespite takılabilir. Bütünlük kontrolü `npm run dev` modunda kapalıdır.
+
 ## Hızlı başlangıç (kendi bilgisayarında)
 
 Gerekenler: **Node.js 20+** (https://nodejs.org)
@@ -133,7 +177,7 @@ kervan/
 Komutlar:
 
 ```bash
-npm test              # hareket, silah, hasar, harita ve maç akışı testleri (vitest)
+npm test              # hareket, silah, hasar, harita, maç akışı ve hile koruması testleri (vitest)
 npm run typecheck     # TypeScript kontrolü
 npm run extract-weapons   # CS2 silah değerlerini yeniden çıkar (oyun güncellenince)
 ```
@@ -145,8 +189,6 @@ npm run extract-weapons   # CS2 silah değerlerini yeniden çıkar (oyun güncel
 
 - Grafikler prosedürel low-poly. CS2'nin model ve dokuları kullanılmadığı için birebir aynı
   görünmez.
-- Sunucu, duvar arkasındaki rakibin konumunu da gönderiyor (wallhack koruması henüz yok).
-  Arkadaş arası oyun için tasarlandı.
 - Zeus, R8 ve Dual Berettas henüz eklenmedi.
 - İletim WebSocket (TCP) üzerinden. Paket kaybı yüksek bağlantılarda UDP kadar akıcı olmayabilir.
 

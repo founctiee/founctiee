@@ -1105,6 +1105,7 @@ export class Game {
     ui.state.value = null;
     this.demoRound(0);
     ui.screen.value = 'demo';
+    this.start();
   }
 
   stopDemo() {
@@ -1180,6 +1181,7 @@ export class Game {
 
   private demoFrame(dt: number) {
     const d = this.#demo!;
+    this.sim = null;
     if (!d.ticks.length) return;
     const prev = d.tick;
     const end = d.ticks[d.ticks.length - 1]!.tick;

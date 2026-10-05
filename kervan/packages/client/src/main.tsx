@@ -3,6 +3,7 @@ import './ui/styles.css';
 import { App } from './ui/App';
 import { Game } from './game/game';
 import { ui } from './ui/store';
+import { setGame } from './ui/gameRef';
 
 const root = document.getElementById('app')!;
 const gameRoot = document.createElement('div');
@@ -26,7 +27,8 @@ if (!test) {
       if (import.meta.env.VITE_KERVAN_DEBUG === '1') (window as unknown as { kervan: Game }).kervan = game;
       loading.remove();
       game.start();
-      render(<App game={game} />, root);
+      setGame(game);
+      render(<App />, root);
       const params = new URLSearchParams(location.search);
       if (params.get('oda')) ui.screen.value = 'menu';
     }

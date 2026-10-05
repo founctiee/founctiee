@@ -92,7 +92,7 @@ export class Integrity {
     const st = this.state.get(p);
     if (!st || !st.nonce || msg.n !== st.nonce) return;
     st.nonce = '';
-    st.nextTick = m.tick + TICK_RATE * (45 + randomInt(0, 60));
+    st.nextTick = m.tick + TICK_RATE * (20 + randomInt(0, 20));
     const flags = typeof msg.f === 'number' ? msg.f | 0 : 0;
     if (flags) {
       const what = Object.entries(TAMPER_TEXT)

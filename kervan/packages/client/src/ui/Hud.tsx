@@ -4,8 +4,8 @@ import { Phase, Team, BombState, TICK_RATE, GRENADE_KEYS, weaponByNum } from '@k
 import { ui, playerById } from './store';
 import { tr } from '../i18n/tr';
 import { weaponIcon } from '../render/icons';
-import type { Game } from '../game/game';
 import { settings } from '../settings';
+import { getGame } from './gameRef';
 
 function fmtTime(sec: number) {
   const s = Math.max(0, Math.ceil(sec));
@@ -265,7 +265,8 @@ export function NetGraph() {
 const RADAR_SIZE = 230;
 const RADAR_RANGE = 1500;
 
-export function Radar({ game }: { game: Game }) {
+export function Radar() {
+  const game = getGame();
   const ref = useRef<HTMLCanvasElement>(null);
   const bg = useRef<HTMLCanvasElement | null>(null);
   useEffect(() => {

@@ -5,6 +5,7 @@ import { ui, playerById } from './store';
 import { tr } from '../i18n/tr';
 import { weaponIcon } from '../render/icons';
 import type { Game } from '../game/game';
+import { getGame } from './gameRef';
 
 interface Item {
   key: string;
@@ -38,7 +39,8 @@ function columns(team: Team, game: Game): { title: string; items: Item[] }[] {
   ];
 }
 
-export function BuyMenu({ game }: { game: Game }) {
+export function BuyMenu() {
+  const game = getGame();
   const [col, setCol] = useState(-1);
   const open = ui.buyOpen.value;
   const st = ui.state.value;

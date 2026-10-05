@@ -3,6 +3,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { TICK_RATE, DemoFile } from '@kervan/shared';
 import type { Game } from '../game/game';
 import { ui } from './store';
+import { getGame } from './gameRef';
 
 const SPEEDS = [0.25, 0.5, 1, 2];
 
@@ -30,7 +31,8 @@ export function openDemoFile(game: Game) {
   input.click();
 }
 
-export function DemoViewer({ game }: { game: Game }) {
+export function DemoViewer() {
+  const game = getGame();
   const [, force] = useState(0);
   useEffect(() => {
     const t = setInterval(() => force((x) => x + 1), 100);

@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
-  buildKervan,
   Team,
   emptyCmd,
   UserCmd,
@@ -250,9 +249,9 @@ describe('nişan analizi', () => {
     ticks(TICK_RATE * 2, () => ({ weapon: ITEM_PRIMARY }));
     for (let k = 0; k < n && m.players.has(a.id); k++) {
       place(b, FAR_POS);
-      const away = { yaw: 30 + k * 7, pitch: 0 };
+      const away = { yaw: 30 + (k % 8) * 7, pitch: 0 };
       ticks(30, () => ({ yaw: away.yaw, pitch: away.pitch }));
-      const spot = { x: OPEN_POS.x - 120 + k * 30, y: OPEN_POS.y - 100, z: 1 };
+      const spot = { x: OPEN_POS.x - 120 + (k % 8) * 30, y: OPEN_POS.y - 100, z: 1 };
       place(b, spot);
       for (let i = 0; i < 40 && m.players.has(a.id); i++) {
         const t = anglesTo(a, headOf(b));
@@ -263,8 +262,9 @@ describe('nişan analizi', () => {
   }
 
   it('sentetik aimbot (tek tick sıçrama + kilit + kafa, insanüstü tepki) atılır', () => {
-    engagements(10, (_k, i, t) => {
-      if (i < 3) return { yaw: 30 + _k * 7, pitch: 0, fire: false };
+    // gizli spread ara sıra kafayı ıskalatır: payı geniş tut
+    engagements(16, (_k, i, t) => {
+      if (i < 3) return { yaw: 30 + (_k % 8) * 7, pitch: 0, fire: false };
       return { yaw: t.yaw, pitch: t.pitch, fire: i === 3 };
     });
     expect(m.players.has(a.id)).toBe(false);
@@ -276,7 +276,7 @@ describe('nişan analizi', () => {
     let rnd = 12345;
     const rand = () => ((rnd = (rnd * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff) * 2 - 1;
     engagements(10, (k, i, t) => {
-      const start = { yaw: 30 + k * 7, pitch: 0 };
+      const start = { yaw: 30 + (k % 8) * 7, pitch: 0 };
       const react = 13 + (k % 4) * 2; // ~200–300 ms
       if (i < react) return { yaw: start.yaw + rand() * 0.05, pitch: rand() * 0.05, fire: false };
       const u = Math.min(1, (i - react) / 6);
@@ -347,7 +347,7 @@ describe('bal tuzağı', () => {
     ticks(TICK_RATE * 2, () => ({ weapon: ITEM_PRIMARY, yaw: 90, pitch: 0 }));
     const ac = m.ac.get(a.id, m.tick);
     let fake: Snapshot['entities'][number] | undefined;
-    for (let attempt = 0; attempt < 20 && !fake; attempt++) {
+    for (let attempt = 0; attempt < 60 && !fake; attempt++) {
       ac.honeypot = null;
       ac.nextHoneypot = m.tick;
       ticks(2, () => ({ yaw: 90, pitch: 0 }));
@@ -361,9 +361,12 @@ describe('bal tuzağı', () => {
     expect(cb.ents()).not.toContain(a.id);
     // ESP/aimbot: sahte kafaya nişan al ve ateş et
     const t = anglesTo(a, { x: fake!.pos.x, y: fake!.pos.y, z: fake!.pos.z + 64 });
-    tick({ yaw: t.yaw, pitch: t.pitch });
-    tick({ yaw: t.yaw, pitch: t.pitch, buttons: IN_ATTACK });
-    ticks(2);
+    // birkaç tek atış (gizli spread kafayı ıskalatıp gövdeye denk getirebilir: gövde 1, kafa 2 puan)
+    for (let shot = 0; shot < 3 && m.players.has(a.id); shot++) {
+      tick({ yaw: t.yaw, pitch: t.pitch });
+      tick({ yaw: t.yaw, pitch: t.pitch, buttons: IN_ATTACK });
+      ticks(14, () => ({ yaw: t.yaw, pitch: t.pitch }));
+    }
     expect(m.players.has(a.id)).toBe(false);
     const k = ca.json.find((j) => j.t === 'kicked');
     expect(k && k.t === 'kicked' && k.reason).toContain('sahte');

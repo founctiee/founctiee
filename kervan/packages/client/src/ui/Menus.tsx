@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { Team, Phase, PlayerInfo, MatchSettings } from '@kervan/shared';
 import { ui } from './store';
 import { tr } from '../i18n/tr';
-import type { Game } from '../game/game';
+import { getGame } from './gameRef';
 
 export function Scoreboard() {
   const st = ui.state.value;
@@ -82,7 +82,8 @@ export function Scoreboard() {
   );
 }
 
-export function EscMenu({ game }: { game: Game }) {
+export function EscMenu() {
+  const game = getGame();
   const [copied, setCopied] = useState(false);
   if (!ui.escOpen.value) return null;
   const st = ui.state.value;
@@ -183,7 +184,8 @@ export function EscMenu({ game }: { game: Game }) {
   );
 }
 
-export function TeamMenu({ game }: { game: Game }) {
+export function TeamMenu() {
+  const game = getGame();
   if (!ui.teamMenuOpen.value) return null;
   const st = ui.state.value;
   const count = (t: Team) => st?.players.filter((p) => p.team === t).length ?? 0;
@@ -224,7 +226,8 @@ export function TeamMenu({ game }: { game: Game }) {
   );
 }
 
-export function MatchSettingsPanel({ game }: { game: Game }) {
+export function MatchSettingsPanel() {
+  const game = getGame();
   const st = ui.state.value;
   const [s, setS] = useState<MatchSettings | null>(null);
   useEffect(() => {
@@ -280,7 +283,8 @@ export function MatchSettingsPanel({ game }: { game: Game }) {
   );
 }
 
-export function ChatInput({ game }: { game: Game }) {
+export function ChatInput() {
+  const game = getGame();
   const mode = ui.chatOpen.value;
   const ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -312,7 +316,8 @@ export function ChatInput({ game }: { game: Game }) {
 }
 
 /** Host paneli: şüphe puanları, atma/yasaklama, otomatik atma anahtarı. */
-export function AcPanel({ game }: { game: Game }) {
+export function AcPanel() {
+  const game = getGame();
   const open = ui.acOpen.value;
   useEffect(() => {
     if (!open) return;

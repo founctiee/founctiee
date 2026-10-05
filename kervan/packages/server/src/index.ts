@@ -62,7 +62,9 @@ const wss = new WebSocketServer({ server, path: '/ws', perMessageDeflate: false,
 wss.on('connection', (ws, req) => {
   // Nagle kapalı: düşük gecikme
   (req.socket as { setNoDelay?: (v: boolean) => void }).setNoDelay?.(true);
-  rooms.attach(ws);
+  const fwd = req.headers['cf-connecting-ip'] ?? req.headers['x-forwarded-for'];
+  const ip = (Array.isArray(fwd) ? fwd[0] : fwd)?.split(',')[0]?.trim() || req.socket.remoteAddress || '';
+  rooms.attach(ws, ip);
 });
 
 // sürüklenmeyi düzelten 64 tick döngüsü

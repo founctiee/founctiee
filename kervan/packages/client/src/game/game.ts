@@ -19,6 +19,12 @@ import {
   GameState,
   GameEvent,
   ServerMsg,
+  ClientMsg,
+  DemoFile,
+  DemoTick,
+  DemoEvent,
+  unpackFrames,
+  base64ToBytes,
   Phase,
   BombState,
   Team,
@@ -87,6 +93,47 @@ import { settings, saveSettings } from '../settings';
 import { ui, pushNotice, log, playerById, KillEntry } from '../ui/store';
 import { tr } from '../i18n/tr';
 import { drawCrosshair } from '../ui/crosshair';
+import { security } from '../security/integrity';
+
+interface DemoState {
+  file: DemoFile;
+  round: number;
+  ticks: DemoTick[];
+  tick: number;
+  speed: number;
+  paused: boolean;
+  pov: number;
+  markers: THREE.Sprite[];
+}
+
+function markerTexture(): THREE.Texture {
+  const c = document.createElement('canvas');
+  c.width = 32;
+  c.height = 96;
+  const g = c.getContext('2d')!;
+  g.strokeStyle = '#ff2a2a';
+  g.lineWidth = 4;
+  g.strokeRect(3, 3, 26, 90);
+  g.fillStyle = 'rgba(255,40,40,0.25)';
+  g.fillRect(3, 3, 26, 90);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+/** Tarayıcıya özel kalıcı kimlik (oda yasağı için). */
+function deviceId(): string {
+  try {
+    let id = localStorage.getItem('kervan.did');
+    if (!id) {
+      id = Array.from(crypto.getRandomValues(new Uint8Array(12)), (b) => b.toString(16).padStart(2, '0')).join('');
+      localStorage.setItem('kervan.did', id);
+    }
+    return id;
+  } catch {
+    return '';
+  }
+}
 
 interface SnapRec {
   tick: number;
@@ -119,21 +166,21 @@ export class Game {
   readonly effects: Effects;
   readonly fx: WorldFx;
   readonly smoke: SmokeEffect;
-  conn: Connection | null = null;
+  #conn: Connection | null = null;
   myId = -1;
   state: GameState | null = null;
   sim: PlayerSim | null = null;
-  private history: UserCmd[] = [];
+  #history: UserCmd[] = [];
   private seq = 0;
   private renderPrev = { x: 0, y: 0, z: 0, eye: 64 };
   private renderCur = { x: 0, y: 0, z: 0, eye: 64 };
   private smoothing = new THREE.Vector3();
-  private snaps: SnapRec[] = [];
-  private tickOffset = NaN;
+  #snaps: SnapRec[] = [];
+  #tickOffset = NaN;
   private jitter = 0;
   interpTicks = 3;
   spectating = 0;
-  private remotes = new Map<number, RemoteVis>();
+  #remotes = new Map<number, RemoteVis>();
   private infernoSounds = new Map<number, Handle | null>();
   private smokeSounds = new Map<number, Handle | null>();
   pendingWeapon = ITEM_NONE;
@@ -167,6 +214,9 @@ export class Game {
   private flashEl: HTMLDivElement | null = null;
   ping = 0;
   roomToken = '';
+  private kickReason = '';
+  #demo: DemoState | null = null;
+  #markerTex: THREE.Texture | null = null;
 
   constructor(container: HTMLElement) {
     this.renderer = new Renderer(container, this.map);
@@ -210,10 +260,15 @@ export class Game {
   }
 
   anyMenuOpen(): boolean {
-    return ui.buyOpen.value || ui.escOpen.value || ui.settingsOpen.value || ui.consoleOpen.value || ui.chatOpen.value !== null || ui.teamMenuOpen.value || ui.matchSettingsOpen.value;
+    return ui.buyOpen.value || ui.escOpen.value || ui.settingsOpen.value || ui.consoleOpen.value || ui.chatOpen.value !== null || ui.teamMenuOpen.value || ui.matchSettingsOpen.value || ui.acOpen.value;
   }
 
   /** Menü durumuna göre girdi ve fare kilidini ayarla. */
+  /** Host: sunucudaki demo kaydını indir. */
+  downloadDemo() {
+    this.#conn?.send({ t: 'demo' });
+  }
+
   syncInputState() {
     const menu = this.anyMenuOpen();
     this.input.enabled = !menu;
@@ -232,13 +287,13 @@ export class Game {
       onSnapshot: (s) => this.onSnapshot(s),
       onClose: () => {
         if (ui.screen.value === 'game' || ui.screen.value === 'connecting') {
-          ui.error.value = tr.disconnected;
+          ui.error.value = this.kickReason || tr.disconnected;
           ui.screen.value = 'error';
         }
         this.stop();
       },
     });
-    this.conn = conn;
+    this.#conn = conn;
     try {
       await conn.whenOpen();
     } catch {
@@ -248,18 +303,24 @@ export class Game {
     }
     const tokenKey = opts.room ? `kervan.token.${opts.room.toUpperCase()}` : '';
     const token = tokenKey ? sessionStorage.getItem(tokenKey) ?? undefined : undefined;
-    conn.send({ t: 'join', name: opts.name, room: opts.room, create: opts.create, practice: opts.practice, version: PROTOCOL_VERSION, token });
+    this.kickReason = '';
+    conn.send({ t: 'join', name: opts.name, room: opts.room, create: opts.create, practice: opts.practice, version: PROTOCOL_VERSION, token, did: deviceId() });
+  }
+
+  /** UI'den sunucuya kontrol mesajı. */
+  send(msg: ClientMsg) {
+    this.#conn?.send(msg);
   }
 
   disconnect() {
-    this.conn?.close();
-    this.conn = null;
+    this.#conn?.close();
+    this.#conn = null;
     this.stop();
     this.sim = null;
     this.state = null;
-    this.snaps = [];
-    for (const r of this.remotes.values()) r.model.dispose();
-    this.remotes.clear();
+    this.#snaps = [];
+    for (const r of this.#remotes.values()) r.model.dispose();
+    this.#remotes.clear();
     this.smoke.clear();
     this.fx.clear();
     ui.state.value = null;
@@ -277,10 +338,10 @@ export class Game {
         sessionStorage.setItem(`kervan.token.${m.room}`, m.token);
         history.replaceState(null, '', `?oda=${encodeURIComponent(m.room)}`);
         ui.screen.value = 'game';
-        this.tickOffset = NaN;
-        this.history = [];
+        this.#tickOffset = NaN;
+        this.#history = [];
         this.sim = null;
-        this.snaps = [];
+        this.#snaps = [];
         this.start();
         if (!this.windHandle && audio.ready) this.windHandle = audio.play2D('wind', 0.06);
         log(`Odaya bağlanıldı: ${m.room} (tick ${m.tickRate})`);
@@ -288,7 +349,7 @@ export class Game {
       case 'error':
         ui.error.value = m.msg;
         ui.screen.value = 'error';
-        this.conn?.close();
+        this.#conn?.close();
         break;
       case 'state': {
         const { t: _t, ...st } = m;
@@ -304,8 +365,31 @@ export class Game {
         break;
       case 'ping':
         this.ping = m.ping;
-        this.conn?.send({ t: 'pong', s: m.s });
+        this.#conn?.send({ t: 'pong', s: m.s });
         break;
+      case 'kicked':
+        this.kickReason = m.auto ? `Hile koruması seni attı: ${m.reason}` : `Odadan çıkarıldın: ${m.reason}`;
+        ui.error.value = this.kickReason;
+        ui.screen.value = 'error';
+        break;
+      case 'acreport':
+        ui.acReport.value = { auto: m.auto, players: m.players, bans: m.bans };
+        break;
+      case 'demo': {
+        const blob = new Blob([JSON.stringify(m.demo)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `kervan-demo-${m.demo.room}-${new Date(m.demo.created).toISOString().slice(0, 16).replace(/[:T]/g, '-')}.json`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+        pushNotice('Demo indirildi', 'good');
+        break;
+      }
+      case 'acn': {
+        const n = m.n;
+        void security.answer(n, m.files).then((r) => this.#conn?.send({ t: 'acn', n, h: r.h, f: r.f }));
+        break;
+      }
       case 'chat': {
         const list = ui.chat.value.slice(-30);
         list.push({ id: performance.now(), name: m.name, text: m.text, team: m.team, teamId: m.teamId, dead: m.dead, t: performance.now() });
@@ -331,34 +415,37 @@ export class Game {
   // ───────────────────────── zaman ─────────────────────────
 
   serverTickNow(): number {
-    if (Number.isNaN(this.tickOffset)) return 0;
-    return performance.now() * (TICK_RATE / 1000) + this.tickOffset;
+    if (this.#demo) return this.#demo.tick;
+    if (Number.isNaN(this.#tickOffset)) return 0;
+    return performance.now() * (TICK_RATE / 1000) + this.#tickOffset;
   }
 
   renderTick(at = performance.now()): number {
-    if (Number.isNaN(this.tickOffset)) return 0;
-    return at * (TICK_RATE / 1000) + this.tickOffset - this.interpTicks;
+    if (this.#demo) return this.#demo.tick;
+    if (Number.isNaN(this.#tickOffset)) return 0;
+    return at * (TICK_RATE / 1000) + this.#tickOffset - this.interpTicks;
   }
 
   private onSnapshot(s: Snapshot) {
     const now = performance.now();
     const sample = s.tick - now * (TICK_RATE / 1000);
-    if (Number.isNaN(this.tickOffset)) this.tickOffset = sample;
+    if (Number.isNaN(this.#tickOffset)) this.#tickOffset = sample;
     else {
-      const dev = sample - this.tickOffset;
+      const dev = sample - this.#tickOffset;
       this.jitter = this.jitter * 0.95 + Math.abs(dev) * 0.05;
-      if (dev > 0) this.tickOffset += dev * 0.5;
-      else this.tickOffset += dev * 0.02;
+      if (dev > 0) this.#tickOffset += dev * 0.5;
+      else this.#tickOffset += dev * 0.02;
     }
-    this.interpTicks = Math.max(2.2, Math.min(8, 1.6 + this.jitter * 2.5));
+    // sunucu en fazla 5 tick interpolasyona izin verir (backtrack koruması)
+    this.interpTicks = Math.max(2.2, Math.min(5, 1.6 + this.jitter * 2.5));
     if (this.lastSnapTick && s.tick > this.lastSnapTick + 1) this.lostSnaps += s.tick - this.lastSnapTick - 1;
     this.lastSnapTick = Math.max(this.lastSnapTick, s.tick);
     this.snapCount++;
 
     const ents = new Map<number, EntityState>();
     for (const e of s.entities) ents.set(e.id, e);
-    this.snaps.push({ tick: s.tick, ents, grenades: s.grenades, dropped: s.dropped, bomb: s.bomb });
-    if (this.snaps.length > 96) this.snaps.shift();
+    this.#snaps.push({ tick: s.tick, ents, grenades: s.grenades, dropped: s.dropped, bomb: s.bomb });
+    if (this.#snaps.length > 96) this.#snaps.shift();
     this.spectating = s.spectating;
 
     if (s.local) this.reconcile(s.local, s.ackSeq);
@@ -367,10 +454,10 @@ export class Game {
   private reconcile(server: PlayerSim, ack: number) {
     const prev = this.sim;
     // onaylanan komutları at
-    while (this.history.length && this.history[0]!.seq <= ack) this.history.shift();
+    while (this.#history.length && this.#history[0]!.seq <= ack) this.#history.shift();
     if (!prev || prev.alive !== server.alive || prev.team !== server.team) {
       this.sim = server;
-      for (const c of this.history) simulateCmd(this.sim, c, this.simEnv());
+      for (const c of this.#history) simulateCmd(this.sim, c, this.simEnv());
       this.snapRender();
       if (server.alive && !prev?.alive) this.viewmodel.redeploy();
       this.viewmodel.setTeam(server.team);
@@ -378,7 +465,7 @@ export class Game {
     }
     const old = { ...prev.move.origin };
     const sim = server;
-    for (const c of this.history) simulateCmd(sim, c, this.simEnv());
+    for (const c of this.#history) simulateCmd(sim, c, this.simEnv());
     this.sim = sim;
     const ex = old.x - sim.move.origin.x;
     const ey = old.y - sim.move.origin.y;
@@ -409,7 +496,7 @@ export class Game {
   private remoteBoxes(): EntityBox[] {
     const out: EntityBox[] = [];
     const rt = this.renderTick();
-    for (const [id] of this.remotes) {
+    for (const [id] of this.#remotes) {
       const e = this.interpEntity(id, rt);
       if (!e || !(e.flags & EF_ALIVE)) continue;
       const h = e.flags & EF_DUCKED ? 54 : 72;
@@ -431,26 +518,28 @@ export class Game {
   }
 
   private clientTick(tickTime: number) {
-    const conn = this.conn;
+    const conn = this.#conn;
     if (!conn) return;
     const buttons = this.input.buttons();
     let yaw = this.input.yaw;
     let pitch = this.input.pitch;
     let fireFrac = 255;
-    let rt = this.renderTick();
-    if (this.input.firePressPending) {
+    // zaman damgası tick zamanına göre: (renderTick − seq) sabit kalır, sunucu bunu doğrular
+    let rt = this.renderTick(tickTime);
+    const press = this.input.takeFirePress();
+    if (press) {
       // subtick: tıklama anının tick içindeki yeri ve o andaki açı
-      const frac = (this.input.lastFirePress - (tickTime - DT * 1000)) / (DT * 1000);
+      const at = Math.max(press.t, tickTime - DT * 1000);
+      const frac = (at - (tickTime - DT * 1000)) / (DT * 1000);
       fireFrac = Math.max(0, Math.min(254, Math.round(frac * 254)));
-      yaw = this.input.firePressYaw;
-      pitch = this.input.firePressPitch;
-      rt = this.renderTick(this.input.lastFirePress);
-      this.input.firePressPending = false;
+      yaw = press.yaw;
+      pitch = press.pitch;
+      rt = this.renderTick(at);
     }
     const cmd: UserCmd = { seq: ++this.seq, buttons, yaw, pitch, weapon: this.pendingWeapon, renderTick: rt, fireFrac };
     this.pendingWeapon = ITEM_NONE;
-    this.history.push(cmd);
-    if (this.history.length > MAX_HISTORY) this.history.shift();
+    this.#history.push(cmd);
+    if (this.#history.length > MAX_HISTORY) this.#history.shift();
 
     if (this.sim && this.sim.alive) {
       const m = this.sim.move;
@@ -460,8 +549,8 @@ export class Game {
       for (const ev of events) this.onPredicted(ev, cmd);
       this.localSounds();
     }
-    const n = this.history.length;
-    conn.sendCmds(this.history.slice(Math.max(0, n - 3)));
+    const n = this.#history.length;
+    conn.sendCmds(this.#history.slice(Math.max(0, n - 3)));
   }
 
   /** Tahmin edilen olayların (ilk simülasyonda) efektleri. */
@@ -597,7 +686,7 @@ export class Game {
         const o = { x: e.o[0], y: e.o[1], z: e.o[2] };
         const name = e.sil ? `shot_${def.key}_sil` : `shot_${def.key}`;
         audio.play3D(audio.has(name) ? name : `shot_${def.key}`, o, { gain: e.sil ? 0.5 : 1, ref: e.sil ? 150 : 400, max: e.sil ? 1500 : 7000 });
-        const vis = this.remotes.get(e.id);
+        const vis = this.#remotes.get(e.id);
         const from = vis ? vis.model.muzzle.clone() : new THREE.Vector3(o.x, o.z, -o.y);
         if (vis) vis.model.fireKick = 1;
         if (!e.sil) this.effects.muzzleFlash(from, def.category === 'sniper' || def.category === 'heavy');
@@ -661,7 +750,7 @@ export class Game {
           ui.buyOpen.value = false;
           this.syncInputState();
         }
-        const r = this.remotes.get(e.v);
+        const r = this.#remotes.get(e.v);
         if (r) r.model.fireKick = 0;
         break;
       }
@@ -865,6 +954,7 @@ export class Game {
         else if (ui.settingsOpen.value) ui.settingsOpen.value = false;
         else if (ui.teamMenuOpen.value) ui.teamMenuOpen.value = false;
         else if (ui.matchSettingsOpen.value) ui.matchSettingsOpen.value = false;
+        else if (ui.acOpen.value) ui.acOpen.value = false;
         else if (ui.chatOpen.value) ui.chatOpen.value = null;
         else ui.escOpen.value = !ui.escOpen.value;
         this.syncInputState();
@@ -895,7 +985,7 @@ export class Game {
         this.syncInputState();
         return;
       case 'drop':
-        this.conn?.send({ t: 'drop' });
+        this.#conn?.send({ t: 'drop' });
         return;
     }
     if (!sim || !sim.alive) return;
@@ -938,7 +1028,7 @@ export class Game {
   }
 
   buy(item: string) {
-    this.conn?.send({ t: 'buy', item });
+    this.#conn?.send({ t: 'buy', item });
   }
 
   // ───────────────────────── döngü ─────────────────────────
@@ -986,7 +1076,8 @@ export class Game {
   private frame(now: number) {
     const dt = Math.min(0.1, (now - this.lastFrame) / 1000);
     this.lastFrame = now;
-    this.pumpTicks(now);
+    if (this.#demo) this.demoFrame(dt);
+    else this.pumpTicks(now);
     const alpha = Math.max(0, Math.min(1, this.acc / TICK_DT));
     this.frames++;
     if (now - this.fpsT > 500) {
@@ -1001,10 +1092,152 @@ export class Game {
     }
   }
 
+  // ───────────────────────── demo ─────────────────────────
+
+  /** Demo dosyasını aç (bağlantı kapatılır). */
+  playDemo(file: DemoFile) {
+    if (this.#conn) this.disconnect();
+    if (!file.rounds?.length) throw new Error('boş demo');
+    this.#demo = { file, round: 0, ticks: [], tick: 0, speed: 1, paused: false, pov: -1, markers: [] };
+    this.myId = -1;
+    this.sim = null;
+    this.state = null;
+    ui.state.value = null;
+    this.demoRound(0);
+    ui.screen.value = 'demo';
+  }
+
+  stopDemo() {
+    const d = this.#demo;
+    if (!d) return;
+    for (const m of d.markers) m.removeFromParent();
+    this.#demo = null;
+    this.#snaps = [];
+    for (const r of this.#remotes.values()) r.model.dispose();
+    this.#remotes.clear();
+    this.fx.clear();
+    ui.screen.value = 'menu';
+  }
+
+  demoRound(i: number) {
+    const d = this.#demo;
+    if (!d) return;
+    const r = d.file.rounds[Math.max(0, Math.min(d.file.rounds.length - 1, i))]!;
+    d.round = d.file.rounds.indexOf(r);
+    const bytes = base64ToBytes(r.frames);
+    d.ticks = unpackFrames(new Int16Array(bytes.buffer, bytes.byteOffset, Math.floor(bytes.byteLength / 2)));
+    d.tick = d.ticks[0]?.tick ?? r.startTick;
+    if (r.evidenceFor !== undefined) d.pov = r.evidenceFor;
+    else if (!d.ticks[0]?.players.some((p) => p.id === d.pov)) d.pov = d.ticks[0]?.players[0]?.id ?? -1;
+    this.demoFill();
+  }
+
+  demoInfo() {
+    const d = this.#demo;
+    if (!d) return null;
+    const r = d.file.rounds[d.round]!;
+    const first = d.ticks[0]?.tick ?? r.startTick;
+    const last = d.ticks[d.ticks.length - 1]?.tick ?? r.endTick;
+    return {
+      file: d.file,
+      round: d.round,
+      start: first,
+      end: last,
+      tick: d.tick,
+      speed: d.speed,
+      paused: d.paused,
+      pov: d.pov,
+      events: r.events,
+      evidenceFor: r.evidenceFor,
+      names: new Map(d.file.players.map((p) => [p.id, p.name])),
+      present: [...new Set(d.ticks.flatMap((t) => t.players.map((p) => p.id)))],
+    };
+  }
+
+  demoControl(c: { seek?: number; speed?: number; paused?: boolean; pov?: number }) {
+    const d = this.#demo;
+    if (!d) return;
+    if (c.seek !== undefined) {
+      d.tick = c.seek;
+      this.demoFill();
+    }
+    if (c.speed !== undefined) d.speed = c.speed;
+    if (c.paused !== undefined) d.paused = c.paused;
+    if (c.pov !== undefined) d.pov = c.pov;
+  }
+
+  private demoIndex(tick: number): number {
+    const t = this.#demo!.ticks;
+    let lo = 0;
+    let hi = t.length - 1;
+    while (lo < hi) {
+      const mid = (lo + hi + 1) >> 1;
+      if (t[mid]!.tick <= tick) lo = mid;
+      else hi = mid - 1;
+    }
+    return lo;
+  }
+
+  private demoFrame(dt: number) {
+    const d = this.#demo!;
+    if (!d.ticks.length) return;
+    const prev = d.tick;
+    const end = d.ticks[d.ticks.length - 1]!.tick;
+    if (!d.paused) d.tick = Math.min(end, d.tick + dt * TICK_RATE * d.speed);
+    if (d.tick >= end) d.paused = true;
+    // aradaki atışlar: iz ve ses
+    if (d.tick > prev && d.tick - prev < 16) {
+      const r = d.file.rounds[d.round]!;
+      for (const e of r.events) {
+        if (e.k !== 'shot' || e.tick <= prev || e.tick > d.tick) continue;
+        const fr = d.ticks[this.demoIndex(e.tick)]?.players.find((p) => p.id === e.id);
+        if (fr?.weapon) this.onEvent({ e: 'shot', id: e.id, w: fr.weapon, m: 0, o: e.o, d: [e.d], sil: false });
+      }
+    }
+    this.demoFill();
+  }
+
+  /** Geçerli tick çevresindeki kayıtları snapshot olarak hazırla; bal tuzağı işaretlerini yerleştir. */
+  private demoFill() {
+    const d = this.#demo!;
+    const i = this.demoIndex(d.tick);
+    const snaps: SnapRec[] = [];
+    for (let k = Math.max(0, i - 2); k <= Math.min(d.ticks.length - 1, i + 3); k++) {
+      const t = d.ticks[k]!;
+      const next = d.ticks[k + 1];
+      const ents = new Map<number, EntityState>();
+      for (const p of t.players) {
+        const n = next?.players.find((q) => q.id === p.id);
+        const vel = n ? { x: (n.x - p.x) * TICK_RATE, y: (n.y - p.y) * TICK_RATE, z: (n.z - p.z) * TICK_RATE } : { x: 0, y: 0, z: 0 };
+        ents.set(p.id, { id: p.id, team: p.team, flags: p.flags, pos: { x: p.x, y: p.y, z: p.z }, vel, yaw: p.yaw, pitch: p.pitch, duck: p.duck, weapon: p.weapon, shots: 0 });
+      }
+      snaps.push({ tick: t.tick, ents, grenades: [], dropped: [], bomb: null });
+    }
+    this.#snaps = snaps;
+    this.spectating = d.pov;
+    // bal tuzakları (kırmızı kutu, duvarların arkasından da görünür)
+    const r = d.file.rounds[d.round]!;
+    const active = r.events.filter((e): e is Extract<DemoEvent, { k: 'honeypot' }> => e.k === 'honeypot' && e.tick <= d.tick && d.tick <= e.end);
+    this.#markerTex ??= markerTexture();
+    while (d.markers.length < active.length) {
+      const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.#markerTex, depthTest: false, transparent: true, toneMapped: false }));
+      sp.center.set(0.5, 0);
+      sp.scale.set(32, 72, 1);
+      sp.renderOrder = 999;
+      this.renderer.scene.add(sp);
+      d.markers.push(sp);
+    }
+    d.markers.forEach((m, k) => {
+      const e = active[k];
+      m.visible = !!e;
+      if (e) m.position.set(e.p[0], e.p[2], -e.p[1]);
+    });
+  }
+
   // ───────────────────────── interpolasyon ─────────────────────────
 
   private interpEntity(id: number, rt: number): EntityState | null {
-    const s = this.snaps;
+    const s = this.#snaps;
     if (!s.length) return null;
     let i = s.length - 1;
     while (i > 0 && s[i]!.tick > rt) i--;
@@ -1022,7 +1255,7 @@ export class Game {
     }
     const t = b.tick === a.tick ? 1 : Math.max(0, Math.min(1, (rt - a.tick) / (b.tick - a.tick)));
     // ölüm/doğuş anlarında atlama (ışınlanma)
-    const jump = Math.hypot(eb.pos.x - ea.pos.x, eb.pos.y - ea.pos.y) > 200;
+    const jump = Math.hypot(eb.pos.x - ea.pos.x, eb.pos.y - ea.pos.y) > 96;
     if (jump) return t < 0.5 ? ea : eb;
     return {
       ...eb,
@@ -1035,7 +1268,7 @@ export class Game {
   }
 
   private interpGrenades(rt: number) {
-    const s = this.snaps;
+    const s = this.#snaps;
     if (!s.length) return [];
     let i = s.length - 1;
     while (i > 0 && s[i]!.tick > rt) i--;
@@ -1058,20 +1291,20 @@ export class Game {
     const sim = this.sim;
 
     // uzak oyuncular
-    const latest = this.snaps[this.snaps.length - 1];
+    const latest = this.#snaps[this.#snaps.length - 1];
     const seen = new Set<number>();
     if (latest) {
       for (const id of latest.ents.keys()) {
         const e = this.interpEntity(id, rt);
         if (!e) continue;
         seen.add(id);
-        let vis = this.remotes.get(id);
+        let vis = this.#remotes.get(id);
         if (!vis || vis.team !== e.team) {
           vis?.model.dispose();
           const model = new PlayerModel(e.team);
           R.scene.add(model.root);
           vis = { model, team: e.team, shots: e.shots, stepAcc: 0, lastPos: null, wasAlive: true, wasOnGround: true, wasReloading: false, defuseSound: 0 };
-          this.remotes.set(id, vis);
+          this.#remotes.set(id, vis);
         }
         const alive = (e.flags & EF_ALIVE) !== 0;
         const pose: PlayerPose = {
@@ -1092,10 +1325,12 @@ export class Game {
         };
         vis.model.update(pose, dt);
         // izlenen oyuncu birinci şahıs: modeli gizle
-        vis.model.setVisible(!(sim && !sim.alive && this.spectating === id));
+        const pov = this.#demo ? this.#demo.pov : sim && !sim.alive ? this.spectating : -1;
+        vis.model.setVisible(pov !== id);
         // ayak sesleri
         if (vis.lastPos && alive) {
-          const d = Math.hypot(e.pos.x - vis.lastPos.x, e.pos.y - vis.lastPos.y);
+          let d = Math.hypot(e.pos.x - vis.lastPos.x, e.pos.y - vis.lastPos.y);
+          if (d > 96) d = 0; // ışınlanma / yeniden belirme
           const speed = Math.hypot(e.vel.x, e.vel.y);
           if (pose.onGround && speed > 150 && !(e.flags & EF_WALKING) && !(e.flags & EF_DUCKED)) {
             vis.stepAcc += d;
@@ -1113,10 +1348,10 @@ export class Game {
         vis.wasAlive = alive;
       }
     }
-    for (const [id, vis] of this.remotes) {
+    for (const [id, vis] of this.#remotes) {
       if (!seen.has(id)) {
         vis.model.dispose();
-        this.remotes.delete(id);
+        this.#remotes.delete(id);
       }
     }
 
@@ -1294,14 +1529,14 @@ export class Game {
     h.fps = this.fps;
     h.ping = this.ping;
     h.interpMs = Math.round((this.interpTicks * 1000) / TICK_RATE);
-    if (this.conn && now - this.lastNetT > 1000) {
+    if (this.#conn && now - this.lastNetT > 1000) {
       const dtn = (now - this.lastNetT) / 1000;
-      h.inKbps = Math.round(((this.conn.bytesIn - this.lastBytesIn) * 8) / 1000 / dtn);
-      h.outKbps = Math.round(((this.conn.bytesOut - this.lastBytesOut) * 8) / 1000 / dtn);
+      h.inKbps = Math.round(((this.#conn.bytesIn - this.lastBytesIn) * 8) / 1000 / dtn);
+      h.outKbps = Math.round(((this.#conn.bytesOut - this.lastBytesOut) * 8) / 1000 / dtn);
       const expected = this.snapCount + this.lostSnaps;
       h.loss = expected > 0 ? Math.round((this.lostSnaps / expected) * 100) : 0;
-      this.lastBytesIn = this.conn.bytesIn;
-      this.lastBytesOut = this.conn.bytesOut;
+      this.lastBytesIn = this.#conn.bytesIn;
+      this.lastBytesOut = this.#conn.bytesOut;
       this.snapCount = 0;
       this.lostSnaps = 0;
       this.lastNetT = now;
@@ -1381,12 +1616,12 @@ export class Game {
     const rt = this.renderTick();
     const out: { id: number; x: number; y: number; yaw: number; team: Team; alive: boolean; me: boolean }[] = [];
     if (this.sim) out.push({ id: this.myId, x: this.sim.move.origin.x, y: this.sim.move.origin.y, yaw: this.input.yaw, team: this.sim.team, alive: this.sim.alive, me: true });
-    for (const id of this.remotes.keys()) {
+    for (const id of this.#remotes.keys()) {
       const e = this.interpEntity(id, rt);
       if (!e) continue;
       out.push({ id, x: e.pos.x, y: e.pos.y, yaw: e.yaw, team: e.team, alive: (e.flags & EF_ALIVE) !== 0, me: false });
     }
-    const bomb = this.snaps[this.snaps.length - 1]?.bomb ?? null;
+    const bomb = this.#snaps[this.#snaps.length - 1]?.bomb ?? null;
     return { players: out, bomb };
   }
 

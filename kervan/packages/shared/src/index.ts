@@ -21,3 +21,4 @@ export * from './maps/kervan';
 export * from './net/binary';
 export * from './net/protocol';
 export * from './net/messages';
+export * from './net/demo';

@@ -116,10 +116,10 @@ export function runCommand(game: Game, line: string) {
     case 'noclip':
     case 'god':
     case 'restart':
-      game.conn?.send({ t: 'cheat', name: cmd as 'noclip' | 'god' | 'restart' });
+      game.send({ t: 'cheat', name: cmd as 'noclip' | 'god' | 'restart' });
       break;
     case 'setpos':
-      game.conn?.send({ t: 'cheat', name: 'setpos', args: args.map(Number) });
+      game.send({ t: 'cheat', name: 'setpos', args: args.map(Number) });
       break;
     case 'getpos': {
       const o = game.sim?.move.origin;
@@ -127,10 +127,10 @@ export function runCommand(game: Game, line: string) {
       break;
     }
     case 'say':
-      game.conn?.send({ t: 'chat', text: a, team: false });
+      game.send({ t: 'chat', text: a, team: false });
       break;
     case 'say_team':
-      game.conn?.send({ t: 'chat', text: a, team: true });
+      game.send({ t: 'chat', text: a, team: true });
       break;
     case 'disconnect':
       game.disconnect();

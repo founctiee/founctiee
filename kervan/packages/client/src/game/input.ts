@@ -17,6 +17,7 @@ import {
   IN_USE,
 } from '@kervan/shared';
 import { settings } from '../settings';
+import { security } from '../security/integrity';
 
 const M_YAW = 0.022;
 const M_PITCH = 0.022;
@@ -39,8 +40,15 @@ const BUTTON_ACTIONS: Record<string, number> = {
 export type ActionHandler = (action: string, down: boolean) => void;
 
 export class Input {
-  yaw = 0;
-  pitch = 0;
+  // açılar dışarıdan yazılamaz (aimbot scripti için gerçek #private alan)
+  #yaw = 0;
+  #pitch = 0;
+  get yaw() {
+    return this.#yaw;
+  }
+  get pitch() {
+    return this.#pitch;
+  }
   private held = new Set<string>();
   /** Bu tick içinde basılıp bırakılan tuşlar (çok kısa basışlar kaybolmasın). */
   private tapped = new Set<string>();
@@ -50,10 +58,7 @@ export class Input {
   /** Zoom sırasında hassasiyet çarpanı. */
   sensScale = 1;
   /** Ateş tuşuna son basılma anı ve o andaki açılar (subtick). */
-  lastFirePress = 0;
-  firePressPending = false;
-  firePressYaw = 0;
-  firePressPitch = 0;
+  #fire: { t: number; yaw: number; pitch: number } | null = null;
   onAction: ActionHandler = () => {};
   onPointerLockChange: (locked: boolean) => void = () => {};
 
@@ -64,28 +69,35 @@ export class Input {
       this.onPointerLockChange(this.locked);
     });
     document.addEventListener('mousemove', (e) => {
+      // script ile üretilen (sahte) olaylar yok sayılır ve bildirilir
+      if (!e.isTrusted) return security.untrusted();
       if (!this.locked || !this.enabled) return;
       // aşırı sıçramaları (bazı tarayıcı hataları) yut
       if (Math.abs(e.movementX) > 2000 || Math.abs(e.movementY) > 2000) return;
       const s = settings.sensitivity * this.sensScale;
-      this.yaw -= e.movementX * s * M_YAW;
-      this.pitch += e.movementY * s * M_PITCH * (settings.invertY ? -1 : 1);
-      if (this.pitch > 89) this.pitch = 89;
-      if (this.pitch < -89) this.pitch = -89;
-      this.yaw = ((this.yaw % 360) + 360) % 360;
+      let yaw = this.#yaw - e.movementX * s * M_YAW;
+      let pitch = this.#pitch + e.movementY * s * M_PITCH * (settings.invertY ? -1 : 1);
+      if (pitch > 89) pitch = 89;
+      if (pitch < -89) pitch = -89;
+      yaw = ((yaw % 360) + 360) % 360;
+      this.#yaw = yaw;
+      this.#pitch = pitch;
     });
     const codeOfMouse = (b: number) => `Mouse${b}`;
     document.addEventListener('mousedown', (e) => {
+      if (!e.isTrusted) return security.untrusted();
       if (!this.locked || !this.enabled) return;
       this.keyDown(codeOfMouse(e.button));
       e.preventDefault();
     });
     document.addEventListener('mouseup', (e) => {
+      if (!e.isTrusted) return security.untrusted();
       this.keyUp(codeOfMouse(e.button));
     });
     document.addEventListener(
       'wheel',
       (e) => {
+        if (!e.isTrusted) return security.untrusted();
         if (!this.locked || !this.enabled) return;
         const code = e.deltaY > 0 ? 'WheelDown' : 'WheelUp';
         this.keyDown(code);
@@ -94,6 +106,7 @@ export class Input {
       { passive: true },
     );
     window.addEventListener('keydown', (e) => {
+      if (!e.isTrusted) return security.untrusted();
       if (isTyping(e)) return;
       if (e.code === 'Tab' || (e.code.startsWith('Digit') && this.locked)) e.preventDefault();
       if (e.code === 'Space' && this.locked) e.preventDefault();
@@ -107,6 +120,7 @@ export class Input {
       this.keyDown(e.code);
     });
     window.addEventListener('keyup', (e) => {
+      if (!e.isTrusted) return security.untrusted();
       if (isTyping(e)) return;
       this.keyUp(e.code);
     });
@@ -129,10 +143,7 @@ export class Input {
         this.held.add(act);
         this.tapped.add(act);
         if (act === 'attack') {
-          this.lastFirePress = performance.now();
-          this.firePressPending = true;
-          this.firePressYaw = this.yaw;
-          this.firePressPitch = this.pitch;
+          this.#fire = { t: performance.now(), yaw: this.#yaw, pitch: this.#pitch };
         }
       }
     }
@@ -159,6 +170,13 @@ export class Input {
     for (const a of this.tapped) b |= BUTTON_ACTIONS[a] ?? 0;
     this.tapped.clear();
     return b;
+  }
+
+  /** Bekleyen ateş basışını al (bir kez). */
+  takeFirePress(): { t: number; yaw: number; pitch: number } | null {
+    const f = this.#fire;
+    this.#fire = null;
+    return f;
   }
 
   isHeld(action: string) {

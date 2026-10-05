@@ -98,6 +98,8 @@ import {
   EF_RELOADING,
   EF_WALKING,
   IN_SPEED,
+  IN_ATTACK,
+  IN_ATTACK2,
   V3,
   Vec3,
   hashSeed,
@@ -107,15 +109,31 @@ import {
   cvars,
   spreadDirections,
   MATERIALS,
+  NetCipher,
 } from '@kervan/shared';
 import { LagCompHistory, PoseRecord } from './lagcomp';
 import { Visibility, VisActor } from './visibility';
 import { randomInt } from 'node:crypto';
+import { DemoRecorder } from './demo';
+import { AntiCheat, PlayerAC, ShotInfo, StrongReason, STRONG_TEXT, SIGNAL_TEXT, BACKTRACK_KICK, Signal } from './anticheat';
 
 export interface Conn {
   sendBinary(data: Uint8Array): void;
   sendJSON(msg: ServerMsg): void;
   bufferedAmount(): number;
+  close(): void;
+}
+
+/** Sunucuda kuyruktaki komut: varış tick'i ile. */
+export type QueuedCmd = UserCmd & { arrival: number };
+
+export interface KickInfo {
+  player: ServerPlayer;
+  /** Kullanıcıya gösterilen sebep. */
+  reason: string;
+  ban: boolean;
+  /** Otomatik tespit mi (host değil). */
+  auto: boolean;
 }
 
 interface RoundStats {
@@ -133,7 +151,7 @@ export class ServerPlayer {
   mvp = 0;
   hs = 0;
   roundsPlayed = 0;
-  cmdQueue: UserCmd[] = [];
+  cmdQueue: QueuedCmd[] = [];
   lastSeq = -1;
   budget = 0;
   lastCmd: UserCmd = emptyCmd();
@@ -155,6 +173,18 @@ export class ServerPlayer {
   shotCounter = 0;
   stepAcc = 0;
   lastStepPos: Vec3 | null = null;
+  /** Son ping ölçümleri (ms). */
+  pings: number[] = [];
+  lastPingSent = 0;
+  prevButtons = 0;
+  /** Cihaz kimliği (localStorage) ve IP özeti: yasak için. */
+  did = '';
+  ipHash = '';
+  /** Paket karıştırma (gelen / giden). */
+  rx = new NetCipher(0);
+  tx = new NetCipher(0);
+  /** Atılma sırada (tick sonunda bağlantı kapanır). */
+  kickPending = false;
 
   constructor(
     readonly id: number,
@@ -258,6 +288,14 @@ export class Match {
   private nextPlayerId = 1;
   host = -1;
   readonly vis: Visibility;
+  readonly ac: AntiCheat;
+  readonly demo = new DemoRecorder();
+  /** Tespitte otomatik at (host kapatabilir; herkes bilgilendirilir). */
+  acAuto = true;
+  /** Oda katmanı: bağlantıyı kapatır, yasak listesine ekler. */
+  onKick: ((k: KickInfo) => void) | null = null;
+  private kicks: KickInfo[] = [];
+  private inStep = false;
 
   constructor(
     readonly map: MapDef,
@@ -266,6 +304,8 @@ export class Match {
   ) {
     this.world = new World(map.brushes, map.triggers);
     this.vis = new Visibility(this.world);
+    this.ac = new AntiCheat(this.world);
+    this.ac.onLog = (id, text) => this.demo.event({ tick: this.tick, k: 'ac', id, text });
     this.settings = { ...DEFAULT_SETTINGS, ...settings };
     if (this.settings.practice) this.settings.showImpacts = true;
   }
@@ -280,6 +320,7 @@ export class Match {
     const p = new ServerPlayer(id, name.slice(0, 24) || `Oyuncu${id}`, token, conn, team);
     p.money = this.phase === Phase.Warmup ? this.settings.warmupMoney : this.settings.startMoney;
     this.players.set(id, p);
+    this.demo.names.set(id, p.name);
     if (this.host < 0 || !this.players.get(this.host)?.conn) this.host = id;
     if (this.phase === Phase.Warmup || this.phase === Phase.Freeze) {
       this.spawn(p, true);
@@ -294,6 +335,7 @@ export class Match {
     p.disconnectTick = -1;
     p.cmdQueue = [];
     p.lastSeq = -1;
+    this.ac.get(p.id, this.tick).resetTiming();
     this.notice(`${p.name} yeniden bağlandı`);
     this.stateDirty = true;
   }
@@ -314,6 +356,7 @@ export class Match {
     if (p.alive) this.dropOnDeath(p);
     this.players.delete(id);
     this.vis.forget(id);
+    this.ac.forget(id);
     if (this.host === id) this.pickHost();
     this.stateDirty = true;
   }
@@ -348,13 +391,17 @@ export class Match {
 
   handleCmds(id: number, cmds: UserCmd[]) {
     const p = this.players.get(id);
-    if (!p) return;
+    if (!p || p.kickPending) return;
     for (const c of cmds) {
+      // normal istemci asla sonsuz/NaN açı ya da zaman göndermez
+      if (!Number.isFinite(c.yaw) || !Number.isFinite(c.pitch) || !Number.isFinite(c.renderTick) || Math.abs(c.pitch) > 90 || Math.abs(c.yaw) > 1e7) {
+        this.detect(p, 'invalid', `açı/zaman: ${c.yaw} ${c.pitch} ${c.renderTick}`);
+        return;
+      }
       if (c.seq <= p.lastSeq) continue;
       if (p.cmdQueue.length && c.seq <= p.cmdQueue[p.cmdQueue.length - 1]!.seq) continue;
-      if (!Number.isFinite(c.yaw) || !Number.isFinite(c.pitch)) continue;
       c.pitch = Math.max(-89, Math.min(89, c.pitch));
-      p.cmdQueue.push(c);
+      p.cmdQueue.push({ ...c, arrival: this.tick });
     }
     // aşırı birikmeyi önle (lag spike sonrası)
     if (p.cmdQueue.length > 32) p.cmdQueue.splice(0, p.cmdQueue.length - 32);
@@ -362,7 +409,7 @@ export class Match {
 
   handleMessage(id: number, msg: ClientMsg) {
     const p = this.players.get(id);
-    if (!p) return;
+    if (!p || p.kickPending) return;
     switch (msg.t) {
       case 'team':
         this.changeTeam(p, msg.team);
@@ -400,8 +447,36 @@ export class Match {
           this.stateDirty = true;
         }
         break;
-      case 'pong':
-        p.ping = Math.max(0, Math.min(999, Date.now() - msg.s));
+      case 'pong': {
+        // yalnızca son gönderilen ping'in yankısı kabul edilir
+        if (msg.s !== p.lastPingSent) break;
+        p.lastPingSent = 0;
+        const ms = Math.max(0, Math.min(999, Date.now() - msg.s));
+        p.pings.push(ms);
+        if (p.pings.length > 5) p.pings.shift();
+        p.ping = ms;
+        this.ac.get(p.id, this.tick).pingSamples++;
+        break;
+      }
+      case 'ac_mode':
+        if (id === this.host && typeof msg.auto === 'boolean' && msg.auto !== this.acAuto) {
+          this.acAuto = msg.auto;
+          this.notice(msg.auto ? 'Host hile korumasında otomatik atmayı AÇTI' : 'Host hile korumasında otomatik atmayı KAPATTI (sadece rapor)', 'warn');
+          this.stateDirty = true;
+        }
+        break;
+      case 'kick':
+      case 'ban': {
+        if (id !== this.host || msg.id === id) break;
+        const t = this.players.get(msg.id);
+        if (t) this.kick(t, msg.t === 'ban' ? 'host tarafından yasaklandı' : 'host tarafından atıldı', msg.t === 'ban', false);
+        break;
+      }
+      case 'acreport':
+        if (id === this.host) this.sendAcReport(p);
+        break;
+      case 'demo':
+        if (id === this.host) p.conn?.sendJSON({ t: 'demo', demo: this.demo.file(this.map.name, this.roomCode) });
         break;
       case 'cheat':
         this.cheat(p, msg.name, msg.args);
@@ -497,6 +572,7 @@ export class Match {
 
   private startRound() {
     this.round++;
+    this.demo.startRound(this.round, this.tick);
     this.phase = Phase.Freeze;
     this.phaseEndTick = this.tick + ts(this.settings.freezeTime);
     this.buyEndTick = this.phaseEndTick + ts(this.settings.buyTime);
@@ -758,6 +834,7 @@ export class Match {
   step() {
     this.tick++;
     const tick = this.tick;
+    this.inStep = true;
 
     // 1) komutlar
     const entityBoxes = (): EntityBox[] => {
@@ -769,9 +846,12 @@ export class Match {
     for (const p of this.players.values()) {
       p.budget = Math.min(MAX_CMDS_PER_TICK, p.budget + 1);
       let ran = 0;
-      while (p.cmdQueue.length > 0 && p.budget > 0) {
+      while (p.cmdQueue.length > 0 && p.budget > 0 && !p.kickPending) {
         const cmd = p.cmdQueue.shift()!;
+        const violation = this.preCmd(p, cmd);
+        const shotsBefore = p.shots;
         this.runCmd(p, cmd, boxes);
+        if (violation && p.shots > shotsBefore) this.backtrackViolation(p, cmd);
         p.lastSeq = cmd.seq;
         p.budget--;
         ran++;
@@ -819,10 +899,143 @@ export class Match {
       poses.set(p.id, { origin: { ...p.sim.move.origin }, yaw: p.lastCmd.yaw, duck: p.sim.move.duckAmount, alive: p.alive });
     }
     this.lag.record(tick, poses);
+    this.recordDemo(tick);
 
     // 6) ağ
+    this.inStep = false;
+    this.flushKicks();
     this.sendAll();
   }
+
+  // ───────────────────────── hile koruması ─────────────────────────
+
+  /** Komut çalışmadan önce: renderTick doğrula/kırp, nişan örneğini kaydet. Döner: ihlal. */
+  private preCmd(p: ServerPlayer, cmd: QueuedCmd): boolean {
+    const ac = this.ac.get(p.id, this.tick);
+    const attack = (cmd.buttons & (IN_ATTACK | IN_ATTACK2)) !== 0;
+    const pingMs = p.pings.length ? Math.min(150, ...p.pings) : 150;
+    const chk = this.ac.checkRenderTick(ac, cmd.seq, cmd.arrival, cmd.renderTick, Math.round((pingMs * TICK_RATE) / 1000), attack, this.tick);
+    cmd.renderTick = chk.renderTick;
+    if (p.alive && !this.settings.practice && (p.team === Team.T || p.team === Team.CT)) {
+      const enemies = this.targetsFor(p, cmd.renderTick).filter((t) => t.team !== p.team);
+      this.ac.onCmd(ac, this.tick, eyePosition(p.sim), cmd.yaw, cmd.pitch, enemies);
+    }
+    return chk.violation;
+  }
+
+  private backtrackViolation(p: ServerPlayer, cmd: UserCmd) {
+    const ac = this.ac.get(p.id, this.tick);
+    ac.backtrackViolations++;
+    ac.note(`zaman ihlali #${ac.backtrackViolations} (seq ${cmd.seq})`);
+    if (ac.backtrackViolations >= BACKTRACK_KICK) this.detect(p, 'backtrack', `${ac.backtrackViolations} ihlal`);
+  }
+
+  /**
+   * Tespit: kesin sebep (reason) ya da istatistiksel eşik (reason = null).
+   * Otomatik atma kapalıysa host'a bildirilir.
+   */
+  detect(p: ServerPlayer, reason: StrongReason | null, detail: string) {
+    const ac = this.ac.get(p.id, this.tick);
+    if (ac.kicked || p.kickPending) return;
+    const text = reason ? STRONG_TEXT[reason] : this.statText(ac);
+    if (reason) ac.note(`KESİN: ${text} (${detail})`);
+    console.log(`[hile] ${this.roomCode} ${p.name}#${p.id}: ${text} (${detail}) puan=${ac.score.toFixed(1)}`);
+    // bozuk/sel mesajlar her durumda atılır; diğerleri host ayarına bağlı
+    if (!this.acAuto && reason !== 'invalid' && reason !== 'flood') {
+      const key = reason ?? 'stats';
+      if (!ac.reported.has(key)) {
+        ac.reported.add(key);
+        if (this.host >= 0) this.toPlayer(this.host, { e: 'notice', text: `Hile şüphesi: ${p.name} — ${text}`, kind: 'warn' });
+      }
+      return;
+    }
+    ac.kicked = text;
+    this.kick(p, text, true, true);
+  }
+
+  private statText(ac: PlayerAC): string {
+    const list = [...ac.signals.keys()].map((k: Signal) => SIGNAL_TEXT[k]);
+    return `şüpheli nişan istatistiği (${list.join(', ')})`;
+  }
+
+  /** Oyuncuyu at (ban = oda ömrü boyunca yasak). Tick içindeyse tick sonunda uygulanır. */
+  kick(p: ServerPlayer, reason: string, ban: boolean, auto: boolean) {
+    if (p.kickPending || !this.players.has(p.id)) return;
+    p.kickPending = true;
+    p.cmdQueue = [];
+    this.kicks.push({ player: p, reason, ban, auto });
+    if (!this.inStep) this.flushKicks();
+  }
+
+  private flushKicks() {
+    if (!this.kicks.length) return;
+    const list = this.kicks;
+    this.kicks = [];
+    for (const k of list) {
+      const p = k.player;
+      this.notice(`${p.name} ${k.auto ? 'hile tespiti nedeniyle atıldı' : 'odadan çıkarıldı'}: ${k.reason}`, 'warn');
+      p.conn?.sendJSON({ t: 'kicked', reason: k.reason, ban: k.ban, auto: k.auto });
+      this.demo.event({ tick: this.tick, k: 'kick', id: p.id, text: k.reason });
+      if (k.auto) this.demo.saveEvidence(p.id);
+      this.onKick?.(k);
+      const conn = p.conn;
+      p.conn = null;
+      this.removePlayer(p.id);
+      conn?.close();
+    }
+  }
+
+  /** Host paneli için hile koruması raporu. */
+  acReport() {
+    return [...this.players.values()].map((p) => {
+      const ac = this.ac.players.get(p.id);
+      return {
+        id: p.id,
+        name: p.name,
+        score: ac ? Math.round(ac.score * 10) / 10 : 0,
+        signals: ac ? Object.fromEntries(ac.signals) : {},
+        backtrack: ac?.backtrackViolations ?? 0,
+        log: ac ? ac.log.slice(-8) : [],
+      };
+    });
+  }
+
+  private sendAcReport(host: ServerPlayer) {
+    host.conn?.sendJSON({ t: 'acreport', auto: this.acAuto, players: this.acReport(), bans: this.bansForReport?.() ?? [] });
+  }
+
+  private recordDemo(tick: number) {
+    const frames = [];
+    for (const p of this.players.values()) {
+      if (p.team !== Team.T && p.team !== Team.CT) continue;
+      frames.push({
+        id: p.id,
+        team: p.team,
+        flags: this.entityFlags(p),
+        x: p.sim.move.origin.x,
+        y: p.sim.move.origin.y,
+        z: p.sim.move.origin.z,
+        yaw: p.lastCmd.yaw,
+        pitch: p.lastCmd.pitch,
+        duck: p.sim.move.duckAmount,
+        weapon: p.alive ? activeDef(p.sim).num : 0,
+      });
+    }
+    this.demo.frame(tick, this.round, frames);
+  }
+
+  /** Yeni oturum anahtarı (welcome ile gider); iki yönün sayaçları sıfırlanır. */
+  newNetKey(id: number): number {
+    const p = this.players.get(id);
+    if (!p) return 0;
+    const key = randomInt(1, 0x7fffffff);
+    p.tx = new NetCipher(key);
+    p.rx = new NetCipher((key ^ 0x5bd1e995) >>> 0 || 1);
+    return key;
+  }
+
+  /** Oda katmanı yasak listesini buraya bağlar. */
+  bansForReport: (() => { key: string; name: string; reason: string }[]) | null = null;
 
   private simEnv(p: ServerPlayer, boxes: EntityBox[]) {
     const live = this.phase === Phase.Live;
@@ -836,6 +1049,7 @@ export class Match {
   }
 
   private runCmd(p: ServerPlayer, cmd: UserCmd, boxes: EntityBox[]) {
+    p.prevButtons = p.lastCmd.buttons;
     if (!p.alive) {
       p.lastCmd = cmd;
       p.sim.move.oldButtons = cmd.buttons;
@@ -917,6 +1131,7 @@ export class Match {
     ev.dirs = spreadDirections(seed, ev.pitch, ev.yaw, ev.inaccuracy, ev.spread, ev.pellets);
     const dirs = ev.dirs.map((d) => [Math.round(d.x * 1e5) / 1e5, Math.round(d.y * 1e5) / 1e5, Math.round(d.z * 1e5) / 1e5] as V3);
     const full: GameEvent = { e: 'shot', id: p.id, w: ev.weapon, m: ev.mode, o: v3(ev.origin), d: dirs, sil: ev.silenced };
+    this.demo.event({ tick: this.tick, k: 'shot', id: p.id, o: v3(ev.origin), d: dirs[0]! });
     const range = ev.silenced ? 1500 : 1e9;
     for (const o of this.players.values()) {
       if (o === p) continue;
@@ -945,11 +1160,31 @@ export class Match {
         // her saçma ayrı zırh hesabı yapılır; basitlik için toplamı uygula
       }
     }
+    // hile analizi (hasardan önce: kurban ölünce görünürlük bilgisi değişmesin)
+    let strong: StrongReason | null = null;
+    const ac = this.ac.get(p.id, this.tick);
+    if (!this.settings.practice) {
+      const shot: ShotInfo = {
+        tick: this.tick,
+        origin: ev.origin,
+        dirs: ev.dirs,
+        pitch: ev.pitch,
+        yaw: ev.yaw,
+        punchP: ev.punchP,
+        punchY: ev.punchY,
+        fullAuto: def.fullAuto,
+        newPress: (cmd.buttons & IN_ATTACK) !== 0 && (p.prevButtons & IN_ATTACK) === 0,
+        hits: [...agg].filter(([vid]) => this.players.get(vid)?.team !== p.team).map(([id, h]) => ({ id, group: h.group })),
+      };
+      strong = this.ac.onShot(ac, shot, (id) => this.vis.visibleSince(p.id, id));
+    }
     for (const [vid, h] of agg) {
       const victim = this.players.get(vid)!;
       const scoped = def.zoomLevels > 0 && p.sim.wpn.zoom === 0 && def.category === 'sniper';
       this.damage(victim, p, h.dmg, def.armorRatio, h.group, def, h.wb, h.point, false, h.smoke, scoped);
     }
+    if (strong) this.detect(p, strong, 'atış');
+    else if (ac.shouldKick()) this.detect(p, null, `puan ${ac.score.toFixed(1)}`);
   }
 
   private smokeBetween(a: Vec3, b: Vec3): boolean {
@@ -1088,6 +1323,7 @@ export class Match {
       }
       if (assister >= 0) this.players.get(assister)!.a++;
     }
+    this.demo.event({ tick: this.tick, k: 'kill', a: attacker?.id ?? -1, v: victim.id, hs });
     this.broadcast({
       e: 'kill',
       k: attacker?.id ?? -1,
@@ -1754,6 +1990,7 @@ export class Match {
         if (mate) spectating = mate.id;
       }
       const visible = ents.filter((e) => e.id !== p.id && this.sees(p, this.players.get(e.id)!));
+      if (p.alive && !this.settings.practice && (p.team === Team.T || p.team === Team.CT)) this.addHoneypot(p, visible);
       // CT, görmediği yerdeki düşmüş C4'ü bilmesin
       const drops = isT || isSpec ? dropped : dropped.filter((d) => d.weapon !== 1 || this.anyTeamSees(p.team, d.pos));
       const snap = encodeSnapshot({
@@ -1766,11 +2003,39 @@ export class Match {
         dropped: drops,
         bomb,
       });
-      conn.sendBinary(snap);
+      conn.sendBinary(p.tx.apply(snap));
     }
     this.personal.clear();
     if (this.tick % TICK_RATE === 0) {
-      for (const p of this.players.values()) p.conn?.sendJSON({ t: 'ping', s: Date.now(), ping: p.ping });
+      const now = Date.now();
+      for (const p of this.players.values()) {
+        if (!p.conn) continue;
+        p.lastPingSent = now;
+        p.conn.sendJSON({ t: 'ping', s: now, ping: p.ping });
+      }
+    }
+  }
+
+  /**
+   * Bal tuzağı: ara sıra, görmediği gerçek bir rakibin kimliğiyle duvarın içine sahte bir
+   * oyuncu ekler. Normal istemci onu duvarın içinde çizer (görünmez); ESP/aimbot ona yönelir.
+   */
+  private addHoneypot(p: ServerPlayer, visible: EntityState[]) {
+    const ac = this.ac.get(p.id, this.tick);
+    const shown = new Set(visible.map((e) => e.id));
+    const hidden: { id: number; team: number; weapon: number }[] = [];
+    for (const o of this.players.values()) {
+      if (!o.alive || o.team === p.team || (o.team !== Team.T && o.team !== Team.CT) || shown.has(o.id)) continue;
+      hidden.push({ id: o.id, team: o.team, weapon: activeDef(o.sim).num });
+    }
+    const before = ac.honeypot;
+    this.ac.maybeStartHoneypot(ac, this.tick, eyePosition(p.sim), p.lastCmd.yaw, p.lastCmd.pitch, hidden);
+    const hp = ac.honeypot;
+    if (hp && hp !== before) this.demo.event({ tick: this.tick, k: 'honeypot', viewer: p.id, id: hp.target, p: v3(hp.pos), end: hp.endTick });
+    const fake = this.ac.honeypotEntity(ac, this.tick, (id) => shown.has(id));
+    if (fake) {
+      fake.shots = this.players.get(fake.id)?.shots ?? 0;
+      visible.push(fake);
     }
   }
 
@@ -1851,6 +2116,7 @@ export class Match {
       mvp: this.mvp,
       swapped: this.swapped,
       overtime: this.overtimeCount,
+      acAuto: this.acAuto,
     };
   }
 }

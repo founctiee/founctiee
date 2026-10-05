@@ -1,8 +1,8 @@
 /** Arayüz durumu (Preact signals). Oyun döngüsü bunları günceller, bileşenler okur. */
 import { signal } from '@preact/signals';
-import type { GameState, PlayerInfo } from '@kervan/shared';
+import type { GameState, PlayerInfo, AcReportPlayer } from '@kervan/shared';
 
-export type Screen = 'menu' | 'connecting' | 'game' | 'error';
+export type Screen = 'menu' | 'connecting' | 'game' | 'error' | 'demo';
 
 export interface KillEntry {
   id: number;
@@ -129,6 +129,8 @@ export const ui = {
   damageReport: signal<{ given: { name: string; dmg: number; hits: number }[]; taken: { name: string; dmg: number; hits: number }[]; t: number } | null>(null),
   consoleLines: signal<string[]>([]),
   pointerLocked: signal(false),
+  acOpen: signal(false),
+  acReport: signal<{ auto: boolean; players: AcReportPlayer[]; bans: { key: string; name: string; reason: string }[] } | null>(null),
 };
 
 export function playerById(id: number): PlayerInfo | undefined {

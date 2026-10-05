@@ -125,7 +125,7 @@ export function EscMenu({ game }: { game: Game }) {
             <button
               class="btn good"
               onClick={() => {
-                game.conn?.send({ t: 'start' });
+                game.send({ t: 'start' });
                 close();
               }}
             >
@@ -142,15 +142,26 @@ export function EscMenu({ game }: { game: Game }) {
             </button>
           </>
         )}
+        {host && st && !st.settings.practice && (
+          <button
+            class="btn"
+            onClick={() => {
+              ui.escOpen.value = false;
+              ui.acOpen.value = true;
+            }}
+          >
+            Hile Koruması
+          </button>
+        )}
         {st?.settings.practice && (
           <div class="practice-tools">
-            <button class="btn small" onClick={() => game.conn?.send({ t: 'cheat', name: 'noclip' })}>
+            <button class="btn small" onClick={() => game.send({ t: 'cheat', name: 'noclip' })}>
               noclip
             </button>
-            <button class="btn small" onClick={() => game.conn?.send({ t: 'cheat', name: 'god' })}>
+            <button class="btn small" onClick={() => game.send({ t: 'cheat', name: 'god' })}>
               ölümsüzlük
             </button>
-            <button class="btn small" onClick={() => game.conn?.send({ t: 'cheat', name: 'restart' })}>
+            <button class="btn small" onClick={() => game.send({ t: 'cheat', name: 'restart' })}>
               yeniden doğ
             </button>
           </div>
@@ -177,7 +188,7 @@ export function TeamMenu({ game }: { game: Game }) {
   const st = ui.state.value;
   const count = (t: Team) => st?.players.filter((p) => p.team === t).length ?? 0;
   const pick = (t: Team) => {
-    game.conn?.send({ t: 'team', team: t });
+    game.send({ t: 'team', team: t });
     ui.teamMenuOpen.value = false;
     game.syncInputState();
     void game.input.lock();
@@ -254,7 +265,7 @@ export function MatchSettingsPanel({ game }: { game: Game }) {
           <button
             class="btn primary"
             onClick={() => {
-              game.conn?.send({ t: 'settings', settings: s });
+              game.send({ t: 'settings', settings: s });
               close();
             }}
           >
@@ -290,12 +301,105 @@ export function ChatInput({ game }: { game: Game }) {
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             const v = (e.target as HTMLInputElement).value.trim();
-            if (v) game.conn?.send({ t: 'chat', text: v, team: mode === 'team' });
+            if (v) game.send({ t: 'chat', text: v, team: mode === 'team' });
             close();
           } else if (e.key === 'Escape') close();
           e.stopPropagation();
         }}
       />
+    </div>
+  );
+}
+
+/** Host paneli: şüphe puanları, atma/yasaklama, otomatik atma anahtarı. */
+export function AcPanel({ game }: { game: Game }) {
+  const open = ui.acOpen.value;
+  useEffect(() => {
+    if (!open) return;
+    game.send({ t: 'acreport' });
+    const t = setInterval(() => game.send({ t: 'acreport' }), 1000);
+    return () => clearInterval(t);
+  }, [open]);
+  if (!open) return null;
+  const rep = ui.acReport.value;
+  const me = ui.myId.value;
+  const close = () => {
+    ui.acOpen.value = false;
+    game.syncInputState();
+  };
+  return (
+    <div class="overlay">
+      <div class="panel ac-panel">
+        <div class="panel-title">Hile Koruması</div>
+        <label class="row">
+          <span>Tespitte otomatik at ve yasakla</span>
+          <input type="checkbox" checked={rep?.auto ?? true} onChange={(e) => game.send({ t: 'ac_mode', auto: (e.target as HTMLInputElement).checked })} />
+        </label>
+        <div class="ac-note">
+          Görüş sisi ve gizli spread her zaman açıktır. Kapatırsan şüpheliler atılmaz, sadece burada ve sana bildirim olarak görünür;
+          herkese de kapattığın duyurulur.
+        </div>
+        <table class="ac-table">
+          <thead>
+            <tr>
+              <th>Oyuncu</th>
+              <th>Puan</th>
+              <th>Sinyaller</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {(rep?.players ?? []).map((p) => (
+              <tr key={p.id}>
+                <td>{p.name}</td>
+                <td class={p.score >= 6 ? 'bad' : p.score >= 3 ? 'warn' : ''}>{p.score.toFixed(1)}</td>
+                <td class="ac-signals">
+                  {Object.entries(p.signals)
+                    .map(([k, n]) => `${k}×${n}`)
+                    .join(' ') || '—'}
+                  {p.backtrack > 0 && ` zaman×${p.backtrack}`}
+                  {p.log.length > 0 && <div class="ac-log">{p.log.slice(-3).join(' · ')}</div>}
+                </td>
+                <td class="ac-actions">
+                  {p.id !== me && (
+                    <>
+                      <button class="btn small" onClick={() => game.send({ t: 'kick', id: p.id })}>
+                        At
+                      </button>
+                      <button class="btn small danger" onClick={() => game.send({ t: 'ban', id: p.id })}>
+                        Yasakla
+                      </button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {(rep?.bans.length ?? 0) > 0 && (
+          <>
+            <div class="ac-sub">Yasaklılar</div>
+            {rep!.bans.map((b) => (
+              <div class="row" key={b.key}>
+                <span>
+                  {b.name} — {b.reason}
+                </span>
+                <button class="btn small" onClick={() => game.send({ t: 'unban', key: b.key })}>
+                  Yasağı kaldır
+                </button>
+              </div>
+            ))}
+          </>
+        )}
+        <div class="btn-row">
+          <button class="btn" onClick={() => game.downloadDemo()}>
+            Demoyu indir
+          </button>
+          <button class="btn" onClick={close}>
+            {tr.close}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

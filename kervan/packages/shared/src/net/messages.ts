@@ -1,12 +1,13 @@
 /** JSON mesaj tipleri (düşük frekanslı, güvenilir). */
 import type { MatchSettings, Phase, RoundEndReason, BombState } from '../game/rules';
 import type { Team } from '../game/player';
+import type { DemoFile } from './demo';
 
 export type V3 = [number, number, number];
 
 // ───────────── istemci → sunucu ─────────────
 export type ClientMsg =
-  | { t: 'join'; name: string; room?: string; create?: boolean; practice?: boolean; version: number; token?: string }
+  | { t: 'join'; name: string; room?: string; create?: boolean; practice?: boolean; version: number; token?: string; did?: string }
   | { t: 'team'; team: Team }
   | { t: 'buy'; item: string }
   | { t: 'drop' }
@@ -15,7 +16,16 @@ export type ClientMsg =
   | { t: 'settings'; settings: Partial<MatchSettings> }
   | { t: 'pong'; s: number }
   | { t: 'cheat'; name: 'noclip' | 'god' | 'money' | 'restart' | 'setpos'; args?: number[] }
-  | { t: 'leave' };
+  | { t: 'leave' }
+  /** Host: hile korumasında otomatik atma. */
+  | { t: 'ac_mode'; auto: boolean }
+  | { t: 'kick'; id: number }
+  | { t: 'ban'; id: number }
+  | { t: 'unban'; key: string }
+  | { t: 'acreport' }
+  | { t: 'demo' }
+  /** İstemci bütünlük yanıtı. */
+  | { t: 'acn'; n: string; h: string; f: number };
 
 // ───────────── sunucu → istemci ─────────────
 export interface PlayerInfo {
@@ -73,6 +83,17 @@ export interface GameState {
   /** Takımlar devre arasında yer değiştirdi mi (skor tablosunda takım isimleri için). */
   swapped: boolean;
   overtime: number;
+  /** Hile korumasında otomatik atma açık mı. */
+  acAuto?: boolean;
+}
+
+export interface AcReportPlayer {
+  id: number;
+  name: string;
+  score: number;
+  signals: Record<string, number>;
+  backtrack: number;
+  log: string[];
 }
 
 export type GameEvent =
@@ -123,10 +144,15 @@ export type GameEvent =
   | { e: 'damage_report'; given: { id: number; dmg: number; hits: number }[]; taken: { id: number; dmg: number; hits: number }[] };
 
 export type ServerMsg =
-  | { t: 'welcome'; id: number; room: string; tick: number; tickRate: number; map: string; version: number; token: string }
+  | { t: 'welcome'; id: number; room: string; tick: number; tickRate: number; map: string; version: number; token: string; key?: number }
   | { t: 'error'; msg: string }
   | ({ t: 'state' } & GameState)
   | { t: 'ev'; tick: number; list: GameEvent[] }
   | { t: 'ping'; s: number; ping: number }
   | { t: 'chat'; from: number; name: string; text: string; team: boolean; teamId: Team; dead: boolean }
-  | { t: 'rooms'; list: { code: string; players: number; phase: Phase; practice: boolean }[] };
+  | { t: 'rooms'; list: { code: string; players: number; phase: Phase; practice: boolean }[] }
+  | { t: 'kicked'; reason: string; ban: boolean; auto: boolean }
+  | { t: 'acreport'; auto: boolean; players: AcReportPlayer[]; bans: { key: string; name: string; reason: string }[] }
+  /** Bütünlük meydan okuması: nonce + doğrulanacak dosyalar. */
+  | { t: 'acn'; n: string; files: string[] }
+  | { t: 'demo'; demo: DemoFile };

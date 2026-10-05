@@ -1238,3 +1238,202 @@ select {
   outline: none;
   font-family: inherit;
 }
+
+/* ───── hile koruması paneli ───── */
+.ac-panel {
+  width: min(760px, 94vw);
+  max-height: 86vh;
+  overflow-y: auto;
+}
+.ac-note {
+  font-size: 12px;
+  opacity: 0.7;
+  margin: 4px 0 12px;
+  line-height: 1.4;
+}
+.ac-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.ac-table th {
+  text-align: left;
+  font-weight: 600;
+  opacity: 0.6;
+  padding: 4px 6px;
+}
+.ac-table td {
+  padding: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  vertical-align: top;
+}
+.ac-table td.warn {
+  color: #e8c050;
+}
+.ac-table td.bad {
+  color: #ff5a4a;
+  font-weight: 700;
+}
+.ac-signals {
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+}
+.ac-log {
+  font-family: inherit;
+  opacity: 0.6;
+  margin-top: 3px;
+  white-space: normal;
+}
+.ac-actions {
+  white-space: nowrap;
+  text-align: right;
+}
+.ac-actions .btn {
+  margin-left: 4px;
+}
+.ac-sub {
+  margin: 14px 0 6px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+/* ───── demo izleyici ───── */
+.demo-ui {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  font-size: 13px;
+  color: #eee;
+}
+.demo-ui > * {
+  pointer-events: auto;
+}
+.demo-top {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  background: rgba(10, 12, 14, 0.78);
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+.demo-top select {
+  background: #222;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 2px 4px;
+}
+.demo-pov {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: auto;
+}
+.demo-events {
+  position: absolute;
+  top: 64px;
+  right: 12px;
+  width: min(340px, 44vw);
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  background: rgba(10, 12, 14, 0.72);
+  border-radius: 6px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.demo-ev {
+  text-align: left;
+  background: none;
+  border: none;
+  color: #ddd;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font: inherit;
+}
+.demo-ev:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.demo-ev .t {
+  opacity: 0.55;
+  margin-right: 6px;
+  font-family: ui-monospace, monospace;
+}
+.demo-ev.ac {
+  color: #f0c050;
+}
+.demo-ev.kick,
+.demo-ev.honeypot {
+  color: #ff5a4a;
+}
+.demo-empty {
+  opacity: 0.5;
+  padding: 6px;
+}
+.demo-bar {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 34px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: rgba(10, 12, 14, 0.78);
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+.demo-time {
+  font-family: ui-monospace, monospace;
+  min-width: 110px;
+}
+.demo-track {
+  position: relative;
+  flex: 1;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+.demo-track input {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.demo-mark {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 8px;
+  background: #aaa;
+}
+.demo-mark.ac {
+  background: #f0c050;
+}
+.demo-mark.kick,
+.demo-mark.honeypot {
+  background: #ff4433;
+  height: 12px;
+}
+.demo-help {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px;
+  opacity: 0.6;
+}
+@media (max-width: 640px) {
+  .demo-events {
+    top: auto;
+    bottom: 90px;
+    max-height: 30vh;
+    width: auto;
+    left: 12px;
+  }
+}

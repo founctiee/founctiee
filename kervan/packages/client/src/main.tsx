@@ -22,7 +22,8 @@ if (!test) {
   setTimeout(() => {
     {
       const game = new Game(gameRoot);
-      (window as unknown as { kervan: Game }).kervan = game;
+      // sadece test derlemesinde (VITE_KERVAN_DEBUG=1) dışarı açılır
+      if (import.meta.env.VITE_KERVAN_DEBUG === '1') (window as unknown as { kervan: Game }).kervan = game;
       loading.remove();
       game.start();
       render(<App game={game} />, root);

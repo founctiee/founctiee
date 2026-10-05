@@ -315,3 +315,29 @@ export function decodeSnapshot(r: Reader): Snapshot {
   const bomb = r.bool() ? { state: r.u8(), pos: { x: r.f32(), y: r.f32(), z: r.f32() } } : null;
   return { tick, ackSeq, local, spectating, entities, grenades, dropped, bomb };
 }
+
+// ───────────── paket karıştırma ─────────────
+
+/**
+ * İkili paketler için oturum anahtarlı xorshift akışı. Gerçek bir şifreleme değildir;
+ * WebSocket'i dinleyip paketleri doğrudan çözen basit eklentileri/scriptleri kırar.
+ * Her yön kendi sayacını tutar (TCP sırayı korur). Anahtar 0 ise kapalıdır.
+ */
+export class NetCipher {
+  private n = 0;
+  constructor(private readonly key: number) {}
+
+  /** buf[from..] üzerinde yerinde uygular (simetrik). */
+  apply(buf: Uint8Array, from = 1): Uint8Array {
+    if (this.key === 0) return buf;
+    let x = (this.key ^ Math.imul(++this.n, 0x9e3779b1)) >>> 0 || 0x6d2b79f5;
+    for (let i = from; i < buf.length; i++) {
+      x ^= x << 13;
+      x ^= x >>> 17;
+      x ^= x << 5;
+      x >>>= 0;
+      buf[i]! ^= x & 255;
+    }
+    return buf;
+  }
+}

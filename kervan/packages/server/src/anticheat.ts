@@ -29,16 +29,29 @@ import {
 export type Signal = 'snap' | 'reaction' | 'trigger' | 'norecoil' | 'headrate' | 'honeylock';
 export type StrongReason = 'honeypot' | 'backtrack' | 'invalid' | 'tamper' | 'integrity' | 'flood';
 
+/** Her olayın puanı ve bir sinyal türünün toplamda katkı sınırı (tek sinyal tek başına atamaz). */
 const WEIGHTS: Record<Signal, number> = {
-  snap: 1,
-  reaction: 2.5,
-  trigger: 1,
+  snap: 1.5,
+  reaction: 3,
+  trigger: 1.5,
   norecoil: 2,
   headrate: 1,
   honeylock: 3,
 };
+const CAPS: Record<Signal, number> = {
+  snap: 6,
+  reaction: 3,
+  trigger: 6,
+  norecoil: 6,
+  headrate: 1,
+  honeylock: 9,
+};
 
 export const AC_KICK_SCORE = 8;
+/** İstemcinin kullanabileceği en büyük interpolasyon (tick). */
+export const MAX_INTERP = 5;
+/** Maç boyunca bu kadar backtrack ihlali → at. */
+export const BACKTRACK_KICK = 5;
 
 export const STRONG_TEXT: Record<StrongReason, string> = {
   honeypot: 'duvar içindeki sahte oyuncuya nişan/ateş (ESP/aimbot)',
@@ -126,6 +139,10 @@ export class PlayerAC {
   nonce = '';
   nonceTick = -1;
   integrityOk = false;
+  /** Otomatik atma kapalıyken host'a bildirilen sebepler. */
+  reported = new Set<string>();
+  /** Günlük satırı eklenince (demo kaydı için). */
+  onLog: ((text: string) => void) | null = null;
 
   constructor(firstHoneypotTick: number) {
     this.nextHoneypot = firstHoneypotTick;
@@ -133,9 +150,25 @@ export class PlayerAC {
 
   addSignal(sig: Signal, detail: string) {
     this.signals.set(sig, (this.signals.get(sig) ?? 0) + 1);
-    this.score += WEIGHTS[sig];
-    this.log.push(`${SIGNAL_TEXT[sig]}: ${detail}`);
+    let total = 0;
+    for (const [k, n] of this.signals) total += Math.min(CAPS[k], n * WEIGHTS[k]);
+    this.score = total;
+    this.note(`${SIGNAL_TEXT[sig]}: ${detail}`);
+  }
+
+  note(text: string) {
+    this.log.push(text);
     if (this.log.length > 40) this.log.shift();
+    this.onLog?.(text);
+  }
+
+  /** Yeniden bağlanmada zaman ölçümleri sıfırlanır (seq baştan başlar). */
+  resetTiming() {
+    this.lagBuckets = [];
+    this.rtBase = NaN;
+    this.angles = [];
+    this.crosshairOn = false;
+    this.crosshairEnter = -1;
   }
 
   distinctSignals(): number {
@@ -172,6 +205,7 @@ function rayHitsTarget(origin: Vec3, dir: Vec3, t: HitTarget, maxT = 8192): HitG
 
 export class AntiCheat {
   readonly players = new Map<number, PlayerAC>();
+  onLog: ((id: number, text: string) => void) | null = null;
 
   constructor(
     private world: World,
@@ -180,7 +214,11 @@ export class AntiCheat {
 
   get(id: number, tick: number): PlayerAC {
     let p = this.players.get(id);
-    if (!p) this.players.set(id, (p = new PlayerAC(tick + Math.round(TICK_RATE * (20 + this.random() * 20)))));
+    if (!p) {
+      p = new PlayerAC(tick + Math.round(TICK_RATE * (20 + this.random() * 20)));
+      p.onLog = (t) => this.onLog?.(id, t);
+      this.players.set(id, p);
+    }
     return p;
   }
 
@@ -216,17 +254,16 @@ export class AntiCheat {
     }
     const minLag = Math.min(...ac.lagBuckets);
     const earliest = seq + minLag;
-    const MAX_INTERP = 5;
-    const minAllowed = earliest - rttTicks - MAX_INTERP - 3;
-    const maxAllowed = earliest + 1;
+    const minAllowed = earliest - rttTicks - MAX_INTERP - 4;
     let rt = renderTick;
     let violation = false;
     if (!Number.isFinite(rt)) return { renderTick: tick, violation: true };
     // tutarlılık: (renderTick − seq) atış dışı komutlarda sabit kalır
     const rel = rt - seq;
     if (!isShot) {
-      ac.rtBase = Number.isNaN(ac.rtBase) ? rel : ac.rtBase * 0.95 + rel * 0.05;
-    } else if (!Number.isNaN(ac.rtBase) && rel < ac.rtBase - 4) {
+      // ileri sıçrama (sekme arka plandan döndü, interpolasyon azaldı) hemen kabul edilir
+      ac.rtBase = Number.isNaN(ac.rtBase) || rel > ac.rtBase + 16 ? rel : ac.rtBase * 0.95 + rel * 0.05;
+    } else if (!Number.isNaN(ac.rtBase) && rel < ac.rtBase - 6) {
       violation = true;
       rt = ac.rtBase + seq;
     }
@@ -234,7 +271,7 @@ export class AntiCheat {
       if (isShot) violation = true;
       rt = minAllowed;
     }
-    if (rt > maxAllowed) rt = maxAllowed;
+    if (rt > tick) rt = tick;
     // ping ölçülmeden ihlal sayma (yalnızca kırp)
     if (ac.pingSamples < 2) violation = false;
     return { renderTick: rt, violation };
@@ -264,7 +301,7 @@ export class AntiCheat {
     if (hp && tick <= hp.endTick) {
       const head = { x: hp.pos.x + 1.5 * Math.cos((hp.yaw * Math.PI) / 180), y: hp.pos.y + 1.5 * Math.sin((hp.yaw * Math.PI) / 180), z: hp.pos.z + 64 };
       const err = angleTo(eye, pitch, yaw, head);
-      if (err < 1.2 && hp.startErr > 12) {
+      if (err < 2 && hp.startErr > 15) {
         hp.lockTicks++;
         if (hp.lockTicks >= 40 && !hp.locked) {
           hp.locked = true;
@@ -284,7 +321,7 @@ export class AntiCheat {
     let strong: StrongReason | null = null;
     // bal tuzağı: atış sahte hedefe gitti mi (duvar yok sayılarak)
     const hp = ac.honeypot;
-    if (hp && shot.tick <= hp.endTick) {
+    if (hp && shot.tick <= hp.endTick && hp.startErr > 15) {
       const ghost = makeHitTarget(hp.target, hp.team, { origin: hp.pos, yaw: hp.yaw, duckAmount: 0 });
       for (const d of shot.dirs) {
         const g = rayHitsTarget(shot.origin, d, ghost, 3000);
@@ -336,7 +373,7 @@ export class AntiCheat {
         if (dt >= 0 && dt < 64) {
           ac.reactions.push(dt);
           if (ac.reactions.length > 12) ac.reactions.shift();
-          if (ac.reactions.length >= 5) {
+          if (ac.reactions.length >= 6) {
             const sorted = [...ac.reactions].sort((x, y) => x - y);
             const med = sorted[Math.floor(sorted.length / 2)]!;
             if (med < 7 && !ac.signals.has('reaction')) ac.addSignal('reaction', `medyan ${Math.round((med * 1000) / TICK_RATE)} ms`);
@@ -347,12 +384,14 @@ export class AntiCheat {
     }
 
     // triggerbot: tetik, nişanın rakibe girdiği tick'te (ya da bir sonrakinde)
-    if (shot.newPress && ac.crosshairOn && ac.crosshairEnter >= 0) {
+    // yalnızca nişan sabit tutulurken (rakip nişana yürüdüğünde) sayılır; insan burada ≥150 ms tepki verir
+    const still = ac.angles.length >= 5 && ac.angles.slice(-5).every((a, i, arr) => i === 0 || angDiff(arr[i - 1]!, a) < 0.15);
+    if (shot.newPress && still && ac.crosshairOn && ac.crosshairEnter >= 0) {
       ac.triggerChecks++;
       const dt = shot.tick - ac.crosshairEnter;
       if (dt <= 1) {
         ac.triggerEvents++;
-        if (ac.triggerEvents >= 4 && ac.triggerEvents / ac.triggerChecks > 0.6) ac.addSignal('trigger', `${ac.triggerEvents}/${ac.triggerChecks} anlık tetik`);
+        if (ac.triggerEvents >= 3 && ac.triggerEvents / ac.triggerChecks > 0.6) ac.addSignal('trigger', `${ac.triggerEvents}/${ac.triggerChecks} anlık tetik`);
       }
     }
 
@@ -383,7 +422,7 @@ export class AntiCheat {
     if (ac.honeypot || tick < ac.nextHoneypot || hidden.length === 0) return;
     ac.nextHoneypot = tick + Math.round(TICK_RATE * (30 + this.random() * 30));
     const pick = hidden[Math.floor(this.random() * hidden.length)]!;
-    const spot = this.findSolidSpot(eye);
+    const spot = this.findSolidSpot(eye, yaw);
     if (!spot) return;
     const faceYaw = vectorAngles({ x: eye.x - spot.x, y: eye.y - spot.y, z: 0 }).yaw;
     const head = { x: spot.x, y: spot.y, z: spot.z + 64 };
@@ -426,9 +465,11 @@ export class AntiCheat {
   }
 
   /** Göze 250–800 birim uzaklıkta, oyuncu hull'ı tamamen katı içinde kalan bir nokta. */
-  findSolidSpot(eye: Vec3): Vec3 | null {
-    for (let attempt = 0; attempt < 40; attempt++) {
+  findSolidSpot(eye: Vec3, viewYaw = 0): Vec3 | null {
+    for (let attempt = 0; attempt < 48; attempt++) {
       const ang = this.random() * Math.PI * 2;
+      // baktığı yönün 35° yakınına koyma (tesadüfen nişan almasın)
+      if (Math.abs(normalizeAngle((ang * 180) / Math.PI - viewYaw)) < 35) continue;
       const dist = 250 + this.random() * 550;
       const base = { x: eye.x + Math.cos(ang) * dist, y: eye.y + Math.sin(ang) * dist, z: Math.max(0, eye.z - 64) };
       if (this.fullyInside(base)) return base;

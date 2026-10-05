@@ -6,9 +6,10 @@ import { settings, saveSettings } from '../settings';
 import type { Game } from '../game/game';
 import { TopBar, WarmupBanner, BottomHud, Killfeed, Notices, CenterText, DamageIndicators, DeathPanel, DamageReport, NetGraph, Radar, ChatFeed, DefuseWatcher } from './Hud';
 import { BuyMenu } from './BuyMenu';
-import { Scoreboard, EscMenu, TeamMenu, MatchSettingsPanel, ChatInput } from './Menus';
+import { Scoreboard, EscMenu, TeamMenu, MatchSettingsPanel, ChatInput, AcPanel } from './Menus';
 import { SettingsPanel, closeSettings } from './Settings';
 import { Console } from './Console';
+import { DemoViewer, openDemoFile } from './DemoViewer';
 
 function MainMenu({ game }: { game: Game }) {
   const params = new URLSearchParams(location.search);
@@ -66,9 +67,14 @@ function MainMenu({ game }: { game: Game }) {
           <button class="btn big" disabled={!ok} onClick={() => go({ create: true, practice: true })}>
             {tr.practice}
           </button>
-          <button class="btn" onClick={() => (ui.settingsOpen.value = true)}>
-            {tr.settings}
-          </button>
+          <div class="btn-row">
+            <button class="btn" onClick={() => (ui.settingsOpen.value = true)}>
+              {tr.settings}
+            </button>
+            <button class="btn" onClick={() => openDemoFile(game)}>
+              Demo izle
+            </button>
+          </div>
         </div>
         <div class="room-list">
           <div class="rl-title">{tr.rooms}</div>
@@ -113,6 +119,7 @@ function GameUI({ game }: { game: Game }) {
       <Scoreboard />
       <TeamMenu game={game} />
       <MatchSettingsPanel game={game} />
+      <AcPanel game={game} />
       <EscMenu game={game} />
       <Console game={game} />
       {ui.settingsOpen.value && <SettingsPanel onClose={() => closeSettings(game)} />}
@@ -147,6 +154,7 @@ export function App({ game }: { game: Game }) {
         </div>
       )}
       {s === 'game' && <GameUI game={game} />}
+      {s === 'demo' && <DemoViewer game={game} />}
       {s !== 'game' && ui.consoleOpen.value && <Console game={game} />}
     </>
   );

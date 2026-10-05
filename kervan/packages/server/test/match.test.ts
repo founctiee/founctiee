@@ -30,6 +30,7 @@ class FakeConn implements Conn {
   sendJSON(m: ServerMsg) {
     this.json.push(m);
   }
+  close() {}
   bufferedAmount() {
     return 0;
   }
